@@ -1,0 +1,46 @@
+<a href="#main" class="sr-only">Skip to content</a>
+<aside class="sidebar" id="sidebar" aria-label="Main navigation">
+  <a class="brand" href="#/home" aria-label="Mediterranean Meal Planner home">
+    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="var(--primary)"/>__MARK_INNER__</svg>
+    <div><svg class="wm" viewBox="0 0 __WM_W__ 30" aria-hidden="true"><path d="__WM_D__"/></svg><small>Meal Planner</small></div>
+  </a>
+  <nav class="nav" id="nav"></nav>
+  <div class="side-foot">
+    <div class="save-state" id="saveState" role="status"><i></i><span>Saved in this browser</span></div>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>
+<div class="main">
+  <header class="topbar">
+    <button class="btn icon ghost menu-btn" id="menuBtn" aria-label="Open menu" data-action="menu"></button>
+    <div class="search" id="searchBox">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="search" type="search" placeholder="Search recipes, meals, shopping…" autocomplete="off" aria-label="Search your planner" aria-controls="searchResults">
+      <kbd id="searchKbd">⌘K</kbd>
+      <div class="search-results" id="searchResults" role="listbox"></div>
+    </div>
+    <div class="top-actions">
+      <button class="btn icon ghost hide-sm" data-action="toggleTheme" aria-label="Toggle dark mode" id="themeBtn"></button>
+      <button class="btn primary" data-action="quickAdd" id="quickBtn"></button>
+    </div>
+  </header>
+  <main class="content" id="main" tabindex="-1">
+    <div id="banners"></div>
+    <section class="page" id="page-home"></section>
+    <section class="page" id="page-today"></section>
+    <section class="page" id="page-week"></section>
+    <section class="page" id="page-recipes"></section>
+    <section class="page" id="page-shopping"></section>
+    <section class="page" id="page-pantry"></section>
+    <section class="page" id="page-balance"></section>
+    <section class="page" id="page-prep"></section>
+    <section class="page" id="page-goals"></section>
+    <section class="page" id="page-calendar"></section>
+    <section class="page" id="page-journal"></section>
+    <section class="page" id="page-settings"></section>
+  </main>
+</div>
+<div id="printRecipe"></div>
+<nav class="bottom-nav" id="bottomNav" aria-label="Quick navigation"></nav>
+<div class="overlay" id="overlay"><div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"></div></div>
+<div class="toasts" id="toasts" aria-live="polite"></div>

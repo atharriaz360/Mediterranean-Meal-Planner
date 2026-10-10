@@ -1,0 +1,28 @@
+{
+ "name": "Mediterranean Meal Planner",
+ "short_name": "Mediterranean Meal Planner",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#FAF6EF",
+ "theme_color": "#1D5673",
+ "description": "Plan Mediterranean meals, recipes and shopping \u2014 private and offline.",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-maskable-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "maskable"
+  }
+ ]
+}
