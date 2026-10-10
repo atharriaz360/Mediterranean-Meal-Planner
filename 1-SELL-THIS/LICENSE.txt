@@ -25,6 +25,6 @@ NO WARRANTY
 Mediterranean Meal Planner is provided "as is". We work hard to keep it reliable and will help you through Etsy messages, but we can't be responsible for data loss caused by clearing browser data, changing browsers or devices without a backup, or third-party software.
 
 THIRD-PARTY COMPONENTS
-Heading typeface: Fraunces, © The Fraunces Project Authors, licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). All icons and food illustrations are original to Mediterranean Meal Planner.
+Heading typeface: Fraunces, © The Fraunces Project Authors, licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). Icons and food illustrations are original to Mediterranean Meal Planner. The food photo on the Home screen was created for this product with the help of AI image tools.
 
 Questions? Message us on Etsy.

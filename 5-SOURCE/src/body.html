@@ -5,6 +5,7 @@
     <div><svg class="wm" viewBox="0 0 __WM_W__ 30" aria-hidden="true"><path d="__WM_D__"/></svg><small>Meal Planner</small></div>
   </a>
   <nav class="nav" id="nav"></nav>
+  <div class="side-quote" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19 14 10"/></svg><p>Healthy meals<br>Happy home<br><em>Better you</em></p></div>
   <div class="side-foot">
     <div class="save-state" id="saveState" role="status"><i></i><span>Saved in this browser</span></div>
   </div>
@@ -21,7 +22,8 @@
     </div>
     <div class="top-actions">
       <button class="btn icon ghost hide-sm" data-action="toggleTheme" aria-label="Toggle dark mode" id="themeBtn"></button>
-      <button class="btn primary" data-action="quickAdd" id="quickBtn"></button>
+      <button class="btn icon ghost bell" data-go="prep" aria-label="Reminders and prep list" id="bellBtn"></button>
+      <button class="btn gold" data-action="addMeal" id="quickBtn"></button>
     </div>
   </header>
   <main class="content" id="main" tabindex="-1">
@@ -43,4 +45,5 @@
 <div id="printRecipe"></div>
 <nav class="bottom-nav" id="bottomNav" aria-label="Quick navigation"></nav>
 <div class="overlay" id="overlay"><div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"></div></div>
+<div class="demo-bar" id="demoBar" role="status" hidden></div>
 <div class="toasts" id="toasts" aria-live="polite"></div>

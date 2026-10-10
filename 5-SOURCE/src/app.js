@@ -11,6 +11,7 @@ const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const pad=n=>String(n).padStart(2,'0');
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
 /* Local-time dates (never toISOString — that shifts the day in many timezones) */
+const DEMO=__DEMO__,ETSY_URL='__ETSY__';
 const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const parse=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||'');return m?new Date(+m[1],+m[2]-1,+m[3]):new Date(NaN)};
 const today=()=>ymd(new Date());
@@ -67,6 +68,12 @@ const IC={
  wand:'<path d="m4 20 11-11M14 4v3M17 7h3M18.5 3.5l-1.5 1.5M11 5.5 12.5 7"/>',
  fish:'<path d="M3 12c3-4 7-5.5 11-5.5 3 0 5 2 7 5.5-2 3.5-4 5.5-7 5.5-4 0-8-1.5-11-5.5z"/><path d="M3 12 1.5 8.5M3 12l-1.5 3.5"/><circle cx="16" cy="11" r=".8"/>',
  info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5h.01"/>',
+ bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 2h-15z"/><path d="M10 21h4"/>',
+ bottle:'<path d="M10 3h4v3l1.5 2.5V20a1.5 1.5 0 0 1-1.5 1.5h-4A1.5 1.5 0 0 1 8.5 20V8.5L10 6z"/><path d="M8.5 13h7"/>',
+ egg:'<path d="M12 3.5c3.5 0 6 5.5 6 9.5a6 6 0 0 1-12 0c0-4 2.5-9.5 6-9.5z"/>',
+ tomato:'<circle cx="12" cy="13.5" r="7"/><path d="M9 6.5c1.2.4 2 .1 3-1 1 1.1 1.8 1.4 3 1M12 5.5V3"/>',
+ bowl:'<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0z"/><path d="M8 20.5h8"/><path d="M8 8c0-1.5 1-2 1-3.5M12 8c0-1.5 1-2 1-3.5M16 8c0-1.5 1-2 1-3.5"/>',
+ arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
  more:'<circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/>'
 };
 const ic=(n,cls='')=>`<svg viewBox="0 0 24 24" class="${cls}" aria-hidden="true">${IC[n]||''}</svg>`;
@@ -74,7 +81,7 @@ const STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.7 5.6
 
 /* ---------------- domain constants ---------------- */
 const SLOTS=['Breakfast','Lunch','Dinner','Snack'];
-const SLOT_COLOR={Breakfast:'#F2B84B',Lunch:'#6E9B3A',Dinner:'#1D5673',Snack:'#D9683A'};
+const SLOT_COLOR={Breakfast:'#F2B84B',Lunch:'#6E9B3A',Dinner:'#1F4A38',Snack:'#D9683A'};
 const GROUPS=[
  {k:'veg',label:'Vegetables',color:'#5E9442'},{k:'fruit',label:'Fruit',color:'#E0873A'},{k:'legumes',label:'Legumes',color:'#A77B45'},
  {k:'grains',label:'Whole grains',color:'#D2A64A'},{k:'fish',label:'Fish & seafood',color:'#3C8DB5'},{k:'oliveoil',label:'Olive oil',color:'#9AA63A'},
@@ -97,7 +104,7 @@ const AISLE_WORDS=[
  ['Produce',/\b(tomato\w*|cucumbers?|onions?|garlic|lemons?|limes?|spinach|kale|lettuce|peppers?|zucchini|courgettes?|eggplants?|aubergines?|carrots?|potato\w*|berries|berry|apples?|oranges?|figs?|grapes?|avocados?|greens|rocket|arugula|herbs|fruit|vegetables?|mushrooms?|celery|leeks?|pomegranates?|bananas?|peach\w*)\b/i]
 ];
 const guessAisle=name=>{for(const [a,re] of AISLE_WORDS)if(re.test(name))return a;return 'Other'};
-const ACCENTS={aegean:['#1D5673','#143F55','Aegean'],olive:['#56652A','#3F4B1D','Olive'],terracotta:['#B0502A','#873C1E','Terracotta'],lavender:['#5E5188','#443A66','Lavender'],charcoal:['#33434A','#222E33','Charcoal']};
+const ACCENTS={forest:['#1F4A38','#163629','Forest green'],midnight:['#20395C','#162944','Midnight blue'],burgundy:['#6A2B3B','#4E1F2B','Burgundy']};
 const TIPS=['Build each plate around vegetables first, then add grains and protein.','Cook a pot of beans or lentils on the weekend for quick lunches.','Keep a jar of mixed herbs and lemon zest for instant flavour.','A handful of nuts makes an easy afternoon snack.','Swap butter for extra virgin olive oil when roasting vegetables.','Plan fish twice a week — canned sardines and tuna count too.','Roast a big tray of vegetables to use across three meals.','Fruit and yogurt make a simple, satisfying dessert.','Freeze leftover soup in single portions for busy nights.','Shop the produce aisle first and fill half your basket there.'];
 
 /* ---------------- illustrated sample dishes (original, generated SVG) ---------------- */
@@ -110,10 +117,15 @@ const ART={
  shakshuka:{bg:'#E3D6C8',fill:'#C8452F',pan:true,items:[[4,'egg','#FFFFFF',20],[14,'leaf','#4E8A3A',8],[10,'dot','#8E2A1C',3]]},
  lentil:{bg:'#E9D9C4',fill:'#D98A3D',items:[[1,'swirl','#F1D9A8',55],[12,'leaf','#4E8A3A',8],[2,'lemon','#F4CF4F',14],[10,'dot','#8B4A1C',2.5]]},
  tuna:{bg:'#DCE3E0',fill:'#EEF0E6',items:[[12,'leaf','#5E9442',16],[12,'circle','#F4EFE2',8],[8,'flake','#C99A8A',10],[6,'circle','#D9483B',10],[5,'olive','#3B2F3A',7]]},
+ chickensalad:{bg:'#E6DDC9',fill:'#DCE6C6',items:[[18,'leaf','#5E9442',18],[7,'circle','#D9483B',10],[9,'chunk','#EBC999',15],[6,'ring','#A9C77B',11],[5,'olive','#3B2F3A',7],[5,'square','#FBFAF4',9]]},
+ pasta:{bg:'#EFE3D0',fill:'#F6EAC4',items:[[26,'noodle','#E3C06C',26],[1,'pool','#F1DCA0',34],[12,'noodle','#F5E3AC',20],[7,'leaf','#4E8A3A',9],[9,'dot','#3B2F3A',2],[4,'circle','#D9483B',9]]},
+ stirfry:{bg:'#E3D9C8',fill:'#F2E7CD',items:[[9,'chunk','#E2AE70',15],[8,'stick','#D9483B',9],[8,'stick','#5E9442',9],[6,'stick','#E0873A',9],[7,'circle','#3F7A2E',9],[16,'dot','#FFFFFF',2.2]]},
+ pancakes:{bg:'#EFE0CC',fill:'#F7F0E3',center:'stack',items:[[5,'ring','#F6E2A0',9],[7,'dot','#C8324A',5],[5,'leaf','#5E9442',8]],noScatterCenter:true},
  peppers:{bg:'#EADFCB',fill:'#F3EFE6',items:[[1,'pepper','#D9483B',0],[1,'pepper2','#F2B84B',0],[10,'leaf','#4E8A3A',9],[8,'square','#FBFAF4',8]],noScatterCenter:true}
 };
 const artCache={};
 function art(kind){
+ if(PHOTOS[kind])return PHOTOS[kind];
  if(artCache[kind])return artCache[kind];
  const a=ART[kind]||ART.salad,r=rng(kind);let s='';
  const cx=200,cy=150;
@@ -131,6 +143,8 @@ function art(kind){
   egg:(x,y,z,c)=>`<path d="M${x-z} ${y}c0-${z*.8} ${z*.4}-${z} ${z}-${z}s${z*1.1} ${z*.3} ${z} ${z}-${z*.5} ${z}-${z} ${z}-${z}-${z*.3}-${z}-${z}z" fill="${c}"/><circle cx="${x}" cy="${y}" r="${z*.42}" fill="#F2B233"/>`,
   flake:(x,y,z,c)=>`<path d="M${x-z} ${y}q${z*.5}-${z} ${z} -${z*.4}q${z*.7}-${z*.3} ${z} ${z*.4}q-${z*.4} ${z*.9}-${z} ${z*.5}q-${z*.8} ${z*.2}-${z}-${z*.5}z" fill="${c}"/>`,
   swirl:(x,y,z,c)=>`<path d="M${cx-z} ${cy}a${z} ${z*.9} 0 1 1 ${z*2} 0a${z*.7} ${z*.6} 0 1 1 -${z*1.4} 0a${z*.4} ${z*.35} 0 1 1 ${z*.8} 0" fill="none" stroke="${c}" stroke-width="7" stroke-linecap="round" opacity=".55"/>`,
+  chunk:(x,y,z,c)=>`<rect x="${x-z/2}" y="${y-z*.3}" width="${z}" height="${z*.6}" rx="${z*.28}" fill="${c}" transform="rotate(${r()*180} ${x} ${y})"/>`,
+  noodle:(x,y,z,c)=>`<path d="M${-z} 0q${z*.25}-${z*.5} ${z*.5} 0t${z*.5} 0t${z*.5} 0t${z*.5} 0" transform="translate(${x} ${y}) rotate(${r()*180})" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>`,
   pool:(x,y,z,c)=>`<ellipse cx="${cx}" cy="${cy}" rx="${z}" ry="${z*.8}" fill="${c}" opacity=".85"/>`,
   pepper:()=>`<path d="M150 108c-26 6-36 38-28 62s30 36 50 30 30-30 26-56-22-42-48-36z" fill="#D9483B"/><path d="M146 110c6-10 16-14 24-12" stroke="#3F7A2E" stroke-width="7" stroke-linecap="round" fill="none"/><ellipse cx="160" cy="150" rx="20" ry="30" fill="#E6C891" opacity=".9"/>`,
   pepper2:()=>`<path d="M232 118c-22 4-32 32-26 54s26 32 44 28 26-28 22-50-18-36-40-32z" fill="#F2B84B"/><path d="M228 120c5-9 14-12 21-10" stroke="#3F7A2E" stroke-width="7" stroke-linecap="round" fill="none"/><ellipse cx="240" cy="158" rx="17" ry="26" fill="#E6C891" opacity=".9"/>`
@@ -142,27 +156,32 @@ function art(kind){
  if(a.pan){s+=`<rect x="320" y="140" width="80" height="22" rx="10" fill="#2B2B2B"/><circle cx="${cx}" cy="${cy}" r="128" fill="#2E2E2E"/><circle cx="${cx}" cy="${cy}" r="112" fill="${a.fill}"/>`}
  else{s+=`<circle cx="${cx}" cy="${cy}" r="130" fill="#FFFFFF"/><circle cx="${cx}" cy="${cy}" r="128" fill="none" stroke="#EDE6DA" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="104" fill="${a.fill}"/>`}
  if(a.center==='fillet')s+=`<g transform="rotate(-18 200 150)"><rect x="140" y="118" width="130" height="64" rx="28" fill="#EE8C62"/><path d="M160 124c8 18 8 38 0 54M185 122c8 20 8 40 0 58M210 122c8 20 8 40 0 58M235 124c7 18 7 36 0 52" stroke="#F8C1A2" stroke-width="5" fill="none" stroke-linecap="round"/></g>`;
+ if(a.center==='stack')s+=`<ellipse cx="200" cy="186" rx="84" ry="24" fill="#C98F46"/><ellipse cx="200" cy="170" rx="84" ry="24" fill="#E2AA5C"/><ellipse cx="200" cy="154" rx="84" ry="24" fill="#C98F46"/><ellipse cx="200" cy="138" rx="84" ry="24" fill="#E8B76C"/><ellipse cx="200" cy="134" rx="60" ry="15" fill="#F2CD8C" opacity=".85"/><path d="M168 130q32-12 64 0q-6 22-18 14q-14 14-28 0q-12 6-18-14z" fill="#A5601F" opacity=".85"/>`;
  for(const [n,type,c,z] of a.items){for(let i=0;i<n;i++){const [x,y]=a.noScatterCenter&&n>1?pos(40,86):(n===1?[cx,cy]:pos(0,84));s+=(shape[type]||shape.circle)(+x.toFixed(1),+y.toFixed(1),z,c)}}
  const uri='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">${s}</svg>`);
  return artCache[kind]=uri;
 }
 function tile(label,color){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><rect width="40" height="40" fill="${color}" opacity=".18"/><text x="20" y="26" text-anchor="middle" font-family="Georgia,serif" font-size="17" font-weight="700" fill="${color}">${esc((label||'?').trim().charAt(0).toUpperCase())}</text></svg>`)}
-const recipeImg=r=>r?.image||(r?.art?art(r.art):tile(r?.title,'#1D5673'));
-function mealImg(m){const r=m.recipeId&&state.recipes.find(x=>x.id===m.recipeId);if(r)return recipeImg(r);return tile(m.title,SLOT_COLOR[m.slot]||'#1D5673')}
+const recipeImg=r=>r?.image||(r?.art?art(r.art):tile(r?.title,'#1F4A38'));
+function mealImg(m){const r=m.recipeId&&state.recipes.find(x=>x.id===m.recipeId);if(r)return recipeImg(r);return tile(m.title,SLOT_COLOR[m.slot]||'#1F4A38')}
 
 /* ---------------- storage: IndexedDB → localStorage → memory ---------------- */
+const DATA_FLAG='mediterranean-meal-planner:has-idb-data';
 const Store={
  mode:'memory',db:null,
  async init(){
   try{
    if(!('indexedDB' in window))throw 0;
-   this.db=await new Promise((res,rej)=>{const t=setTimeout(()=>rej('timeout'),2500);const q=indexedDB.open('mediterranean-meal-planner-planner',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{clearTimeout(t);res(q.result)};q.onerror=()=>{clearTimeout(t);rej(q.error)};q.onblocked=()=>{clearTimeout(t);rej('blocked')}});
+   const open=()=>new Promise((res,rej)=>{const t=setTimeout(()=>rej('timeout'),4000);const q=indexedDB.open('mediterranean-meal-planner-planner',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{clearTimeout(t);res(q.result)};q.onerror=()=>{clearTimeout(t);rej(q.error)};q.onblocked=()=>{clearTimeout(t);rej('blocked')}});
+   try{this.db=await open()}catch(e){await new Promise(r=>setTimeout(r,400));this.db=await open()}
    await this.idbSet('__probe',1);this.mode='idb';return;
   }catch(e){this.db=null}
+  let hadIdb=false;try{hadIdb=localStorage.getItem(DATA_FLAG)==='1'}catch(e){}
+  if(hadIdb){this.mode='unavailable';return}
   try{localStorage.setItem('__olv_probe','1');localStorage.removeItem('__olv_probe');this.mode='local'}catch(e){this.mode='memory'}
  },
- idbSet(k,v){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=()=>res(true);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error||new Error('aborted'))})},
- idbGet(k){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readonly');const q=tx.objectStore('kv').get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error)})},
+ idbSet(k,v){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=()=>{if(k==='state'){try{localStorage.setItem(DATA_FLAG,'1')}catch(e){}}res(true)};tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error||new Error('aborted'))})},
+ idbGet(k){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readonly');const q=tx.objectStore('kv').get(k);let v;q.onsuccess=()=>{v=q.result};tx.oncomplete=()=>res(v);tx.onerror=()=>rej(tx.error||q.error);tx.onabort=()=>rej(tx.error||new Error('aborted'))})},
  async get(k){
   if(this.mode==='idb'){const v=await this.idbGet(k);if(v!==undefined)return v;}
   try{const raw=localStorage.getItem('mediterranean-meal-planner:'+k);if(raw)return JSON.parse(raw)}catch(e){}
@@ -204,79 +223,112 @@ function defaultWeekStart(){try{const l=navigator.language||'';return /^(en-US|e
 function blankState(){
  return {app:'mediterranean-meal-planner',version:2,createdAt:new Date().toISOString(),
   profile:{name:'',plannerName:'My Mediterranean Planner'},
-  settings:{theme:'system',accent:'aegean',weekStart:defaultWeekStart(),waterGoal:8,dateFormat:'auto',showCalories:true,backupRemind:true,lastBackup:null,onboarded:false,sampleCleared:false},
+  settings:{theme:'system',accent:'forest',weekStart:defaultWeekStart(),waterGoal:8,dateFormat:'auto',showCalories:true,backupRemind:true,lastBackup:null,onboarded:false,sampleCleared:false},
   recipes:[],meals:[],shopping:[],pantry:[],tasks:[],goals:[],notes:[],water:{},
   ui:{page:'home',weekOffset:0,calMonth:null,calYear:null,recipeFilter:'All',shopFilter:'open',backupSnooze:null}};
 }
 function sampleState(){
  const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:''},o);
  s.recipes=[
-  R({title:'Greek Chickpea Salad',category:'Lunch',time:15,servings:2,calories:480,art:'salad',fav:true,groups:['veg','legumes','oliveoil','dairy'],tags:'no-cook, meal prep',
-   ingredients:['1 can chickpeas, rinsed','2 tomatoes, chopped','1 cucumber, diced','1/2 red onion, thinly sliced','60 g feta','handful of Kalamata olives','2 tbsp extra virgin olive oil','1 lemon','1 tsp dried oregano'],
-   method:'Add the chickpeas, tomatoes, cucumber and onion to a large bowl.\nWhisk the olive oil with the juice of half the lemon, the oregano and a pinch of salt.\nToss everything together, then crumble over the feta and scatter the olives.\nKeeps well in the fridge for 2 days, so it works for packed lunches.'}),
-  R({title:'Lemon Herb Salmon with Greens',category:'Dinner',time:25,servings:2,calories:560,art:'salmon',fav:true,groups:['fish','veg','oliveoil'],tags:'high protein, 30 minutes',
-   ingredients:['2 salmon fillets','1 lemon','2 garlic cloves','small bunch of dill','200 g green beans','100 g spinach','1 tbsp extra virgin olive oil'],
-   method:'Heat the oven to 200°C / 400°F.\nPlace the salmon on a lined tray, rub with olive oil, grated garlic, lemon zest and chopped dill.\nAdd the green beans around the fish and roast for 12–15 minutes.\nWilt the spinach in a warm pan, then serve with lemon wedges.'}),
-  R({title:'Overnight Oats with Berries & Walnuts',category:'Breakfast',time:5,servings:1,calories:410,art:'oats',groups:['grains','fruit','nuts','dairy'],tags:'make ahead',
-   ingredients:['50 g rolled oats','120 g Greek yogurt','80 ml milk','handful of mixed berries','1 tbsp chopped walnuts','1 tsp honey','pinch of cinnamon'],
-   method:'Stir the oats, yogurt, milk and cinnamon together in a jar.\nCover and refrigerate overnight.\nIn the morning, top with berries, walnuts and a drizzle of honey.'}),
-  R({title:'Hummus & Crunchy Veg Plate',category:'Snack',time:10,servings:2,calories:290,art:'hummus',groups:['legumes','veg','oliveoil'],tags:'snack board',
-   ingredients:['200 g hummus','2 carrots','1 cucumber','1 red pepper','handful of olives','1 tbsp extra virgin olive oil','pinch of smoked paprika'],
-   method:'Spread the hummus on a plate and swirl with the back of a spoon.\nDrizzle with olive oil and dust with paprika.\nCut the vegetables into sticks and arrange around the hummus with the olives.'}),
-  R({title:'Shakshuka with Fresh Herbs',category:'Breakfast',time:30,servings:2,calories:390,art:'shakshuka',groups:['veg','poultry','oliveoil'],tags:'weekend brunch, vegetarian',
-   ingredients:['4 eggs','1 can chopped tomatoes','1 red pepper','1 onion','2 garlic cloves','1 tsp cumin','1 tsp paprika','small bunch of parsley','1 tbsp extra virgin olive oil','wholegrain bread, to serve'],
-   method:'Soften the onion and pepper in olive oil for 8 minutes.\nAdd garlic and spices, cook for 1 minute, then pour in the tomatoes and simmer for 10 minutes.\nMake four wells, crack in the eggs, cover and cook until the whites are set.\nFinish with chopped parsley and serve with warm bread.'}),
-  R({title:'Red Lentil & Lemon Soup',category:'Dinner',time:35,servings:4,calories:380,art:'lentil',groups:['legumes','veg','oliveoil'],tags:'batch cook, freezer friendly',
+  R({title:'Chicken Stir Fry',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan',
+   ingredients:['2 chicken breasts, sliced','1 red pepper','1 carrot','1 head broccoli','2 garlic cloves','1 tbsp soy sauce','1 tbsp extra virgin olive oil','cooked rice, to serve'],
+   method:'Heat the olive oil in a wok and brown the chicken for 5 minutes.\nAdd the garlic, carrot and pepper and stir-fry for 4 minutes.\nAdd the broccoli and soy sauce with a splash of water; cook 3 minutes more.\nServe over rice.'}),
+  R({title:'Mediterranean Bowl',category:'Lunch',time:25,servings:2,calories:510,art:'salad',fav:true,groups:['poultry','grains','veg','oliveoil'],tags:'popular, meal prep',
+   ingredients:['150 g quinoa','2 chicken breasts','1 cucumber','200 g cherry tomatoes','handful of olives','60 g feta','1 lemon','2 tbsp extra virgin olive oil'],
+   method:'Cook the quinoa and grill the seasoned chicken.\nChop the cucumber and tomatoes.\nBuild the bowls, top with olives and feta, and dress with lemon and olive oil.'}),
+  R({title:'Banana Pancakes',category:'Breakfast',time:20,servings:2,calories:430,art:'pancakes',fav:true,groups:['grains','fruit','dairy'],tags:'weekend, popular',
+   ingredients:['2 ripe bananas','2 eggs','100 g wholemeal flour','150 ml milk','1 tsp baking powder','1 tsp honey','handful of berries'],
+   method:'Mash the bananas and whisk with the eggs and milk.\nFold in the flour and baking powder until just combined.\nCook ladlefuls in a lightly oiled pan for 2 minutes per side.\nServe with berries and honey.'}),
+  R({title:'Creamy Garlic Pasta',category:'Dinner',time:25,servings:4,calories:560,art:'pasta',fav:true,groups:['grains','dairy','veg'],tags:'family, comfort food',
+   ingredients:['320 g wholewheat pasta','200 g Greek yogurt','3 garlic cloves','100 g spinach','50 g parmesan','1 lemon','1 tbsp extra virgin olive oil'],
+   method:'Cook the pasta until al dente; keep a cup of cooking water.\nSoften the garlic in olive oil, add the spinach and wilt.\nStir the yogurt with a splash of pasta water and lemon zest, toss through the pasta off the heat.\nFinish with parmesan and black pepper.'}),
+  R({title:'Grilled Chicken Bowl',category:'Lunch',time:30,servings:2,calories:520,art:'chickensalad',groups:['poultry','grains','veg','oliveoil'],tags:'high protein, meal prep',
+   ingredients:['2 chicken breasts','150 g quinoa','1 avocado','200 g cherry tomatoes','handful of spinach','1 lemon','2 tbsp extra virgin olive oil','1 tsp sesame seeds'],
+   method:'Cook the quinoa according to the pack.\nGrill the seasoned chicken for 6 minutes per side, rest, then slice.\nBuild the bowls with quinoa, spinach, tomatoes and avocado, top with the chicken.\nDress with lemon and olive oil, finish with sesame seeds.'}),
+  R({title:'Veggie Pasta',category:'Dinner',time:25,servings:4,calories:520,art:'pasta',groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
+   ingredients:['320 g wholewheat pasta','250 g cherry tomatoes','1 zucchini','1 red pepper','2 garlic cloves','handful of basil','2 tbsp extra virgin olive oil','parmesan, to serve'],
+   method:'Cook the pasta until al dente.\nSoften the garlic, zucchini and pepper in olive oil, add the tomatoes and cook until they burst.\nToss through the pasta with basil and parmesan.'}),
+  R({title:'Salmon & Quinoa',category:'Dinner',time:25,servings:2,calories:560,art:'salmon',groups:['fish','grains','veg','oliveoil'],tags:'high protein, 30 minutes',
+   ingredients:['2 salmon fillets','150 g quinoa','200 g asparagus','150 g cherry tomatoes','1 lemon','2 garlic cloves','small bunch of dill','1 tbsp extra virgin olive oil'],
+   method:'Heat the oven to 200°C / 400°F.\nPlace the salmon on a tray with the asparagus and tomatoes, rub with olive oil, garlic, lemon zest and dill.\nRoast 12–15 minutes while the quinoa cooks.\nServe with lemon wedges.'}),
+  R({title:'Mediterranean Wrap',category:'Lunch',time:20,servings:2,calories:420,art:'salad',groups:['grains','veg','dairy','oliveoil'],tags:'quick, vegetarian',
+   ingredients:['2 wholemeal wraps','100 g hummus','1 cucumber','2 tomatoes','60 g feta','handful of olives','handful of spinach'],
+   method:'Spread hummus over the wraps.\nLayer the vegetables, feta and olives.\nRoll tightly and slice in half.'}),
+  R({title:'Lentil Soup',category:'Dinner',time:35,servings:4,calories:380,art:'lentil',groups:['legumes','veg','oliveoil'],tags:'batch cook, freezer friendly',
    ingredients:['250 g red lentils','1 onion','2 carrots','2 garlic cloves','1 tsp cumin','1 litre vegetable stock','1 lemon','2 tbsp extra virgin olive oil','parsley, to serve'],
-   method:'Soften the onion and carrot in olive oil for 6–8 minutes.\nStir in the garlic and cumin, then add the lentils and stock.\nSimmer for 20 minutes until the lentils collapse.\nBlend until smooth, squeeze in the lemon and season. Top with parsley and a drizzle of oil.'}),
-  R({title:'Tuna & White Bean Salad',category:'Lunch',time:10,servings:2,calories:450,art:'tuna',groups:['fish','legumes','veg','oliveoil'],tags:'pantry meal',
-   ingredients:['1 can tuna in olive oil','1 can cannellini beans','100 g cherry tomatoes','1/2 red onion','handful of rocket','1 tbsp capers','1 lemon','1 tbsp extra virgin olive oil'],
-   method:'Drain and rinse the beans; flake the tuna.\nHalve the tomatoes and finely slice the onion.\nToss everything with the capers, lemon juice and olive oil, then fold through the rocket.'}),
-  R({title:'Bulgur-Stuffed Peppers with Feta',category:'Dinner',time:45,servings:4,calories:520,art:'peppers',groups:['veg','grains','dairy','oliveoil'],tags:'vegetarian, family',
-   ingredients:['4 bell peppers','150 g bulgur wheat','1 can chopped tomatoes','1 zucchini','100 g feta','small bunch of mint','1 tsp dried oregano','2 tbsp extra virgin olive oil'],
-   method:'Heat the oven to 190°C / 375°F. Halve and deseed the peppers.\nCook the bulgur according to the pack, then mix with diced zucchini, tomatoes, oregano and half the feta.\nFill the peppers, drizzle with olive oil and bake for 25 minutes.\nTop with the remaining feta and torn mint.'})
+   method:'Soften the onion and carrot in olive oil for 6–8 minutes.\nStir in the garlic and cumin, then add the lentils and stock.\nSimmer 20 minutes until the lentils collapse.\nSqueeze in the lemon, season, and top with parsley.'}),
+  R({title:'Overnight Oats',category:'Breakfast',time:10,servings:1,calories:410,art:'oats',groups:['grains','fruit','nuts','dairy'],tags:'make ahead',
+   ingredients:['50 g rolled oats','120 g Greek yogurt','80 ml milk','handful of mixed berries','1 tbsp chopped walnuts','1 tsp honey','pinch of cinnamon'],
+   method:'Stir the oats, yogurt, milk and cinnamon together in a jar.\nCover and refrigerate overnight.\nTop with berries, walnuts and honey in the morning.'}),
+  R({title:'Grilled Chicken Salad',category:'Lunch',time:20,servings:2,calories:420,art:'chickensalad',groups:['poultry','veg','oliveoil'],tags:'high protein, quick',
+   ingredients:['2 grilled chicken breasts','100 g spinach','150 g cherry tomatoes','1 cucumber','1/2 red onion','1 lemon','2 tbsp extra virgin olive oil'],
+   method:'Slice the chicken and combine with the spinach, tomatoes, cucumber and onion.\nWhisk the olive oil and lemon juice, toss through and season.'}),
+  R({title:'Greek Yogurt & Berries',category:'Snack',time:5,servings:1,calories:180,art:'oats',groups:['dairy','fruit','nuts'],tags:'snack, no-cook',
+   ingredients:['200 g Greek yogurt','handful of mixed berries','1 tsp honey','1 tbsp chopped walnuts'],
+   method:'Spoon the yogurt into a bowl.\nTop with the berries, walnuts and honey.'})
  ];
  const rb=t=>s.recipes.find(r=>r.title===t);
  const ws=weekStartOf(today(),s.settings.weekStart),t=today();
- const plan=[
-  [0,'Breakfast','Overnight Oats with Berries & Walnuts'],[0,'Lunch','Greek Chickpea Salad'],[0,'Dinner','Lemon Herb Salmon with Greens'],
-  [1,'Breakfast','Greek yogurt, figs & honey',320,['dairy','fruit','nuts']],[1,'Lunch','Tuna & White Bean Salad'],[1,'Dinner','Red Lentil & Lemon Soup'],[1,'Snack','Hummus & Crunchy Veg Plate'],
-  [2,'Breakfast','Overnight Oats with Berries & Walnuts'],[2,'Lunch','Red Lentil & Lemon Soup'],[2,'Dinner','Bulgur-Stuffed Peppers with Feta'],
-  [3,'Breakfast','Wholegrain toast, tomato & olive oil',330,['grains','veg','oliveoil']],[3,'Lunch','Greek Chickpea Salad'],[3,'Dinner','Herb chicken & roasted vegetables',590,['poultry','veg','oliveoil']],[3,'Snack','Apple & a handful of almonds',220,['fruit','nuts']],
-  [4,'Breakfast','Shakshuka with Fresh Herbs'],[4,'Lunch','Hummus & Crunchy Veg Plate'],[4,'Dinner','Lemon Herb Salmon with Greens'],
-  [5,'Breakfast','Shakshuka with Fresh Herbs'],[5,'Dinner','Lamb kofta, tabbouleh & tzatziki',640,['redmeat','grains','veg','dairy']],
-  [6,'Lunch','Tuna & White Bean Salad'],[6,'Dinner','Bulgur-Stuffed Peppers with Feta']
- ];
- s.meals=plan.map(([d,slot,title,cal,groups])=>{const r=rb(title);const date=addDays(ws,d);return {id:uid(),date,slot,title,recipeId:r?.id||null,calories:r?r.calories:cal,groups:r?[...r.groups]:groups,status:date<t?'Eaten':'Planned',notes:'',isSample:true}});
- const shop=[['Chickpeas','2 cans'],['Tomatoes','6'],['Cucumbers','2'],['Feta','200 g'],['Salmon fillets','4'],['Lemons','4'],['Fresh dill','1 bunch'],['Greek yogurt','500 g'],['Mixed berries','2 punnets'],['Walnuts','100 g'],['Red lentils','250 g'],['Wholegrain bread','1 loaf'],['Extra virgin olive oil','1 bottle'],['Bell peppers','4']];
- s.shopping=shop.map(([n,q],i)=>({id:uid(),name:n,qty:q,aisle:guessAisle(n),done:i%5===2,isSample:true}));
- s.pantry=[['Extra virgin olive oil','Oils & Condiments','1 bottle',60],['Rolled oats','Bakery & Grains','750 g',120],['Red lentils','Legumes & Canned','500 g',180],['Canned tuna','Legumes & Canned','3 cans',300],['Greek yogurt','Dairy & Eggs','1 tub',3],['Feta','Dairy & Eggs','100 g',-1],['Dried oregano','Herbs & Spices','1 jar',240]]
+ const wk=[['Lunch','Grilled Chicken Bowl'],['Dinner','Veggie Pasta'],['Dinner','Salmon & Quinoa'],['Lunch','Chicken Stir Fry'],['Lunch','Mediterranean Wrap'],['Dinner','Lentil Soup'],['Breakfast','Banana Pancakes']];
+ const ti=(parse(t).getDay()-s.settings.weekStart+7)%7;
+ const salm=wk.splice(2,1)[0];wk.splice(ti,0,salm);
+ const plan2=wk.map(([sl,ti2],i)=>[i,sl,ti2]).filter(x=>x[0]!==ti).concat([[ti,'Breakfast','Overnight Oats'],[ti,'Lunch','Grilled Chicken Salad'],[ti,'Dinner','Salmon & Quinoa'],[ti,'Snack','Greek Yogurt & Berries']]);
+ const eatenDays=Array.from({length:7},(_,i)=>i).filter(i=>i!==ti).slice(0,3);
+ s.meals=plan2.map(([d,slot,title,cal,groups])=>{const r=rb(title);const date=addDays(ws,d);return {id:uid(),date,slot,title,recipeId:r?.id||null,calories:r?r.calories:cal,groups:r?[...r.groups]:groups,status:eatenDays.includes(d)?'Eaten':'Planned',notes:'',isSample:true}});
+ const shop=[['Salmon fillet','2 pc'],['Quinoa','1 cup'],['Asparagus','1 bunch'],['Cherry tomatoes','1 box'],['Greek yogurt','1 tub'],['Spinach','1 bag'],['Lemon','2'],['Garlic','1 bulb'],['Chicken breast','500 g'],['Feta','200 g'],['Fresh dill','1 bunch'],['Wholemeal wraps','1 pack']];
+ s.shopping=shop.map(([n,q],i)=>({id:uid(),name:n,qty:q,aisle:guessAisle(n),done:i>=9,isSample:true}));
+ s.pantry=[['Rice','Bakery & Grains','1 kg',30],['Pasta','Bakery & Grains','500 g',45],['Olive Oil','Oils & Condiments','1 L',9],['Tomatoes','Produce','4',4],['Eggs','Dairy & Eggs','6',20]]
   .map(([n,a,q,d])=>({id:uid(),name:n,aisle:a,qty:q,expiry:addDays(t,d),isSample:true}));
- s.tasks=[['Soak chickpeas for Thursday',t,'High'],['Batch-cook lentil soup',addDays(t,1),'Medium'],['Wash and chop salad vegetables',t,'Medium'],['Plan next week’s dinners',addDays(t,3),'Low'],['Portion walnuts into snack jars',addDays(t,-1),'Low']]
+ s.tasks=[['Marinate chicken for the bowls',t,'High'],['Batch-cook lentil soup',addDays(t,1),'Medium'],['Wash and chop salad vegetables',t,'Medium'],['Plan next week’s dinners',addDays(t,3),'Low'],['Portion walnuts into snack jars',addDays(t,-1),'Low']]
   .map(([title,date,priority],i)=>({id:uid(),title,date,priority,status:i===4?'Done':'Open',isSample:true}));
  s.goals=[{title:'Fish twice a week',description:'Salmon, sardines, tuna — fresh or canned all count.',progress:50,deadline:addDays(t,28)},{title:'Cook at home 5 nights a week',description:'Keep two easy fallback meals in the pantry.',progress:70,deadline:addDays(t,21)},{title:'Try one new recipe every week',description:'Explore a new vegetable, grain or legume each week.',progress:25,deadline:addDays(t,60)}]
   .map(g=>({id:uid(),status:'Active',isSample:true,...g}));
- s.notes=[{title:'Pantry staples to keep stocked',text:'Extra virgin olive oil\nCanned chickpeas & lentils\nCanned tomatoes\nWholegrain pasta & bulgur\nNuts and dried oregano',pinned:true},{title:'Sunday prep idea',text:'Roast a tray of peppers, zucchini and onion. Cook a pot of bulgur. Use them in salads, bowls and wraps through the week.',pinned:false},{title:'Family favourites',text:'Stuffed peppers were a hit — double the batch next time.',pinned:false}]
+ s.notes=[{title:'Pantry staples to keep stocked',text:'Extra virgin olive oil\nCanned chickpeas & lentils\nCanned tomatoes\nWholegrain pasta & bulgur\nNuts and dried oregano',pinned:true},{title:'Sunday prep idea',text:'Roast a tray of peppers, zucchini and onion. Cook a pot of bulgur. Use them in salads, bowls and wraps through the week.',pinned:false},{title:'Family favourites',text:'Salmon & Quinoa was a hit — double the batch next time.',pinned:false}]
   .map(n=>({id:uid(),date:t,isSample:true,...n}));
  for(let i=1;i<=6;i++)s.water[addDays(t,-i)]=[6,8,5,7,8,4][i-1];s.water[t]=3;
  return s;
 }
+const ID_RE=/^[A-Za-z0-9_-]{1,64}$/,DATE_RE=/^\d{4}-\d{2}-\d{2}$/,IMG_RE=/^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/;
+const RECIPE_CATS=['Breakfast','Lunch','Dinner','Snack','Dessert','Side'];
+const isDate=v=>typeof v==='string'&&DATE_RE.test(v)&&ymd(parse(v))===v;
+const str=(v,max=500)=>v==null?'':String(v).slice(0,max);
+const numOr=(v,min,max)=>{if(v===''||v==null)return '';const n=+v;return Number.isFinite(n)?Math.min(max,Math.max(min,n)):''};
+const oneOf=(v,list,d)=>list.includes(v)?v:d;
+const obj=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
+const arr=v=>Array.isArray(v)?v:[];
+const groupsOf=v=>[...new Set(arr(v).filter(k=>G[k]))];
+/* Every record that enters state passes through here: ids, enums, dates and image data are whitelisted, so a crafted backup cannot inject markup or break views. */
 function normalize(x){
- const b=blankState();const o=Object.assign(b,x||{});
- o.profile=Object.assign(blankState().profile,x?.profile||{});
- o.settings=Object.assign(blankState().settings,x?.settings||{});
- o.ui=Object.assign(blankState().ui,x?.ui||{});
- for(const k of COLLECTIONS)if(!Array.isArray(o[k]))o[k]=[];
- if(!o.water||typeof o.water!=='object')o.water={};
- o.meals.forEach(m=>{if(!Array.isArray(m.groups))m.groups=[];if(!SLOTS.includes(m.slot))m.slot='Dinner'});
- o.recipes.forEach(r=>{if(!Array.isArray(r.groups))r.groups=[];if(!Array.isArray(r.ingredients))r.ingredients=String(r.ingredients||'').split('\n').filter(Boolean)});
- o.shopping.forEach(i=>{if(!AISLES.includes(i.aisle))i.aisle=guessAisle(i.name||'')});
+ if(!x||typeof x!=='object'||Array.isArray(x))throw new Error('This file isn’t a Mediterranean Meal Planner backup.');
+ const b=blankState(),P=obj(x.profile),S=obj(x.settings),U=obj(x.ui),seen=new Set(),idMap={};
+ const cid=(v,map)=>{let id=typeof v==='string'&&ID_RE.test(v)&&!seen.has(v)?v:uid();while(seen.has(id))id=uid();seen.add(id);if(map&&typeof v==='string')map[v]=id;return id};
+ const o=b;
+ o.createdAt=typeof x.createdAt==='string'&&!isNaN(Date.parse(x.createdAt))?x.createdAt:b.createdAt;
+ o.profile={name:str(P.name,60),plannerName:str(P.plannerName,80)||b.profile.plannerName};
+ o.settings={theme:oneOf(S.theme,['system','light','dark'],'system'),accent:oneOf(S.accent,Object.keys(ACCENTS),'forest'),weekStart:oneOf(S.weekStart,[0,1,6],b.settings.weekStart),
+  waterGoal:Math.round(numOr(S.waterGoal,1,30)||8),dateFormat:oneOf(S.dateFormat,['auto','DMY','MDY','YMD'],'auto'),showCalories:S.showCalories!==false,backupRemind:S.backupRemind!==false,
+  lastBackup:typeof S.lastBackup==='string'&&!isNaN(Date.parse(S.lastBackup))?S.lastBackup:null,onboarded:!!S.onboarded,sampleCleared:!!S.sampleCleared};
+ o.ui={page:oneOf(U.page,PAGES.map(p=>p[0]),'home'),weekOffset:Math.round(numOr(U.weekOffset,-520,520)||0),calMonth:Number.isInteger(U.calMonth)&&U.calMonth>=0&&U.calMonth<12?U.calMonth:null,
+  calYear:Number.isInteger(U.calYear)&&U.calYear>1900&&U.calYear<3000?U.calYear:null,recipeFilter:oneOf(U.recipeFilter,['All','Favourites',...RECIPE_CATS],'All'),
+  shopFilter:oneOf(U.shopFilter,['open','done','all'],'open'),backupSnooze:isDate(U.backupSnooze)?U.backupSnooze:null};
+ o.recipes=arr(x.recipes).filter(r=>r&&typeof r==='object').map(r=>({id:cid(r.id,idMap),title:str(r.title,160).trim()||'Recipe',category:oneOf(r.category,RECIPE_CATS,'Dinner'),
+  time:numOr(r.time===''?'':parseInt(r.time),0,1440),servings:numOr(r.servings===''?'':parseInt(r.servings),1,100),calories:numOr(r.calories,0,10000),groups:groupsOf(r.groups),
+  tags:str(r.tags,300),ingredients:(Array.isArray(r.ingredients)?r.ingredients:String(r.ingredients||'').split('\n')).map(v=>str(v,300).trim()).filter(Boolean).slice(0,200),
+  method:str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&ART[r.art]?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
+ o.meals=arr(x.meals).filter(m=>m&&typeof m==='object'&&isDate(m.date)).map(m=>({id:cid(m.id),date:m.date,slot:oneOf(m.slot,SLOTS,'Dinner'),title:str(m.title,160).trim()||'Meal',
+  recipeId:typeof m.recipeId==='string'&&idMap[m.recipeId]?idMap[m.recipeId]:null,calories:numOr(m.calories,0,10000),groups:groupsOf(m.groups),status:m.status==='Eaten'?'Eaten':'Planned',notes:str(m.notes,2000),isSample:!!m.isSample}));
+ o.shopping=arr(x.shopping).filter(i=>i&&typeof i==='object'&&str(i.name).trim()).map(i=>({id:cid(i.id),name:str(i.name,160).trim(),qty:str(i.qty,60),aisle:AISLES.includes(i.aisle)?i.aisle:guessAisle(str(i.name)),done:!!i.done,isSample:!!i.isSample}));
+ o.pantry=arr(x.pantry).filter(i=>i&&typeof i==='object'&&str(i.name).trim()).map(i=>({id:cid(i.id),name:str(i.name,160).trim(),qty:str(i.qty,60),aisle:AISLES.includes(i.aisle)?i.aisle:guessAisle(str(i.name)),expiry:isDate(i.expiry)?i.expiry:'',isSample:!!i.isSample}));
+ o.tasks=arr(x.tasks).filter(t=>t&&typeof t==='object').map(t=>({id:cid(t.id),title:str(t.title,200).trim()||'Task',date:isDate(t.date)?t.date:'',priority:oneOf(t.priority,['High','Medium','Low'],'Medium'),status:t.status==='Done'?'Done':'Open',isSample:!!t.isSample}));
+ o.goals=arr(x.goals).filter(g=>g&&typeof g==='object').map(g=>({id:cid(g.id),title:str(g.title,160).trim()||'Goal',description:str(g.description,1000),progress:Math.round(numOr(g.progress,0,100)||0),deadline:isDate(g.deadline)?g.deadline:'',status:'Active',isSample:!!g.isSample}));
+ o.notes=arr(x.notes).filter(n=>n&&typeof n==='object').map(n=>({id:cid(n.id),title:str(n.title,160).trim()||'Note',text:str(n.text,20000),pinned:!!n.pinned,date:isDate(n.date)?n.date:today(),isSample:!!n.isSample}));
+ o.water={};for(const [k,v] of Object.entries(obj(x.water)))if(isDate(k)){const n=Math.round(numOr(v,0,40)||0);if(n)o.water[k]=n}
  o.version=2;o.app='mediterranean-meal-planner';
  return o;
 }
 /* Accepts Mediterranean Meal Planner backups and the earlier single-file planner format (v1) */
 function migrate(x){
- if(x&&x.app==='mediterranean-meal-planner'&&x.state)return normalize(x.state);
+ if(x&&x.app==='mediterranean-meal-planner'&&'state' in x)return normalize(x.state);
  if(x&&x.app==='mediterranean-meal-planner')return normalize(x);
  if(x&&x.version===1&&Array.isArray(x.meals)){
   const s=blankState();s.settings.onboarded=true;s.settings.sampleCleared=true;
@@ -300,19 +352,20 @@ let saveTimer=null,lastSaveOk=true,persistAsked=false,snapshot=null;
 function setSaveState(kind,text){const el=$('#saveState');if(!el)return;el.className='save-state '+(kind||'');el.querySelector('span').textContent=text}
 async function flush(){
  clearTimeout(saveTimer);saveTimer=null;
+ if(DEMO){setSaveState('','Live demo · not saved');return true}
  try{
   const ok=await Store.set('state',state);
-  if(!ok){setSaveState('bad','Not saving — see banner');return false}
-  lastSaveOk=true;setSaveState('','Saved in this browser');
+  if(!ok){setSaveState('bad','Not saving — see banner');renderBanners();return false}
+  if(!lastSaveOk){lastSaveOk=true;renderBanners()}setSaveState('','Saved in this browser');
   if(!persistAsked&&userCount()>0&&navigator.storage?.persist){persistAsked=true;try{await navigator.storage.persist()}catch(e){}}
   return true;
  }catch(e){
-  lastSaveOk=false;setSaveState('bad','Couldn’t save');
+  lastSaveOk=false;setSaveState('bad','Couldn’t save');renderBanners();
   toast(/quota/i.test(String(e?.name||e))?'Your browser storage is full. Remove a few photos, then export a backup.':'Couldn’t save your last change. Export a backup from Settings.','err');
   return false;
  }
 }
-function save(){setSaveState('warn','Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(flush,250)}
+function save(){if(DEMO){setSaveState('','Live demo · not saved');return}setSaveState('warn','Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(flush,250)}
 window.addEventListener('pagehide',()=>{if(saveTimer)flush()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&saveTimer)flush()});
 function commit(){save();refresh()}
@@ -375,6 +428,8 @@ const NAV_GROUPS=[['Plan',['home','today','week','calendar']],['Kitchen',['recip
 function renderNav(){
  const cnt={shopping:state.shopping.filter(x=>!x.done).length,prep:state.tasks.filter(t=>t.status!=='Done').length};
  $('#nav').innerHTML=NAV_GROUPS.map(([label,ids])=>`${label?`<div class="nav-label">${label}</div>`:'<div style="height:10px"></div>'}${ids.map(id=>{const p=PAGES.find(x=>x[0]===id);return `<button data-go="${id}" class="${state.ui.page===id?'active':''}" ${state.ui.page===id?'aria-current="page"':''}>${ic(p[1])}<span>${p[2]}</span>${cnt[id]?`<span class="count">${cnt[id]}</span>`:''}</button>`}).join('')}`).join('');
+ const due=state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=today()).length;
+ $('#bellBtn').innerHTML=ic('bell')+(due?`<i class="bdg">${due>9?'9+':due}</i>`:'');
  const bn=[['home','home','Home'],['week','week','Week'],['recipes','book','Recipes'],['shopping','cart','Shop'],['more','more','More']];
  $('#bottomNav').innerHTML=bn.map(([id,icn,l])=>`<button ${id==='more'?'data-action="menu"':`data-go="${id}"`} class="${state.ui.page===id?'active':''}">${ic(icn)}<span>${l}</span></button>`).join('');
 }
@@ -398,9 +453,9 @@ const mq=matchMedia('(prefers-color-scheme: dark)');
 function applyTheme(){
  const t=state.settings.theme;const dark=t==='dark'||(t==='system'&&mq.matches);
  document.documentElement.dataset.theme=dark?'dark':'light';
- const a=ACCENTS[state.settings.accent]||ACCENTS.aegean;
+ const a=ACCENTS[state.settings.accent]||ACCENTS.forest;
  document.documentElement.style.setProperty('--primary',a[0]);document.documentElement.style.setProperty('--primary-deep',a[1]);
- $('meta[name=theme-color]')?.setAttribute('content',dark?'#0E181D':a[0]);
+ $('meta[name=theme-color]')?.setAttribute('content',dark?'#0F1713':a[0]);
  $('#themeBtn').innerHTML=ic(dark?'sun':'moon');
 }
 mq.addEventListener?.('change',()=>{if(state.settings.theme==='system'){applyTheme();refresh()}});
@@ -408,7 +463,9 @@ mq.addEventListener?.('change',()=>{if(state.settings.theme==='system'){applyThe
 /* ---------------- banners ---------------- */
 function renderBanners(){
  const b=[];const t=today();
- if(Store.mode==='memory')b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>This browser can’t save your planner</b>Changes will be lost when you close this tab. Open the file in Chrome, Safari, Edge or Firefox — not a file preview — or use your online link.</div></div>`);
+ if(DEMO){const b2=$('#demoBar');b2.hidden=false;b2.innerHTML=`<span>Live demo · <b>Mediterranean Meal Planner</b> · changes aren’t saved</span>${ETSY_URL.startsWith('https://www.etsy.com/listing/')?`<a class="btn gold sm" href="${esc(ETSY_URL)}" target="_blank" rel="noopener">Get it on Etsy</a>`:''}`;$('#banners').innerHTML='';return}
+ if(Store.temporary)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Temporary planner — nothing is being saved</b>Your saved plans couldn’t be opened just now and are untouched. Reload the page to try again.</div><button class="btn sm primary" onclick="location.reload()">Reload</button></div>`);
+ else if(Store.mode==='memory')b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>This browser can’t save your planner</b>Changes will be lost when you close this tab. Open the file in Chrome, Safari, Edge or Firefox — not a file preview — or use your online link.</div></div>`);
  else if(!lastSaveOk)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Your last change wasn’t saved</b>Storage may be full. Export a backup now, then remove a few large photos.</div><button class="btn sm primary" data-action="exportBackup">Export backup</button></div>`);
  const lb=state.settings.lastBackup,uc=userCount();
  const due=state.settings.backupRemind&&uc>=5&&(!lb||(Date.now()-new Date(lb).getTime())>7*864e5)&&(!state.ui.backupSnooze||state.ui.backupSnooze<=t);
@@ -495,46 +552,74 @@ function renderPage(p){({home:pHome,today:pToday,week:pWeek,recipes:pRecipes,sho
 const head=(title,sub,actions='')=>`<div class="page-h"><div><h1>${title}</h1>${sub?`<p>${sub}</p>`:''}</div><div class="actions">${actions}</div></div>`;
 
 /* ---------------- HOME ---------------- */
-function pHome(){
- const t=today(),ws=weekStartOf(t,state.settings.weekStart),wm=weekMeals(ws),bal=balance(wm);
- const toBuy=state.shopping.filter(x=>!x.done).length,w=+state.water[t]||0,wg=state.settings.waterGoal;
- const name=state.profile.name?`, ${esc(state.profile.name)}`:'';
- const days=weekDays(ws);
- const stacks=days.map(d=>SLOTS.map(s=>mealsOn(d).filter(m=>m.slot===s).reduce((a,m)=>a+(state.settings.showCalories?(+m.calories||0):1),0)));
- const upcoming=state.meals.filter(m=>m.date>t||(m.date===t&&m.status!=='Eaten')).sort((a,b)=>a.date.localeCompare(b.date)||SLOTS.indexOf(a.slot)-SLOTS.indexOf(b.slot)).slice(0,5);
- const tasks=state.tasks.filter(x=>x.status!=='Done').sort((a,b)=>(a.date||'9').localeCompare(b.date||'9')||['High','Medium','Low'].indexOf(a.priority)-['High','Medium','Low'].indexOf(b.priority)).slice(0,5);
- const expiring=state.pantry.filter(p=>p.expiry&&p.expiry<=addDays(t,5)).sort((a,b)=>a.expiry.localeCompare(b.expiry)).slice(0,4);
- $('#page-home').innerHTML=`
- <div class="hero"><svg class="sprig" viewBox="0 0 64 64" aria-hidden="true">${SPRIG}</svg><div class="hero-in">
-  <div class="eyebrow">${esc(fmtDate(t,'long'))}</div>
-  <h2>${greeting()}${name}</h2>
-  <p>${wm.length?`You have <b>${wm.length} meals</b> planned this week${toBuy?` and <b>${toBuy} items</b> on your shopping list`:''}.`:'Your week is a blank page. Start with a few dinners — you can fill in the rest later.'}</p>
-  <div class="actions"><button class="btn solid" data-go="week">${ic('week')}Open week plan</button><button class="btn" data-action="genShopping">${ic('wand')}Build shopping list</button></div>
- </div></div>
- <div class="grid g4 mt">
-  <div class="card stat"><span class="k">${ic('week')}Meals this week</span><span class="v">${wm.length}<small> / 28</small></span><div class="bar"><i style="width:${Math.min(100,wm.length/28*100)}%"></i></div></div>
-  <div class="card stat"><span class="k">${ic('leaf')}Plant-forward</span><span class="v">${bal.plant}<small>%</small></span><div class="bar"><i style="width:${bal.plant}%;background:var(--olive)"></i></div></div>
-  <div class="card stat"><span class="k">${ic('cart')}To buy</span><span class="v">${toBuy}<small> items</small></span><div class="bar"><i style="width:${state.shopping.length?(state.shopping.length-toBuy)/state.shopping.length*100:0}%;background:var(--terra)"></i></div></div>
-  <div class="card stat"><span class="k">${ic('drop')}Water today</span><span class="v">${w}<small> / ${wg} glasses</small></span><div class="bar"><i style="width:${Math.min(100,w/wg*100)}%;background:#4FA3C7"></i></div></div>
- </div>
- <div class="card mt"><div class="card-h"><h3>Today’s plate</h3><button class="link" data-go="today">Open today →</button></div>
-  <div class="slots">${SLOTS.map(s=>{const ms=mealsOn(t).filter(m=>m.slot===s);return `<div class="slot ${ms.length?'has':''}"><span class="sl"><span class="dot" style="background:${SLOT_COLOR[s]}"></span>${s}</span>${ms.map(mealChip).join('')}<button class="add" data-add-meal="${t}|${s}">+ Add</button></div>`}).join('')}</div>
- </div>
- <div class="grid g-main mt">
-  <div class="card"><div class="card-h"><h3>${state.settings.showCalories?'Calories planned':'Meals planned'} this week</h3><button class="link" data-go="balance">Balance →</button></div>
-   ${svgBars(days.map(d=>({s:fmtDate(d,'weekday'),t:fmtDate(d),today:d===t})),stacks,SLOTS.map(s=>SLOT_COLOR[s]),{unit:state.settings.showCalories?' kcal':' meals'})}
-   ${legend(SLOTS.map(s=>[s,SLOT_COLOR[s]]))}
-  </div>
-  <div class="card"><div class="card-h"><h3>Up next</h3><button class="link" data-go="week">Week →</button></div>
-   <div class="list">${upcoming.map(m=>`<div class="li"><img class="th" style="width:42px;height:42px;border-radius:10px;object-fit:cover" src="${mealImg(m)}" alt=""><div class="grow"><div class="t">${esc(m.title)}</div><div class="s">${relDay(m.date)} · ${m.slot}</div></div>${m.calories&&state.settings.showCalories?`<span class="pill">${Math.round(m.calories)} kcal</span>`:''}</div>`).join('')||emptyState('week','Nothing planned yet','Add a meal to see it here.',`<button class="btn sm primary" data-action="addMeal">${ic('plus')}Add meal</button>`)}</div>
-  </div>
- </div>
- <div class="grid g2 mt">
-  <div class="card"><div class="card-h"><h3>Prep list</h3><button class="link" data-go="prep">All tasks →</button></div><div class="list">${tasks.map(taskRow).join('')||emptyState('list','All caught up','Nothing left on your prep list.')}</div></div>
-  <div class="card"><div class="card-h"><h3>Use it up</h3><button class="link" data-go="pantry">Pantry →</button></div><div class="list">${expiring.map(p=>`<div class="li"><div class="grow"><div class="t">${esc(p.name)}</div><div class="s">${esc(p.qty||'')} · ${esc(p.aisle)}</div></div>${expiryPill(p.expiry)}</div>`).join('')||emptyState('jar','Nothing expiring soon','Items expiring in the next 5 days show up here.')}</div></div>
- </div>`;
+const PANTRY_IC=n=>/oil|vinegar/i.test(n)?'bottle':/egg/i.test(n)?'egg':/tomato|pepper|spinach|garlic|onion|lemon|cucumber/i.test(n)?'tomato':/rice|pasta|oats|bulgur|bread|flour|couscous/i.test(n)?'bowl':/yogh?urt|milk|feta|cheese/i.test(n)?'drop':'jar';
+function ring(p,val,label,col){
+ const C=163.4;p=Math.max(0,Math.min(1,p||0));
+ return `<div class="rg"><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="rg-bg" cx="32" cy="32" r="26"/><circle class="rg-fg" cx="32" cy="32" r="26" style="stroke:${col};stroke-dashoffset:${(C*(1-p)).toFixed(1)}"/></svg><b>${val}</b><span>${label}</span></div>`;
 }
-const SPRIG=`<path d="__STEM__" fill="none" stroke="#FBF6EC" stroke-width="2.4" stroke-linecap="round"/><path d="__LEAVES__" fill="#FBF6EC"/><path d="M27 40.6 Q28.5 43 28.6 44.5" fill="none" stroke="#FBF6EC" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="29.2" cy="48.6" rx="3.8" ry="4.9" transform="rotate(-18 29.2 48.6)" fill="#D9683A"/>`;
+function dayCard(d,t){
+ const ms=mealsOn(d),pick=['Dinner','Lunch','Breakfast','Snack'].map(s=>ms.find(m=>m.slot===s&&m.recipeId)).find(Boolean)||ms.find(m=>m.slot==='Dinner')||ms[0];
+ const isT=d===t,r=pick&&pick.recipeId&&state.recipes.find(x=>x.id===pick.recipeId);
+ const head=`<span class="dc-h"><b>${esc(fmtDate(d,'weekday'))}</b><span>${parse(d).getDate()}</span>${isT?'<em>Today</em>':''}</span>`;
+ if(!pick)return `<button class="dcard empty ${isT?'today':''}" data-add-meal="${d}|Dinner">${head}<span class="dc-add">${ic('plus')}<small>Plan a meal</small></span></button>`;
+ return `<button class="dcard ${isT?'today':''}" data-day="${d}">${head}<img src="${mealImg(pick)}" alt=""><span class="dc-t">${esc(pick.title).replace(/([A-Za-z]{7})([A-Za-z]{4,})/g,'$1&shy;$2')}</span><span class="dc-m">${pick.slot}${r&&+r.time?` • ${+r.time} min`:''}</span><span class="dc-v">View ${ic('arrow')}</span></button>`;
+}
+function planCard(slot,t){
+ const m=mealsOn(t).find(x=>x.slot===slot),r=m&&m.recipeId&&state.recipes.find(x=>x.id===m.recipeId);
+ if(!m)return `<button class="pcard empty" data-add-meal="${t}|${slot}"><span class="pc-slot"><i style="background:${SLOT_COLOR[slot]}"></i>${slot}</span><span class="pc-add">${ic('plus')}<small>Add ${slot.toLowerCase()}</small></span></button>`;
+ const meta=[r&&+r.time?`${+r.time} min`:'',state.settings.showCalories&&m.calories?`${Math.round(m.calories)} kcal`:''].filter(Boolean).join(' • ');
+ return `<button class="pcard ${m.status==='Eaten'?'eaten':''}" data-meal="${m.id}"><img src="${mealImg(m)}" alt=""><span class="pc-slot"><i style="background:${SLOT_COLOR[slot]}"></i>${slot}</span><span class="pc-b"><b>${esc(m.title)}</b>${meta?`<small>${meta}</small>`:''}</span></button>`;
+}
+function pHome(){
+ const t=today(),ws=weekStartOf(t,state.settings.weekStart),wm=weekMeals(ws),days=weekDays(ws);
+ const planned=days.filter(d=>mealsOn(d).some(m=>m.status!=='Eaten')).length;
+ const shopTotal=state.shopping.length,shopDone=state.shopping.filter(x=>x.done).length,toBuy=shopTotal-shopDone;
+ const w=+state.water[t]||0,wg=+state.settings.waterGoal||8;
+ const name=state.profile.name?`, ${esc(state.profile.name)}`:'';
+ const todays=mealsOn(t),heroM=todays.find(m=>m.slot==='Lunch')||todays.find(m=>m.slot==='Dinner')||todays[0]||wm[0];
+ const cnt={};state.meals.forEach(m=>{if(m.recipeId)cnt[m.recipeId]=(cnt[m.recipeId]||0)+1});
+ const pop=state.recipes.slice().sort((a,b)=>(!!b.fav-!!a.fav)||(a.fav?0:(cnt[b.id]||0)-(cnt[a.id]||0))).slice(0,4);
+ const lowPantry=state.pantry.filter(x=>x.expiry&&x.expiry<=addDays(t,14)).length;
+ const pantry=state.pantry.slice(0,5),shop=state.shopping.slice(0,6);
+ $('#page-home').innerHTML=`
+ <div class="g-home"><div class="hm-main">
+  <section class="hero" aria-label="Welcome">
+   <div class="hero-in">
+    <div class="hi">${greeting()}${name}!</div>
+    <h2>A week of calm &amp; delicious meals</h2>
+    <p>Well planned meals. Less stress. More time for what matters.</p>
+    <div class="rings">${ring(planned/7,`${planned}/7`,'Meals planned','var(--primary)')}${ring(shopTotal?toBuy/shopTotal:0,toBuy,'Shopping items','#5E8A4A')}${ring(lowPantry/Math.max(1,state.pantry.length),lowPantry,'Pantry low','var(--gold)')}</div>
+   </div>
+   <div class="hero-art" aria-hidden="true"><img src="${PHOTOS.herobowl||(heroM?mealImg(heroM):art('salad'))}" alt=""><svg class="sprig" viewBox="0 0 64 64">${SPRIG}</svg><em>Good food fuels a happy life</em></div>
+  </section>
+ <section class="card mt-l"><div class="card-h"><h3>This Week’s Meals</h3><button class="link" data-go="week">View full plan →</button></div>
+  <div class="wk7">${days.map(d=>dayCard(d,t)).join('')}</div></section>
+ <section class="mt-l"><div class="sec-h"><h3>Today’s meal plan</h3><span class="pill gold">${esc(fmtDate(t,'long'))}</span><button class="link" data-go="today">Open today →</button></div>
+  <div class="tri">${['Breakfast','Lunch','Dinner'].map(s=>planCard(s,t)).join('')}</div></section>
+  <section class="card mt-l"><div class="card-h"><h3>Shopping list</h3><button class="link" data-go="shopping">View all →</button></div>
+   <div class="list">${shop.map(i=>`<div class="li ${i.done?'done':''}"><input type="checkbox" class="chk" data-shop="${i.id}" ${i.done?'checked':''} aria-label="${esc(i.name)}"><div class="grow"><div class="t">${esc(i.name)}</div></div>${i.qty?`<span class="qty">${esc(i.qty)}</span>`:''}</div>`).join('')||emptyState('cart','Nothing to buy','Add items or build a list from your week.',`<button class="btn sm primary" data-action="genShopping">${ic('wand')}Build list</button>`)}</div>
+   ${shopTotal?`<div class="bar mt"><i style="width:${shopDone/shopTotal*100}%"></i></div><div class="small muted" style="margin-top:6px">${shopDone} of ${shopTotal} bought</div>`:''}
+  </section>
+ <div class="promos mt-l">
+  <button class="promo p1" data-go="recipes"><span><b>Fresh recipes</b><small>Explore delicious Mediterranean ideas</small></span><i>${ic('book')}</i></button>
+  <button class="promo p2" data-go="shopping"><span><b>Smart shopping</b><small>Plan, shop and save</small></span><i>${ic('cart')}</i></button>
+  <button class="promo p3" data-go="pantry"><span><b>Keep your pantry ready</b><small>Stock up on the staples</small></span><i>${ic('jar')}</i></button>
+ </div>
+ </div><aside class="rail">
+  <section class="card qa rl"><div class="card-h"><h3>Quick Actions</h3></div>
+   <button class="qa-b" data-action="addMeal"><span class="qa-i">${ic('week')}</span><span><b>Plan Meals</b><small>Add to your week</small></span>${ic('arrow')}</button>
+   <button class="qa-b" data-go="shopping"><span class="qa-i">${ic('cart')}</span><span><b>Shopping List</b><small>${toBuy} to buy</small></span>${ic('arrow')}</button>
+   <button class="qa-b" data-action="addRecipe"><span class="qa-i">${ic('book')}</span><span><b>Add Recipe</b><small>Save a new favourite</small></span>${ic('arrow')}</button>
+  </section>
+  <section class="card rl"><div class="card-h"><h3>Popular Recipes</h3><button class="link" data-go="recipes">View all →</button></div>
+   <div class="list">${pop.map(r=>`<div class="li pr"><button class="pr-b" data-recipe="${r.id}"><img src="${recipeImg(r)}" alt=""><span class="grow"><b>${esc(r.title)}</b><small>${+r.time?`${+r.time} mins`:r.category}</small></span></button><button class="heart ${r.fav?'on':''}" data-fav="${r.id}" aria-label="${r.fav?'Remove from':'Add to'} favourites" aria-pressed="${!!r.fav}">${ic('heart')}</button></div>`).join('')||emptyState('book','No recipes yet','Add your first recipe to see it here.',`<button class="btn sm primary" data-action="addRecipe">${ic('plus')}Add recipe</button>`)}</div>
+  </section>
+  <section class="card rl"><div class="card-h"><h3>Your Pantry</h3><button class="link" data-go="pantry">View all →</button></div>
+   <div class="list">${pantry.map(p=>`<div class="li"><span class="pi">${ic(PANTRY_IC(p.name))}</span><div class="grow"><div class="t">${esc(p.name)}</div></div>${p.expiry&&p.expiry<=addDays(t,5)?expiryPill(p.expiry):''}<span class="qty">${esc(p.qty||'')}</span></div>`).join('')||emptyState('jar','Pantry is empty','Track what you have to waste less.',`<button class="btn sm primary" data-action="addPantry">${ic('plus')}Add item</button>`)}</div>
+  </section>
+ </aside></div>`;
+}
+const SPRIG=`<path d="__STEM__" fill="none" stroke="#5E8A4A" stroke-width="2.4" stroke-linecap="round"/><path d="__LEAVES__" fill="#5E8A4A"/><path d="M27 40.6 Q28.5 43 28.6 44.5" fill="none" stroke="#5E8A4A" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="29.2" cy="48.6" rx="3.8" ry="4.9" transform="rotate(-18 29.2 48.6)" fill="#D9683A"/>`;
 
 /* ---------------- TODAY ---------------- */
 function pToday(){
@@ -547,7 +632,7 @@ function pToday(){
   <div class="card"><div class="card-h"><h3>Meals</h3>${state.settings.showCalories&&cal?`<span class="pill p">${cal} kcal planned</span>`:''}</div>
    <div class="list">${SLOTS.map(s=>{const x=ms.filter(m=>m.slot===s);return `<div class="li" style="align-items:flex-start"><span class="pill" style="min-width:86px;justify-content:center;margin-top:8px"><span class="dot" style="background:${SLOT_COLOR[s]}"></span>${s}</span><div class="grow" style="display:grid;gap:6px">${x.map(m=>`<div class="row"><input type="checkbox" class="chk" data-eat="${m.id}" ${m.status==='Eaten'?'checked':''} aria-label="Mark ${esc(m.title)} as eaten">${mealChip(m)}</div>`).join('')||`<button class="btn sm ghost" style="justify-self:start" data-add-meal="${t}|${s}">${ic('plus')}Add ${s.toLowerCase()}</button>`}</div></div>`}).join('')}</div>
   </div>
-  <div style="display:grid;gap:16px;align-content:start">
+  <div style="display:grid;gap:16px;align-content:start;grid-template-columns:minmax(0,1fr)">
    <div class="card"><div class="card-h"><h3>Water</h3><span class="pill p">${w} / ${wg}</span></div>
     <div class="row" style="gap:18px;align-items:center"><div class="ring" style="--p:${Math.min(100,Math.round(w/wg*100))}"><div><span><b>${Math.min(100,Math.round(w/wg*100))}%</b><br><small>of goal</small></span></div></div>
     <div class="glasses">${Array.from({length:Math.max(wg,w)},(_,i)=>`<button class="glass ${i<w?'on':''}" data-glass="${i+1}" aria-label="${i+1} glasses"><svg viewBox="0 0 30 40"><path class="fill" d="M6.5 12h17l-1.7 23.5a2 2 0 0 1-2 1.8h-9.6a2 2 0 0 1-2-1.8z"/><path class="outline" d="M4 4h22l-2.3 31.5a2.5 2.5 0 0 1-2.5 2.3H8.8a2.5 2.5 0 0 1-2.5-2.3z"/></svg></button>`).join('')}</div></div>
@@ -745,7 +830,7 @@ function pBalance(){
   <div class="card"><div class="card-h"><h3>Food groups this week</h3><span class="muted small">${b.total} meals</span></div>
    ${b.total?`<div class="list">${GROUPS.map(g=>`<div class="li"><span class="dot" style="background:${g.color}"></span><div class="grow"><div class="row" style="justify-content:space-between"><b style="font-weight:600">${g.label}</b><span class="small muted">${b.tally[g.k]} meal${b.tally[g.k]===1?'':'s'}${GUIDES[g.k]?` · ${GUIDES[g.k].txt}`:''}</span></div><div class="bar" style="margin-top:6px"><i style="width:${b.tally[g.k]/maxT*100}%;background:${g.color}"></i></div></div><div style="width:92px;text-align:right">${status(g.k)}</div></div>`).join('')}</div>`:emptyState('leaf','No meals this week yet','Plan a few meals and tag their food groups to see your balance.')}
   </div>
-  <div style="display:grid;gap:16px;align-content:start">
+  <div style="display:grid;gap:16px;align-content:start;grid-template-columns:minmax(0,1fr)">
    ${state.settings.showCalories?`<div class="card"><div class="card-h"><h3>Calories by day</h3></div>${svgBars(days.map(d=>({s:fmtDate(d,'weekday'),t:fmtDate(d),today:d===t})),cal.map(c=>[c]),['var(--primary)'],{h:180,unit:' kcal'})}</div>`:''}
    <div class="card" style="background:var(--tint);border-color:transparent"><h3 style="margin:0 0 8px;font-size:17px">How Balance works</h3><p class="small" style="margin:0 0 8px">Tag each meal or recipe with its food groups. Balance counts them across the week and compares them with common Mediterranean-style eating patterns: plenty of vegetables, legumes, whole grains and olive oil, fish a couple of times a week, and red meat only now and then.</p><p class="small muted" style="margin:0">This is a planning aid, not medical or nutritional advice. For personal dietary needs, talk to a qualified professional.</p></div>
   </div>
@@ -820,7 +905,7 @@ function noteModal(id=null){
 /* ---------------- SETTINGS ---------------- */
 async function pSettings(){
  const s=state.settings,info=await storageInfo();
- const where={idb:'This browser’s app storage (IndexedDB)',local:'This browser’s local storage',memory:'Not saving — this browser blocks storage'}[Store.mode];
+ const where=DEMO?{memory:'Live demo — nothing is saved'}:{idb:'This browser’s app storage (IndexedDB)',local:'This browser’s local storage',memory:'Not saving — this browser blocks storage'}[Store.mode];
  $('#page-settings').innerHTML=head('Settings','Make Mediterranean Meal Planner yours, and keep your data safe.')+`
  <div class="grid g2" style="align-items:start">
   <div class="card"><div class="card-h"><h3>You</h3></div>
@@ -877,8 +962,8 @@ async function eraseAll(){
  const keep={theme:state.settings.theme,accent:state.settings.accent};takeSnapshot();state=blankState();Object.assign(state.settings,keep,{onboarded:true,sampleCleared:true});applyTheme();commit();go('home');toast('Planner erased','',restoreSnapshot);
 }
 function download(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
-function exportBackup(){state.settings.lastBackup=new Date().toISOString();state.ui.backupSnooze=null;download(`mediterranean-meal-planner-backup-${today()}.json`,JSON.stringify({app:'mediterranean-meal-planner',version:2,exportedAt:new Date().toISOString(),state},null,1),'application/json');commit();toast('Backup saved to your downloads')}
-function exportCSV(){
+function exportBackup(){if(DEMO)return toast('Backups are in the full version');state.settings.lastBackup=new Date().toISOString();state.ui.backupSnooze=null;download(`mediterranean-meal-planner-backup-${today()}.json`,JSON.stringify({app:'mediterranean-meal-planner',version:2,exportedAt:new Date().toISOString(),state},null,1),'application/json');commit();toast('Backup saved to your downloads')}
+function exportCSV(){if(DEMO)return toast('Export is in the full version');
  const q=v=>`"${String(v??'').replace(/"/g,'""')}"`,rows=[['Type','Date','Meal / Category','Title','Calories','Status / Qty','Details']];
  state.meals.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(m=>rows.push(['Meal',m.date,m.slot,m.title,m.calories,m.status,(m.groups||[]).map(k=>G[k]?.label).join('; ')]));
  state.recipes.forEach(r=>rows.push(['Recipe','',r.category,r.title,r.calories,'',r.ingredients.join('; ')]));
@@ -888,7 +973,7 @@ function exportCSV(){
  download(`mediterranean-meal-planner-${today()}.csv`,'﻿'+rows.map(r=>r.map(q).join(',')).join('\r\n'),'text/csv');toast('CSV exported — opens in Excel, Numbers or Sheets');
 }
 function importBackup(file){
- if(!file)return;if(file.size>60*1024*1024){toast('That file is too large to be a backup','err');return}
+ if(DEMO)return toast('Restore is in the full version');if(!file)return;if(file.size>60*1024*1024){toast('That file is too large to be a backup','err');return}
  const rd=new FileReader();rd.onload=async()=>{try{const x=migrate(JSON.parse(rd.result));const n=COLLECTIONS.reduce((a,k)=>a+x[k].length,0);
   if(!await confirmBox(`This backup has ${n} items. Restoring replaces what’s in this browser now.`,{title:'Restore backup?',ok:'Restore'}))return;
   takeSnapshot();x.settings.onboarded=true;state=x;applyTheme();await flush();go('home');toast('Backup restored','',restoreSnapshot)}catch(e){toast(e.message.includes('Mediterranean Meal Planner')?e.message:'That file couldn’t be read as a backup.','err')}};
@@ -896,7 +981,7 @@ function importBackup(file){
 }
 
 /* ---------------- print ---------------- */
-function printHead(title){return `<div class="print-head" style="display:none"><svg viewBox="0 0 270 64" aria-hidden="true"><g transform="scale(1)"><rect width="64" height="64" rx="16" fill="#1D5673"/>${MARK_INNER}</g><g transform="translate(76 14) scale(1)" fill="#1E2A30"><path d="${WM_D}"/></g></svg><div style="text-align:right"><b class="serif" style="font-size:16px">${esc(title)}</b><br><span class="small muted">${esc(state.profile.plannerName)}</span></div></div>`}
+function printHead(title){return `<div class="print-head" style="display:none"><svg viewBox="0 0 270 64" aria-hidden="true"><g transform="scale(1)"><rect width="64" height="64" rx="16" fill="#1F4A38"/>${MARK_INNER}</g><g transform="translate(76 14) scale(1)" fill="#1E2A30"><path d="${WM_D}"/></g></svg><div style="text-align:right"><b class="serif" style="font-size:16px">${esc(title)}</b><br><span class="small muted">${esc(state.profile.plannerName)}</span></div></div>`}
 function doPrint(kind,orient){
  document.body.dataset.print=kind;let st=$('#pageOrient');if(!st){st=document.createElement('style');st.id='pageOrient';document.head.appendChild(st)}
  st.textContent=`@page{size:${orient};margin:12mm}`;
@@ -985,19 +1070,26 @@ document.addEventListener('change',e=>{
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-recipe],[role=button][data-noteedit]')){e.preventDefault();e.target.click()}});
 
 /* ---------------- boot ---------------- */
+function bootBlocked(){return new Promise(res=>{const d=document.createElement('div');d.className='boot-block';d.setAttribute('role','alertdialog');d.setAttribute('aria-labelledby','bbT');
+ d.innerHTML=`<div class="card"><h1 id="bbT">We can’t open your saved planner right now</h1><p>Your plans are still stored in this browser — nothing has been deleted. This usually clears up after closing other tabs of the planner, or restarting the browser.</p><div class="actions"><button class="btn primary" id="bbRetry">Try again</button><button class="btn" id="bbTemp">Use a temporary planner</button></div><p class="small">A temporary planner is not saved. Your real plans stay safe and load next time.</p></div>`;
+ document.body.appendChild(d);d.querySelector('#bbRetry').onclick=()=>location.reload();d.querySelector('#bbTemp').onclick=()=>{d.remove();res()};d.querySelector('#bbRetry').focus()})}
 async function boot(){
- $('#menuBtn').innerHTML=ic('menu');$('#quickBtn').innerHTML=`${ic('plus')}<span class="hide-sm">Quick add</span>`;
- await Store.init();
- let saved;try{saved=await Store.get('state')}catch(e){}
- if(!saved&&Store.mode==='idb'){try{const raw=localStorage.getItem('mediterranean-meal-planner:state');if(raw)saved=JSON.parse(raw)}catch(e){}}
- try{state=saved?migrate(saved):sampleState()}catch(e){state=sampleState()}
+ $('#menuBtn').innerHTML=ic('menu');$('#quickBtn').innerHTML=`${ic('plus')}<span class="hide-sm">Plan Meals</span>`;
+ if(DEMO)document.documentElement.classList.add('is-demo');else await Store.init();
+ let saved,readFail=false,corrupt=false;
+ if(!DEMO&&Store.mode!=='unavailable'){try{saved=await Store.get('state')}catch(e){readFail=true}}
+ if(!DEMO&&!saved&&!readFail&&Store.mode==='idb'){try{const raw=localStorage.getItem('mediterranean-meal-planner:state');if(raw)saved=JSON.parse(raw)}catch(e){}}
+ if(!DEMO&&(Store.mode==='unavailable'||readFail)){await bootBlocked();Store.mode='memory';Store.temporary=true;saved=null}
+ try{state=saved?migrate(saved):sampleState()}catch(e){corrupt=true;try{await Store.set('state_recovery_'+Date.now(),saved)}catch(_){}state=sampleState();state.settings.onboarded=true}
+ if(DEMO)state.settings.onboarded=true;
  applyTheme();
  const h=(location.hash.match(/^#\/(\w+)/)||[])[1];
  go(h||state.ui.page||'home',{push:false});
- if(!saved)await flush();
+ if((!saved||corrupt)&&!DEMO&&!Store.temporary)await flush();
+ if(corrupt)setTimeout(()=>toast('Your saved planner couldn’t be read, so a fresh one was started. The damaged copy was kept safely in this browser — message us on Etsy and we’ll help you recover it.','err'),600);
  if(!state.settings.onboarded)setTimeout(()=>onboarding(0),250);
  // Installable app when hosted online (service workers can't run from a downloaded file)
- if(/^https?:$/.test(location.protocol)){
+ if(!DEMO&&/^https?:$/.test(location.protocol)){
   const l=document.createElement('link');l.rel='manifest';l.href='manifest.webmanifest';document.head.appendChild(l);
   if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
  }

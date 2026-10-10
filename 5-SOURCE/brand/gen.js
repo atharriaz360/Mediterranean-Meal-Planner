@@ -10,6 +10,6 @@ const leaves=pts.map(p=>leaf(...p)).join('');
 module.exports={stem,leaves};
 if(require.main===module){
 const cream='#FBF6EC';
-const svg=(bg=true)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">${bg?'<rect width="64" height="64" rx="16" fill="#1D5673"/>':''}<circle cx="34" cy="29" r="16" fill="#F2B84B"/><path d="${stem}" fill="none" stroke="${cream}" stroke-width="2.4" stroke-linecap="round"/><path d="${leaves}" fill="${cream}"/><path d="M27 40.6 Q28.5 43 28.6 44.5" fill="none" stroke="#FBF6EC" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="29.2" cy="48.6" rx="3.8" ry="4.9" transform="rotate(-18 29.2 48.6)" fill="#D9683A"/></svg>`;
+const svg=(bg=true)=>`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">${bg?'<rect width="64" height="64" rx="16" fill="#1F4A38"/>':''}<circle cx="34" cy="29" r="16" fill="#F2B84B"/><path d="${stem}" fill="none" stroke="${cream}" stroke-width="2.4" stroke-linecap="round"/><path d="${leaves}" fill="${cream}"/><path d="M27 40.6 Q28.5 43 28.6 44.5" fill="none" stroke="#FBF6EC" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="29.2" cy="48.6" rx="3.8" ry="4.9" transform="rotate(-18 29.2 48.6)" fill="#D9683A"/></svg>`;
 require('fs').writeFileSync(__dirname+'/mark.svg',svg());
 }
