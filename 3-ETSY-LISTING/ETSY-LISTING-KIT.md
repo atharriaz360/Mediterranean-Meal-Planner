@@ -203,20 +203,20 @@ Made by Athar at KaelLabs. Explore my other offline planner apps in the shop.
 
 ## 6. Photo order: what each image is for
 
-All images are 2400×3000 px (4:5), JPG, under 600 KB, and made only from real screenshots of the app with sample data.
+All images are 2400×3000 px (4:5), JPG, under 700 KB. App screens are real screenshots of the app with sample data, in realistic iPhone frames. No brand name is shown anywhere. Each image leads with a problem and a benefit, not just features.
 
 | # | File | Job |
 |---|------|-----|
-| 1 | `01-hero.jpg` | Thumbnail. Big readable keyword "Mediterranean Meal Planner", marked as a DIGITAL APP, laptop + phone. |
-| 2 | `02-week-plan.jpg` | The main feature: the full week grid. |
-| 3 | `03-recipes-to-list.jpg` | The "wow" moment: recipe → grocery list in one tap. |
-| 4 | `04-on-your-phone.jpg` | Answers "does it work on my phone?" |
-| 5 | `05-balance.jpg` | The Mediterranean-specific feature. |
-| 6 | `06-pantry-prep.jpg` | Pantry use-by alerts + prep list. |
-| 7 | `07-12-tools.jpg` | Everything included. |
-| 8 | `08-private-dark.jpg` | Privacy, backups, dark mode. |
-| 9 | `09-how-it-works.jpg` | 3 steps + what you receive + devices. Cuts down on pre-sale questions. |
-| 10 | `10-app-vs-printable.jpg` | Why it's worth more than a €3 PDF. |
+| 1 | `01-hero.jpg` | Thumbnail. Benefit headline readable in 3 seconds. No brand name. Laptop + iPhone, grocery-list callout. |
+| 2 | `02-week-plan.jpg` | Problem → fix: dinner decided last minute → whole week in one view. |
+| 3 | `03-recipes-to-list.jpg` | Problem → fix: handwritten lists → one-tap grocery list. |
+| 4 | `04-on-your-phone.jpg` | Problem → fix: no list at the shop → plan in your pocket. |
+| 5 | `05-balance.jpg` | Problem → fix: hard to see variety → weekly food-group view. |
+| 6 | `06-pantry-prep.jpg` | Problem → fix: forgotten food → use-by alerts + prep list. |
+| 7 | `07-12-tools.jpg` | Problem → fix: juggling notes and apps → everything in one place. |
+| 8 | `08-private-dark.jpg` | Problem → fix: accounts and fees → private, one-time purchase. |
+| 9 | `09-how-it-works.jpg` | Answers how-does-it-work questions before purchase. |
+| 10 | `10-app-vs-printable.jpg` | Problem → fix: printables can't build your list → why an app wins. |
 
 ### Alt text for each photo (paste into Etsy: Photos → hover the photo → "Add alt text")
 
@@ -224,16 +224,16 @@ Alt text helps buyers who use screen readers, and Google Images can read it. Eac
 
 | # | File | Alt text |
 |---|------|----------|
-| 1 | `01-hero.jpg` | Mediterranean meal planner digital app shown on a laptop week plan and a phone home screen, with the text Digital App, Auto Grocery List, recipes and weekly plan, works on phone and computer, no subscription |
-| 2 | `02-week-plan.jpg` | Weekly meal planner grid showing breakfast, lunch, dinner and snacks for Sunday to Saturday, with Mediterranean meals like Greek chickpea salad, lentil soup and lemon herb salmon, plus add meal, shopping list, copy last week and print buttons |
-| 3 | `03-recipes-to-list.jpg` | Two phone screens: a Greek chickpea salad recipe with ingredients and a Plan it button, and the grocery list it creates, sorted by aisle, skipping pantry items and merging duplicates |
-| 4 | `04-on-your-phone.jpg` | Three phone screens of the Mediterranean meal planner app, showing today's meals and water tracker, the home dashboard with meals planned this week, and the shopping list, on a blue background |
-| 5 | `05-balance.jpg` | Balance screen of the Mediterranean meal planner showing food groups this week (vegetables, fruit, legumes, whole grains, fish and olive oil) with progress bars and a calories-by-day chart |
-| 6 | `06-pantry-prep.jpg` | Two phone screens: a pantry inventory with use-by date alerts for items like feta, yogurt and olive oil, and a meal prep to-do list for soaking, chopping and batch-cooking |
-| 7 | `07-12-tools.jpg` | Grid of 12 tools in the meal planner app: week plan, today, recipes, shopping list, pantry, balance, prep list, goals and water, calendar, journal, backup and dark mode |
-| 8 | `08-private-dark.jpg` | Meal planner app in dark mode on a phone, with the points: no account or login, nothing uploaded, one-tap backups, light and dark mode with 5 accent colours, and works offline |
-| 9 | `09-how-it-works.jpg` | Three steps to use the digital meal planner (download, open, plan), what you receive (HTML planner app, Start Here PDF guide, licence) and supported devices: iPhone, iPad, Android, Mac, Windows, Chromebook |
-| 10 | `10-app-vs-printable.jpg` | Comparison table of the Mediterranean meal planner app vs a PDF printable planner: automatic grocery list, sorted by aisle, copy last week, search recipes, use on phone and computer, and print your week |
+| 1 | `01-hero.jpg` | Digital Mediterranean meal planner app on a laptop and an iPhone showing the weekly meal plan and an automatic grocery list, with the headline Dinner planned, groceries done, and badges: no subscription, works offline, phone and computer |
+| 2 | `02-week-plan.jpg` | Weekly meal planner grid on a laptop showing breakfast, lunch, dinner and snacks from Sunday to Saturday, with the headline See your whole week at a glance |
+| 3 | `03-recipes-to-list.jpg` | Two iPhone screens: the weekly meal plan, an arrow, then the automatic grocery list sorted by aisle with duplicates merged and pantry items skipped |
+| 4 | `04-on-your-phone.jpg` | Three iPhone screens of the meal planner app showing today's meals and water tracker, the home dashboard and the shopping list, with the headline Your meal plan, in your pocket |
+| 5 | `05-balance.jpg` | iPhone showing the Balance screen of the meal planner with food groups this week such as vegetables, fruit, legumes and whole grains, with the headline Spot the gaps in your week |
+| 6 | `06-pantry-prep.jpg` | Two iPhone screens: a pantry list with use-by alerts and a meal prep to-do list, with the headline Use what you have before it expires |
+| 7 | `07-12-tools.jpg` | Grid of 12 tools in the meal planner app: week plan, today, recipes, shopping, pantry, prep list, balance, goals and water, calendar, journal, backup and dark mode |
+| 8 | `08-private-dark.jpg` | iPhone in dark mode showing the meal planner home screen, with benefits: nothing is uploaded, works offline, one-tap backup file, light and dark mode, and the headline Yours alone, no account, no subscription |
+| 9 | `09-how-it-works.jpg` | Three steps to use the downloadable meal planner app: download, open, plan, plus what you receive: the app file, a Start Here PDF guide and a licence |
+| 10 | `10-app-vs-printable.jpg` | Comparison table of the meal planner app versus a PDF printable: grocery list builds itself, sorted by aisle, copy last week, search recipes, use on phone and computer, print when you want |
 
 **Video:** Etsy has no alt-text field for videos, so nothing to add there.
 
