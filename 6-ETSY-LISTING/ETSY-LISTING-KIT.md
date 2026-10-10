@@ -1,49 +1,66 @@
-# 0. FINAL LISTING SETUP (updated 11 Oct 2026) — THIS SECTION WINS
+# Mediterranean Meal Planner — Etsy Listing Kit (v3, 11 Oct 2026)
+Listing: https://www.etsy.com/listing/4581630401 · Shop: KaelLabs
+This file replaces every earlier version. Everything below matches the current build (forest green · gold · ivory design).
 
-> **Status 11 Oct 2026 — app redesigned (forest green · gold · ivory, new Home dashboard).**
-> **Photos + video rebuilt 11 Oct** from the new design: 10 images in `6-ETSY-LISTING/images/` (old ones in `images/_old-blue/`) and a new 15 s video in `6-ETSY-LISTING/video/`.
-> Re-upload the new `Mediterranean-Meal-Planner-Digital-Download.zip` and `Mediterranean-Meal-Planner-Start-Here.pdf` (both rebuilt 11 Oct).
+## 0. What to upload (all rebuilt 11 Oct 2026)
+| Item | File | Notes |
+|---|---|---|
+| Digital files | `1-SELL-THIS/Mediterranean-Meal-Planner-Digital-Download.zip` + `1-SELL-THIS/Mediterranean-Meal-Planner-Start-Here.pdf` | The zip holds the app (one HTML file), the PDF and `LICENSE.txt`; it is rebuilt automatically by `python3 build.py --sync` |
+| Photos (10) | `6-ETSY-LISTING/images/01-hero.jpg` … `10-how-it-works.jpg` | 2400×1800, 4:3, JPG, 290–420 KB each. Order + alt text in section 6 |
+| Video | `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` | 15.0 s, 1920×1080, no audio. Details in section 7 |
+| Online app (buyers) | `2-HOST-ONLINE/` → Vercel | Redeploy with the new build. This link is printed in the Start Here PDF |
+| Live demo (shoppers) | `3-HOST-DEMO/` → its own Vercel project | Nothing is saved; "Get it on Etsy" button. Optional: add its link to the description once live |
 
-Anything further down that disagrees with section 0 is old. Section 0 is the source of truth.
-
-## 0.1 Problems found on live listing
-- GPSR "Add info" was opened on a digital item (empty Manufacturer/Safety boxes). Click "Remove info".
-- Category Calendars & Planners is physical-paper (Magnetic/Width fields). Move to Planner Templates. "Party decor" highlight also shows on Planner Templates listings (Kindling), so check Occasion/Celebration attributes are empty.
-- 5 overlapping tags: meal planner app, meal planning app, digital meal planner, grocery list app, shopping list app. Two wasted slots.
-- Title ended "| Digital Download" (wasted) and used pipes.
-- Old kit said "[AI disclosure line, see section 7]" placeholder and "don't upload the ZIP". Now: AI line filled, files = zip + pdf like every other listing.
-- No health claims: never "heart healthy", "anti inflammatory", "weight loss", "proven benefits".
-
-## 0.2 Title (109/140, 15 words)
+## 1. Title (109/140, 15 words)
 ```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Healthy Eating Planner, Works Offline
+Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Digital Download, Works Offline
 ```
 
-## 0.3 Tags (13/13, each ≤ 20 chars)
+## 2. Tags (13/13, each ≤ 20 chars)
 ```
 mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, family meal plan, recipe book app, meal plan template, menu planning app, offline meal app
 ```
 
-## 0.4 Description changes
-Keep the section 4 description below, with these edits:
-1. First 2 lines (show in search + Google) become:
+## 3. Description (paste as-is)
+Short and scannable. The first 2 lines show in search previews and Google. Every feature line was checked against the app.
+
 ```
-🫒 Mediterranean meal planner app: plan your week, keep your recipes, and turn meals into a grocery list sorted by aisle in one tap.
-Instant download for phone, tablet and computer. Works offline. No subscription, no account.
-```
-2. Replace the "what you get / what you'll receive" block with:
-```
-📦 WHAT YOU GET (instant download)
-• Mediterranean-Meal-Planner-Digital-Download.zip: the app (one HTML file), Start Here guide (PDF) and personal-use licence
-• Mediterranean-Meal-Planner-Start-Here.pdf: the same guide as a loose file, so you can open it on your phone without unzipping
-This is a digital download. Nothing will be shipped.
-```
-3. Last lines must be (AI disclosure, required by Etsy Creativity Standards):
-```
-Designed and built by me (KaelLabs). AI tools assisted with parts of the coding, images and listing copy, and the food photo on the Home screen was made with AI image tools. Every feature was reviewed and tested by hand. App screens in the photos are real screenshots with example data.
+Mediterranean Meal Planner app with weekly menu, recipes and a grocery list that builds itself. Works offline on phone, tablet and computer. Buy once, no subscription.
+
+Plan the week, keep your recipes, shop with one list sorted by aisle. No account. Your data stays on your device.
+
+━━ WHAT'S INSIDE ━━
+✔ Weekly menu planner (breakfast to dinner, copy last week in one tap)
+✔ Recipe organizer (ingredients, method, photos, favourites)
+✔ Automatic grocery list: sorted by aisle, skips what's in your pantry
+✔ Pantry with use-by reminders
+✔ Plus Today view, prep list, balance tracker, goals & water, calendar, journal
+✔ Print your week, shopping list or recipe cards
+✔ Light & dark mode
+
+━━ HOW IT WORKS ━━
+1. Buy and download instantly
+2. Computer: open the file in Chrome, Safari, Edge or Firefox
+3. Phone: open your link from the Start Here guide and tap "Add to Home Screen"
+4. Plan your week. Works offline
+
+━━ WHAT YOU GET ━━
+• The app (one HTML file)
+• Start Here guide (PDF)
+• Personal-use licence
+
+━━ GOOD TO KNOW ━━
+• Digital download. Nothing is shipped
+• Needs a modern browser
+• Data saves in your browser. Use Backup often; clearing browser data can erase it
+• No automatic sync between devices (move data with Backup → Restore)
+• Personal use only. Not medical or diet advice
+• Questions? Message me, I reply fast
+
+Designed and built by me (KaelLabs). AI tools assisted with parts of the coding, images and listing copy, and the food photo on the Home screen was made with AI image tools. Every feature was reviewed and tested by hand. Photos show real app screens with example data.
 ```
 
-## 0.5 Etsy fields
+## 4. Etsy listing fields
 | Field | Value |
 |---|---|
 | Category | Planner Templates (Digital files). Remove Calendars & Planners |
@@ -61,153 +78,14 @@ Designed and built by me (KaelLabs). AI tools assisted with parts of the coding,
 | GPSR info | Leave empty ("Add info" not clicked). Digital file, not a physical product |
 | Photos | 10 photos at 2400×1800 (4:3), hero first (section 6) + the 15 s video |
 
-## 0.6 Note to buyers (paste; plain text, no quote marks, which Etsy was showing as &quot;)
+**Fix on the live listing if still present:** GPSR "Add info" opened on a digital item → click "Remove info". Category must be Planner Templates (not the physical Calendars & Planners). Occasion / Holiday / Celebration attributes empty (removes the "Party decor" highlight).
+
+## 5. Note to buyers (paste; plain text, no quote marks, which Etsy was showing as &quot;)
 ```
 Open the Start Here PDF first. It shows how to open your app on computer and phone (Add to Home Screen). Unzip the download before opening the HTML file. Your data stays private on your device, so use the same browser each time and export a backup weekly. Need help? Message me on Etsy. Athar
 ```
 
-## 0.7 After saving
-Make all edits in one session, then leave listing alone 14 days. Check Stats → Search terms weekly. Low views → tags/title. Views but no clicks → photo 1. Clicks but no sales → price, photos 2–4, first description lines.
-
----
-
-# Mediterranean Meal Planner: Etsy Listing Kit (v2, 29 Sep 2026)
-
-Live listing: https://www.etsy.com/listing/4581630401 (listed 24 Sep 2026)
-
-This version replaces the v1 kit. Section 1 explains why the listing isn't ranking. Sections 2–9 are ready to copy and paste.
-
----
-
-## 1. Why it isn't ranking: what I found
-
-Checked on 29 Sep 2026 against the live listing, the shop page and Etsy search.
-
-### A. Problems in the listing (fix now)
-
-| # | Problem | Why it hurts | Fix |
-|---|---------|--------------|-----|
-| 1 | **Your video shows your private app link.** The screen recording includes the Chrome address bar with the private Netlify app address. | Anyone watching can use the full app for free. | Delete that video from the listing now. Rename the Netlify site to a new hidden name, regenerate the Start Here PDF with it (`node 5-SOURCE/guide/make-guide.js "https://NEW-LINK"`) and re-upload the PDF. Upload `video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` instead. It shows no URLs. |
-| 2 | **Photo 1 (thumbnail) is the AI-generated "Premium hero".** It has garbled text ("MEAMEANER", "Good morning, Ma") and a real food photo that doesn't exist in the app. | Etsy requires photos to show the actual item. A thumbnail that looks fake lowers clicks, and clicks are one of Etsy's strongest ranking signals. | Replace it with `images/01-hero.jpg`, which is built only from real app screenshots. |
-| 3 | **Image size.** | Small or oddly shaped images look soft in search and on the listing page. | All 10 new images are **2400×1800 (4:3 landscape)**, matching Etsy Help: first photo landscape or square, 2000 px or more. |
-| 4 | **Health claims in the description**: "proven benefits of the Mediterranean diet", "heart-healthy meal ideas". | Etsy prohibits medical and health claims and can suppress or remove listings that make them. | Use the new description in section 4. It keeps the planner benefits and drops the health claims. |
-| 5 | **Promises more recipes than you ship.** "Weekly Meal Planner with Mediterranean-style recipes" reads like a recipe pack. The app ships with 12 sample recipes. | Buyers expecting 100+ recipes leave bad reviews, which hurts future ranking. | The new copy says exactly what's included: 12 sample recipes, and you add unlimited recipes of your own. |
-| 6 | **"Party decor for gatherings and celebrations"** appears under Highlights. | Wrong attributes confuse Etsy about who the item is for. | In the listing editor, clear any Occasion, Celebration or Holiday attribute. Set the category and attributes as in section 5. |
-| 7 | **The ZIP duplicates the other files** (the listing shows 1 PDF, 1 TXT, 1 ZIP, 1 other file). | Buyers can't tell which file is the product, which leads to more "it doesn't work" messages. | Upload only 3 files: `Mediterranean-Meal-Planner.html`, `Mediterranean-Meal-Planner-Start-Here.pdf` and `LICENSE.txt`. |
-
-### B. Shop-level problems (these affect all 6 listings)
-
-| # | Problem | Fix |
-|---|---------|-----|
-| 8 | Your **About section** still says "Website Templates & Digital Designs for Small Business", but every product in the shop is a planner app. | Use the About text in section 8. |
-| 9 | All **FAQ questions** are titled "Custom and personalised orders", and one answer talks about editing CSS variables and Canva. | Replace them with the FAQs in section 8. |
-| 10 | **Manufacturer info** shows a personal email and a hostel address to the public. | EU product-safety rules need a contact point. Consider a business email and a business or PO-box address. |
-
-### C. Things that are normal (don't panic)
-
-- **The shop is 5 days old, with 0 sales and 0 reviews.** Etsy has almost no data on new listings. It learns from clicks, favourites and sales, so the first 2–6 weeks are always slow. Better photos and copy speed this up, but they can't skip it.
-- **Changing images doesn't get you "penalised".** Changing them every day does make it impossible to tell what works, though. After this update, leave the listing alone for **14 days**, then check Stats.
-- **Your search competition** for "mediterranean meal plan" is mostly bold, text-heavy printables (for example, "365 days", "120+ recipes"). Your advantage is that Mediterranean Meal Planner is an app, so the new images lead with **"Digital App · Auto Grocery List"** and include an "App vs PDF" comparison (image 10).
-
----
-
-## 2. Title (131 characters, main keyword first)
-
-```
-OLD, replaced. Use section 0.
-```
-
-Shorter alternative, if you'd rather keep it tight:
-
-```
-OLD, replaced. Use section 0.
-```
-
-## 3. The 13 tags (all ≤ 20 characters, none repeat the title word for word)
-
-```
-OLD, replaced. Use section 0.
-```
-
-Don't use other brand names (Notion, Canva, Mealime, etc.) as tags.
-
-## 4. Description (paste as-is)
-
-The first 2 lines matter most, because they show in search previews and Google.
-
-```
-Mediterranean meal planner app: plan your week, keep your recipes, and turn your meals into a sorted grocery list in one tap. Instant digital download for phone, tablet and computer. No subscription, no account.
-
-Mediterranean Meal Planner is a real interactive app, not a printable PDF. Open it on your computer, or add it to your phone's Home Screen and use it like an app. It works offline, and everything you enter stays private on your device.
-
-━━━━━━━━━━━━━━━━━━
-★ WHAT'S INSIDE: 12 TOOLS IN ONE APP
-━━━━━━━━━━━━━━━━━━
-• WEEK PLAN: breakfast, lunch, dinner and snacks for every day. Copy last week in one tap.
-• RECIPES: ingredients, method, photos, favourites and category filters. Add as many as you like.
-• SHOPPING LIST: built automatically from your planned meals, sorted by aisle. It skips what's already in your pantry and merges duplicates.
-• PANTRY: track what you have, with use-by alerts so less food goes to waste.
-• BALANCE: tag meals with food groups (vegetables, legumes, fish, whole grains, olive oil and more) and see how your week lines up with Mediterranean-style eating.
-• TODAY: today's meals, water tracker and tasks at a glance.
-• PREP LIST: soak, chop and batch-cook reminders.
-• GOALS & WATER, CALENDAR and JOURNAL.
-• PRINT your week (landscape), shopping list or any recipe card.
-• BACKUP & RESTORE: one-tap backup file with a weekly reminder. CSV export.
-• Light and dark mode, 3 accent colours, and an option to hide calories.
-
-Starts with a sample week and 12 sample recipes so you can explore. Clear them in one tap and add your own.
-
-━━━━━━━━━━━━━━━━━━
-★ WHY AN APP INSTEAD OF A PRINTABLE?
-━━━━━━━━━━━━━━━━━━
-✔ Your grocery list writes itself from your meal plan
-✔ Search every recipe and meal
-✔ Plan on your laptop, shop from your phone
-✔ You can still print whenever you want
-
-━━━━━━━━━━━━━━━━━━
-★ WORKS ON
-━━━━━━━━━━━━━━━━━━
-iPhone, iPad, Android, Mac, Windows and Chromebook, in Chrome, Safari, Edge or Firefox.
-On your phone, open your personal link (in the Start Here guide) and tap "Add to Home Screen".
-
-━━━━━━━━━━━━━━━━━━
-★ WHAT YOU'LL RECEIVE
-━━━━━━━━━━━━━━━━━━
-1. Mediterranean-Meal-Planner.html: the app
-2. Start Here guide (PDF): 1-minute setup, phone install and your personal online link
-3. Licence (personal use)
-
-This is a digital download. No physical item will be shipped.
-
-━━━━━━━━━━━━━━━━━━
-★ GOOD TO KNOW
-━━━━━━━━━━━━━━━━━━
-• Your data is saved in the browser you use. Use the same browser each time, and back up weekly (Mediterranean Meal Planner reminds you).
-• Mediterranean Meal Planner doesn't sync automatically between devices. To move your plans, export a backup on one device and restore it on the other.
-• Mediterranean Meal Planner is a planning tool. It does not give medical or nutritional advice.
-• For personal use only. Please don't share or resell.
-• Because this is a digital product, returns aren't accepted, but I'm always happy to help. Just send me a message.
-
-Designed and built by me (KaelLabs). AI tools assisted with parts of the coding, images and listing copy, and the food photo on the Home screen was made with AI image tools. Every feature was reviewed and tested by hand. App screens in the photos are real screenshots with example data.
-
-Made by Athar at KaelLabs. Explore my other offline planner apps in the shop.
-```
-
-## 5. Listing settings
-
-- **About this listing:** Who made it: *I did*. What is it: *A finished product*. When was it made: *2020–2026*.
-- **Type:** Digital files.
-- **Category:** Planner Templates (see section 0). Your current category is Stationery → Design & Templates → Templates → Planner Templates, which is for editable templates. If Etsy suggests a different planner category while you type "meal planner", pick that one.
-- **Attributes:** fill in every planner-related one Etsy offers (for example, *Planner type: meal / food*, *Time frame: weekly*, *Digital format*). Leave **Occasion, Holiday and Celebration empty**. That's what shows "Party decor" today.
-- **Files (3):** `Mediterranean-Meal-Planner.html`, `Mediterranean-Meal-Planner-Start-Here.pdf` (regenerated with your NEW link), `LICENSE.txt`. Upload the ZIP + PDF (see section 0).
-- **Photos:** upload all 10 from `6-ETSY-LISTING/images`, **in order** (section 6). Leave Etsy's thumbnail crop centred.
-- **Video:** `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` — 15.0 s, 1920×1080 (16:9), MP4/H.264, 30 fps, no audio track. Real app interactions played at 1.5× speed, no browser bar, no private link. Scenes: dashboard → one tap builds the grocery list → ticking items off by aisle → recipe opens → pantry use-by highlight → dark mode → end card (The Ultimate Meal Planner · no subscription · works offline · phone + computer). Each scene has one benefit badge.
-- **Price:** your current €21.14 → €10.36 (51% off) sale is fine. When the sale ends, renew it at 40–50% off rather than dropping the list price. Keep it until you have 5+ reviews.
-- **Quantity:** 999, with auto-renew on. **Personalisation:** off.
-
-## 6. Photo order: what each image is for
-
+## 6. Photos
 All 10 images were rebuilt on 11 Oct 2026 from the redesigned app: **2400×1800 px (4:3 landscape)**, JPG, each under 1 MB (Etsy Help: first photo landscape or square, 2000 px or more; files over 1 MB may fail to upload). App screens are real screenshots of the current build with sample data, in realistic laptop and iPhone frames. The app logo appears inside the app screens (laptop sidebar). Each image answers one buyer question: problem → benefit.
 
 | # | File | Job |
@@ -240,16 +118,22 @@ All 10 images were rebuilt on 11 Oct 2026 from the redesigned app: **2400×1800 
 
 **Video:** Etsy has no alt-text field for videos, so nothing to add there.
 
-**Video spec used** (Etsy Help page could not be fetched on 11 Oct; these are the commonly cited Etsy limits — check the upload screen): 5–15 s, MP4/MOV, up to 100 MB, 1080p recommended, sound is removed by Etsy, so the video tells its story with on-screen badges only.
+## 7. Video
+- File: `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` — 15.0 s, 1920×1080 (16:9), MP4/H.264, 30 fps, no audio track.
+- Real app interactions played at 1.5× speed; no browser bar, no private link.
+- Scenes (one benefit badge each): dashboard (*Your whole week at a glance*) → Week Plan, one tap (*One tap builds your grocery list*) → shopping list by aisle, 3 items ticked (*Sorted by aisle. Tick off as you shop*) → Lentil Soup recipe opens (*Every recipe in one place*) → pantry use-by highlight (*Use what you have. Waste less*) → dark mode (*Private. No account. No subscription*) → end card (The Ultimate Meal Planner · no subscription · works offline · phone + computer).
+- **Video spec used** (Etsy Help page could not be fetched on 11 Oct; these are the commonly cited Etsy limits — check the upload screen): 5–15 s, MP4/MOV, up to 100 MB, 1080p recommended, sound is removed by Etsy, so the video tells its story with on-screen badges only.
+- Etsy has no alt-text field for videos.
 
-## 7. Policy & compliance
+## 8. Policy & compliance
 
-- **AI disclosure:** Etsy's Creativity Standards ask sellers to disclose when AI tools were used to create an item. If AI helped build Mediterranean Meal Planner, add a line such as: *"Designed and built by me; AI-assisted tools were used during development."* That's your call, but Etsy enforces it.
+- **AI disclosure:** Etsy's Creativity Standards ask sellers to disclose AI use. The description already ends with the disclosure line, and "How is this digital content created?" is set to *With an AI generator*. Keep them matching.
 - **No health claims** anywhere (title, tags, photos, description): no "heart-healthy", "lose weight", "proven benefits", "lower cholesterol" and so on. "Mediterranean-style" and "planning tool" are safe.
-- **Photos must show the real product.** Don't go back to AI-generated mockups with food photography the app doesn't contain.
+- **Photos must show the real product.** All images use real screenshots of the current build. If the app design changes, re-take them (the image script lives with the source).
+- **Hero food photo:** it came from your AI-generated mockup. Confirm you created it; the licence and AI line say so.
 - **Keep your hosted link private.** Never show a browser address bar in screenshots or videos. The link belongs only inside the paid PDF.
 
-## 8. Shop fixes (Shop Manager → Settings → Info & Appearance / Policies)
+## 9. Shop fixes (Shop Manager → Settings → Info & Appearance / Policies)
 
 **About: headline**
 ```
@@ -272,89 +156,33 @@ Questions before you buy? Send me a message. I usually reply within a day.
 - *Does it sync between my phone and laptop?* Not automatically. Export a backup on one device and restore it on the other.
 - *Can I share it or resell it?* No. Each purchase is for personal use by one household.
 
-## 9. The next 30 days
+## 10. Next 30 days
+1. **Publish day:** upload the zip + PDF, 10 photos (in order, alt text), the video, title, tags, description and fields — all in one session. Redeploy both Vercel projects first.
+2. **Leave the listing alone for 14 days.** Check Stats → Search terms weekly:
+   - Low views → title or tags. Adjust only those.
+   - Views but few clicks → thumbnail. Try a variant of photo 1.
+   - Clicks but no sales → price, photos 2–4, first description lines.
+3. **Share outside Etsy:** post the 15 s video as a Pinterest pin and an Instagram/TikTok reel linking to the listing.
+4. **Reviews:** keep Etsy's automatic review request on. The Start Here PDF already asks kindly for a review.
+5. **Etsy Ads (optional):** about €1–2/day for 2–3 weeks to get early click data; stop if no sales after ~3 weeks.
+6. **Updates:** edit `5-SOURCE/src`, bump `VERSION` in `build.py`, run `python3 build.py --sync`, run both tests, re-upload. Tell buyers to export a backup in the old version first, then restore it in the new one.
 
-1. **Today:** delete the old video, rotate the Netlify link, re-upload the PDF, then swap in the new photos, video, title, tags, description and attributes (all at once).
-2. **Then leave the listing alone for 14 days.** Check Stats weekly:
-   - Low views → the title or tags are the problem. Adjust only those.
-   - Views but few clicks → the thumbnail is the problem. Try a variant of photo 1.
-   - Clicks but no sales → look at price, photos 2–4, and the description's opening lines.
-3. **Share outside Etsy:** post the 15 s video as a Pinterest pin and an Instagram/TikTok reel, linking to the listing. Meal-planning content does well on Pinterest, and outside traffic that converts helps your Etsy ranking.
-4. **Reviews:** turn on Etsy's automatic review request. Your first 5 reviews matter most.
-5. **Etsy Ads (optional):** a small daily budget (about €1–2) for 2–3 weeks gives Etsy early click data. Turn it off if it gets no sales after about 3 weeks.
-6. **Version updates:** bump `VERSION` in `build.py`, rebuild and re-upload. Tell buyers to **Export backup** in the old version before opening the new file, then **Restore backup**.
-
-## 10. Pre-publish checklist
-
-- [ ] Old video deleted from the listing
-- [ ] Vercel online link (2-HOST-ONLINE) redeployed with the new build; tested on iPhone + Android (Add to Home Screen, airplane mode)
-- [ ] `Mediterranean-Meal-Planner-Start-Here.pdf` regenerated with the new link (no red placeholder) and re-uploaded
-- [ ] ZIP + Start Here PDF uploaded (see section 0)
-- [ ] 10 new photos uploaded in order, thumbnail crop centred
-- [ ] Alt text added to all 10 photos (section 6)
-- [ ] `Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` uploaded
-- [ ] New title, 13 tags and description pasted (AI line decided)
-- [ ] Category changed; Occasion/Holiday/Celebration attributes empty ("Party decor" gone)
-- [ ] Shop About + FAQs updated
-- [ ] Hands off for 14 days, then review Stats
-
-
-
-########################################################################################################################################################################################### Latest
-
-# Mediterranean Meal Planner — KIT
-Listing: https://www.etsy.com/listing/4581630401
-Priority: Medium
-Updated: 2026-10-07 | Status: live, 0 sales
-
-> CHECK: delete any feature line below that the app does not have.
-
-## Step 1 — Title (112)
-```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Book and Grocery List, Healthy Eating Planner, Works Offline
-```
-
-## Step 2 — Tags (13)
-```
-mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, family meal plan, recipe book app, meal plan template, menu planning app, offline meal app
-```
-
-## Step 3 — Description
-```
-Mediterranean Meal Planner with weekly menu, recipes and grocery list in one place. Works offline on phone, tablet and computer. Buy once, no subscription.
-
-Mediterranean Meal Planner makes healthy eating simple: plan the week, keep your recipes, shop with one list. No account. Your data stays on your device.
-
-━━ WHAT'S INSIDE ━━
-✔ Weekly menu planner
-✔ Recipe organizer
-✔ Grocery list
-
-━━ HOW IT WORKS ━━
-1. Buy and download instantly
-2. Open the file in Chrome, Safari or Edge
-3. Plan your week. Works offline
-
-━━ GOOD TO KNOW ━━
-• Digital download. Nothing is shipped
-• Needs a modern browser (Chrome, Safari, Edge)
-• Data saves in your browser. Use Export/Backup often; clearing browser data can erase it
-• Personal use only. Not medical or diet advice
-• Questions? Message me, I reply fast
-
-Designed and built by me (KaelLabs). AI tools assisted with parts of the coding, images and listing copy, and the food photo on the Home screen was made with AI image tools. Every feature was reviewed and tested by hand. Photos show real app screens with example data.
-
-More planners: https://kaellabs.etsy.com
-```
-
-## Step 4 — Price
-$9.99
-
-## Step 5 — Photos (10) + video
-Use the 10 files in `6-ETSY-LISTING/images/` in numeric order — see section 6 for each image's job and alt text. Video: `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` (rebuilt 11 Oct).
-
-## Step 6 — Section: Meal Planners
+## 11. Pre-publish checklist
+- [ ] Hero food photo rights confirmed (you created the AI image)
+- [ ] `2-HOST-ONLINE` redeployed; link opens; tested on iPhone + Android (Add to Home Screen, airplane mode)
+- [ ] `3-HOST-DEMO` deployed (optional) and its link added to the description
+- [ ] Start Here PDF shows the correct online link (no red placeholder)
+- [ ] Zip + Start Here PDF uploaded; old files removed
+- [ ] 10 photos uploaded in order, alt text on each, thumbnail crop centred
+- [ ] Video uploaded
+- [ ] Title (section 1), 13 tags (section 2), description (section 3) pasted
+- [ ] Fields set (section 4); GPSR info removed; Occasion/Holiday/Celebration empty
+- [ ] Note to buyers pasted (section 5)
+- [ ] Shop About + FAQs updated (section 9)
+- [ ] `python3 test/functional_test.py` and `python3 test/robustness_test.py` pass after the final build
 
 ## Change log
-- 2026-10-07: new title, tags, description, photo plan.
-- 2026-10-07: short title (Etsy tip). Added AI disclosure line.
+- 2026-10-11 (v3.1): description replaced with the shorter, scannable version.
+- 2026-10-11 (v3): app redesigned (green · gold · ivory); new photos (2400×1800) and 15 s video; zip, PDF and licence rebuilt; title cut to 15 words; 12 sample recipes; 3 accent colours; AI line covers the hero food photo; kit consolidated into one version.
+- 2026-10-07: title, tags, description, AI disclosure line.
+- 2026-09-29: listing kit v2.
