@@ -11,7 +11,7 @@ gen = (W / 'brand/gen.js').read_text()
 import subprocess
 sprig = json.loads(subprocess.check_output(['node', '-e', "const g=require('./brand/gen.js');console.log(JSON.stringify(g))"], cwd=W))
 body = body.replace('__MARK_INNER__', mark_inner).replace('__WM_W__', str(wm['w'] + 2)).replace('__WM_D__', wm['d'])
-js = '\n'.join((W / f'src/{n}.js').read_text() for n in ['core', 'state', 'ui', 'pages'])
+js = '\n'.join((W / f'src/{n}.js').read_text() for n in ['app'])
 js = js.replace('__VERSION__', VERSION).replace('__STEM__', sprig['stem']).replace('__LEAVES__', sprig['leaves'])
 js = f"const MARK_INNER={json.dumps(mark_inner)};const WM_D={json.dumps(wm['d'])};\n" + js
 icon_svg = (W / 'brand/mediterranean-meal-planner-icon.svg').read_text()

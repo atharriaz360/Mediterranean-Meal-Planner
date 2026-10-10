@@ -9,16 +9,15 @@ Anything further down that disagrees with section 0 is old. Section 0 is the sou
 - Old kit said "[AI disclosure line, see section 7]" placeholder and "don't upload the ZIP". Now: AI line filled, files = zip + pdf like every other listing.
 - No health claims: never "heart healthy", "anti inflammatory", "weight loss", "proven benefits".
 
-## 0.2 Title (105/140, 14 words, no repeated word)
+## 0.2 Title (112/140)
 ```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Organizer, Auto Grocery List, Pantry Tracker, Offline
+Mediterranean Meal Planner App, Weekly Menu, Recipe Book and Grocery List, Healthy Eating Planner, Works Offline
 ```
 
-## 0.3 Tags (13/13, each ≤ 20 chars, no tag shared with any other shop listing)
+## 0.3 Tags (13/13, each ≤ 20 chars)
 ```
-mediterranean diet, mediterranean meals, meal planner app, weekly meal planner, weekly menu planner, recipe organizer, grocery list app, meal prep planner, pantry inventory, food planner, healthy meal planner, batch cooking, digital recipe book
+mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, family meal plan, recipe book app, meal plan template, menu planning app, offline meal app
 ```
-Removed from live: digital meal planner, meal planning app, shopping list app
 
 ## 0.4 Description changes
 Keep the section 4 description below, with these edits:
@@ -83,7 +82,7 @@ Checked on 29 Sep 2026 against the live listing, the shop page and Etsy search.
 
 | # | Problem | Why it hurts | Fix |
 |---|---------|--------------|-----|
-| 1 | **Your video shows your private app link.** The screen recording includes the Chrome address bar with `olivora-app-7k2q.netlify.app`. | Anyone watching can use the full app for free. | Delete that video from the listing now. Rename the Netlify site to a new hidden name, regenerate the Start Here PDF with it (`node 5-SOURCE/guide/make-guide.js "https://NEW-LINK"`) and re-upload the PDF. Upload `video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` instead. It shows no URLs. |
+| 1 | **Your video shows your private app link.** The screen recording includes the Chrome address bar with the private Netlify app address. | Anyone watching can use the full app for free. | Delete that video from the listing now. Rename the Netlify site to a new hidden name, regenerate the Start Here PDF with it (`node 5-SOURCE/guide/make-guide.js "https://NEW-LINK"`) and re-upload the PDF. Upload `video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` instead. It shows no URLs. |
 | 2 | **Photo 1 (thumbnail) is the AI-generated "Premium hero".** It has garbled text ("MEAMEANER", "Good morning, Ma") and a real food photo that doesn't exist in the app. | Etsy requires photos to show the actual item. A thumbnail that looks fake lowers clicks, and clicks are one of Etsy's strongest ranking signals. | Replace it with `images/01-hero.jpg`, which is built only from real app screenshots. |
 | 3 | **Wrong image shape for search.** Etsy search now shows thumbnails as **4:5 portrait** (measured at 255×319 px, center-cropped). The old images were 4:3 landscape. | In search, the left and right edges are cut off, so your headline text disappears. | All 10 new images are **2400×3000 (4:5)**. The hero keeps its key content inside a square safe zone, so it also works on square surfaces. |
 | 4 | **Health claims in the description**: "proven benefits of the Mediterranean diet", "heart-healthy meal ideas". | Etsy prohibits medical and health claims and can suppress or remove listings that make them. | Use the new description in section 4. It keeps the planner benefits and drops the health claims. |
@@ -228,13 +227,13 @@ Alt text helps buyers who use screen readers, and Google Images can read it. Eac
 | 1 | `01-hero.jpg` | Mediterranean meal planner digital app shown on a laptop week plan and a phone home screen, with the text Digital App, Auto Grocery List, recipes and weekly plan, works on phone and computer, no subscription |
 | 2 | `02-week-plan.jpg` | Weekly meal planner grid showing breakfast, lunch, dinner and snacks for Sunday to Saturday, with Mediterranean meals like Greek chickpea salad, lentil soup and lemon herb salmon, plus add meal, shopping list, copy last week and print buttons |
 | 3 | `03-recipes-to-list.jpg` | Two phone screens: a Greek chickpea salad recipe with ingredients and a Plan it button, and the grocery list it creates, sorted by aisle, skipping pantry items and merging duplicates |
-| 4 | `04-on-your-phone.jpg` | Three phone screens of the Mediterranean Meal Planner meal planner app, showing today's meals and water tracker, the home dashboard with meals planned this week, and the shopping list, on a blue background |
+| 4 | `04-on-your-phone.jpg` | Three phone screens of the Mediterranean meal planner app, showing today's meals and water tracker, the home dashboard with meals planned this week, and the shopping list, on a blue background |
 | 5 | `05-balance.jpg` | Balance screen of the Mediterranean meal planner showing food groups this week (vegetables, fruit, legumes, whole grains, fish and olive oil) with progress bars and a calories-by-day chart |
 | 6 | `06-pantry-prep.jpg` | Two phone screens: a pantry inventory with use-by date alerts for items like feta, yogurt and olive oil, and a meal prep to-do list for soaking, chopping and batch-cooking |
 | 7 | `07-12-tools.jpg` | Grid of 12 tools in the meal planner app: week plan, today, recipes, shopping list, pantry, balance, prep list, goals and water, calendar, journal, backup and dark mode |
 | 8 | `08-private-dark.jpg` | Meal planner app in dark mode on a phone, with the points: no account or login, nothing uploaded, one-tap backups, light and dark mode with 5 accent colours, and works offline |
 | 9 | `09-how-it-works.jpg` | Three steps to use the digital meal planner (download, open, plan), what you receive (HTML planner app, Start Here PDF guide, licence) and supported devices: iPhone, iPad, Android, Mac, Windows, Chromebook |
-| 10 | `10-app-vs-printable.jpg` | Comparison table of the Mediterranean Meal Planner meal planner app vs a PDF printable planner: automatic grocery list, sorted by aisle, copy last week, search recipes, use on phone and computer, and print your week |
+| 10 | `10-app-vs-printable.jpg` | Comparison table of the Mediterranean meal planner app vs a PDF printable planner: automatic grocery list, sorted by aisle, copy last week, search recipes, use on phone and computer, and print your week |
 
 **Video:** Etsy has no alt-text field for videos, so nothing to add there.
 
@@ -309,14 +308,14 @@ Updated: 2026-10-07 | Status: live, 0 sales
 
 > CHECK: delete any feature line below that the app does not have.
 
-## Step 1 — Title (10 words)
+## Step 1 — Title (112)
 ```
-Mediterranean Meal Planner with Weekly Menu, Recipes and Grocery List
+Mediterranean Meal Planner App, Weekly Menu, Recipe Book and Grocery List, Healthy Eating Planner, Works Offline
 ```
 
 ## Step 2 — Tags (13)
 ```
-meal planner, mediterranean diet, weekly meal planner, menu planner, recipe organizer, grocery list, meal prep planner, healthy eating, digital meal plan, food planner, recipe book, diet planner, shopping list
+mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, family meal plan, recipe book app, meal plan template, menu planning app, offline meal app
 ```
 
 ## Step 3 — Description

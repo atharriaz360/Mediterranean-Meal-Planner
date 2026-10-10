@@ -751,8 +751,8 @@ function normalize(x){
 }
 /* Accepts Mediterranean Meal Planner backups and the earlier single-file planner format (v1) */
 function migrate(x){
- if(x&&(x.app==='mediterranean-meal-planner'||x.app==='olivora')&&x.state)return normalize(x.state);
- if(x&&(x.app==='mediterranean-meal-planner'||x.app==='olivora'))return normalize(x);
+ if(x&&x.app==='mediterranean-meal-planner'&&x.state)return normalize(x.state);
+ if(x&&x.app==='mediterranean-meal-planner')return normalize(x);
  if(x&&x.version===1&&Array.isArray(x.meals)){
   const s=blankState();s.settings.onboarded=true;s.settings.sampleCleared=true;
   s.recipes=(x.recipes||[]).map(r=>({id:r.id||uid(),title:r.title||'Recipe',category:r.category||'Dinner',time:parseInt(r.time)||'',servings:2,calories:'',groups:[],tags:r.tags||'',ingredients:String(r.tags||'').split(',').map(v=>v.trim()).filter(Boolean),method:'',image:/^data:image\//.test(r.image||'')?r.image:'',fav:false,isSample:!!r.isSample}));
