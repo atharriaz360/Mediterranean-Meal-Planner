@@ -1,7 +1,7 @@
 # 0. FINAL LISTING SETUP (updated 11 Oct 2026) — THIS SECTION WINS
 
 > **Status 11 Oct 2026 — app redesigned (forest green · gold · ivory, new Home dashboard).**
-> **Photos:** the 10 images in `6-ETSY-LISTING/images/` were rebuilt from the new design on 11 Oct (old ones moved to `images/_old-blue/`). **Video:** still shows the old blue design — re-record it before uploading, or leave the video off for now.
+> **Photos + video rebuilt 11 Oct** from the new design: 10 images in `6-ETSY-LISTING/images/` (old ones in `images/_old-blue/`) and a new 15 s video in `6-ETSY-LISTING/video/`.
 > Re-upload the new `Mediterranean-Meal-Planner-Digital-Download.zip` and `Mediterranean-Meal-Planner-Start-Here.pdf` (both rebuilt 11 Oct).
 
 Anything further down that disagrees with section 0 is old. Section 0 is the source of truth.
@@ -59,7 +59,7 @@ Designed and built by me (KaelLabs). AI tools assisted with parts of the coding,
 | Feature this listing | Off |
 | Renewal | Automatic |
 | GPSR info | Leave empty ("Add info" not clicked). Digital file, not a physical product |
-| Photos | 10 new photos at 2400×1800 (4:3), hero first, made from the redesigned app (pending — see status note) + 15 s video |
+| Photos | 10 photos at 2400×1800 (4:3), hero first (section 6) + the 15 s video |
 
 ## 0.6 Note to buyers (paste; plain text, no quote marks, which Etsy was showing as &quot;)
 ```
@@ -202,7 +202,7 @@ Made by Athar at KaelLabs. Explore my other offline planner apps in the shop.
 - **Attributes:** fill in every planner-related one Etsy offers (for example, *Planner type: meal / food*, *Time frame: weekly*, *Digital format*). Leave **Occasion, Holiday and Celebration empty**. That's what shows "Party decor" today.
 - **Files (3):** `Mediterranean-Meal-Planner.html`, `Mediterranean-Meal-Planner-Start-Here.pdf` (regenerated with your NEW link), `LICENSE.txt`. Upload the ZIP + PDF (see section 0).
 - **Photos:** upload all 10 from `6-ETSY-LISTING/images`, **in order** (section 6). Leave Etsy's thumbnail crop centred.
-- **Video:** `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4`. It's a 15 s real screen recording of the live app (1920×1200, no browser bar, no audio). It starts on Week Plan and adds a meal live, then goes Calendar → Recipes → Shopping → Pantry → Balance → Goals & Water → Settings (accent colours + dark mode) → Home, and ends on a brand card.
+- **Video:** `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` — 15.0 s, 1920×1080 (16:9), MP4/H.264, 30 fps, no audio track. Real app interactions played at 1.5× speed, no browser bar, no private link. Scenes: dashboard → one tap builds the grocery list → ticking items off by aisle → recipe opens → pantry use-by highlight → dark mode → end card (The Ultimate Meal Planner · no subscription · works offline · phone + computer). Each scene has one benefit badge.
 - **Price:** your current €21.14 → €10.36 (51% off) sale is fine. When the sale ends, renew it at 40–50% off rather than dropping the list price. Keep it until you have 5+ reviews.
 - **Quantity:** 999, with auto-renew on. **Personalisation:** off.
 
@@ -240,9 +240,7 @@ All 10 images were rebuilt on 11 Oct 2026 from the redesigned app: **2400×1800 
 
 **Video:** Etsy has no alt-text field for videos, so nothing to add there.
 
-**Videos**
-- `video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4`: for the Etsy listing (Etsy allows 5–15 s). It's a real, fast-cut screen recording of every section of the app.
-- `video/Mediterranean-Meal-Planner-Feature-Tour-Full.mp4` (38 s, every feature graphic): for Pinterest idea pins, Instagram Reels and TikTok. Etsy won't accept it, because it's longer than 15 s.
+**Video spec used** (Etsy Help page could not be fetched on 11 Oct; these are the commonly cited Etsy limits — check the upload screen): 5–15 s, MP4/MOV, up to 100 MB, 1080p recommended, sound is removed by Etsy, so the video tells its story with on-screen badges only.
 
 ## 7. Policy & compliance
 
@@ -281,7 +279,7 @@ Questions before you buy? Send me a message. I usually reply within a day.
    - Low views → the title or tags are the problem. Adjust only those.
    - Views but few clicks → the thumbnail is the problem. Try a variant of photo 1.
    - Clicks but no sales → look at price, photos 2–4, and the description's opening lines.
-3. **Share outside Etsy:** post the full feature-tour video as a Pinterest pin and an Instagram/TikTok reel, linking to the listing. Meal-planning content does well on Pinterest, and outside traffic that converts helps your Etsy ranking.
+3. **Share outside Etsy:** post the 15 s video as a Pinterest pin and an Instagram/TikTok reel, linking to the listing. Meal-planning content does well on Pinterest, and outside traffic that converts helps your Etsy ranking.
 4. **Reviews:** turn on Etsy's automatic review request. Your first 5 reviews matter most.
 5. **Etsy Ads (optional):** a small daily budget (about €1–2) for 2–3 weeks gives Etsy early click data. Turn it off if it gets no sales after about 3 weeks.
 6. **Version updates:** bump `VERSION` in `build.py`, rebuild and re-upload. Tell buyers to **Export backup** in the old version before opening the new file, then **Restore backup**.
@@ -353,7 +351,7 @@ More planners: https://kaellabs.etsy.com
 $9.99
 
 ## Step 5 — Photos (10) + video
-Use the 10 files in `6-ETSY-LISTING/images/` in numeric order — see section 6 for each image's job and alt text. Video: re-record from the new design (5–15 s).
+Use the 10 files in `6-ETSY-LISTING/images/` in numeric order — see section 6 for each image's job and alt text. Video: `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` (rebuilt 11 Oct).
 
 ## Step 6 — Section: Meal Planners
 
