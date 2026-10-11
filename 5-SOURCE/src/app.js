@@ -230,18 +230,18 @@ function blankState(){
 function sampleState(){
  const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:''},o);
  s.recipes=[
-  R({title:'Chicken Stir Fry',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan',
-   ingredients:['2 chicken breasts, sliced','1 red pepper','1 carrot','1 head broccoli','2 garlic cloves','1 tbsp soy sauce','1 tbsp extra virgin olive oil','cooked rice, to serve'],
-   method:'Heat the olive oil in a wok and brown the chicken for 5 minutes.\nAdd the garlic, carrot and pepper and stir-fry for 4 minutes.\nAdd the broccoli and soy sauce with a splash of water; cook 3 minutes more.\nServe over rice.'}),
+  R({title:'Lemon Herb Chicken',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan',
+   ingredients:['2 chicken breasts, sliced','1 lemon','2 garlic cloves','1 tsp dried oregano','1 red pepper','1 zucchini','200 g green beans','2 tbsp extra virgin olive oil','150 g bulgur wheat, to serve'],
+   method:'Toss the chicken with olive oil, garlic, oregano and lemon zest.\nSear in a large pan for 6 minutes until golden.\nAdd the pepper, zucchini and green beans and cook 5 minutes more.\nSqueeze over the lemon and serve with bulgur.'}),
   R({title:'Mediterranean Bowl',category:'Lunch',time:25,servings:2,calories:510,art:'salad',fav:true,groups:['poultry','grains','veg','oliveoil'],tags:'popular, meal prep',
    ingredients:['150 g quinoa','2 chicken breasts','1 cucumber','200 g cherry tomatoes','handful of olives','60 g feta','1 lemon','2 tbsp extra virgin olive oil'],
    method:'Cook the quinoa and grill the seasoned chicken.\nChop the cucumber and tomatoes.\nBuild the bowls, top with olives and feta, and dress with lemon and olive oil.'}),
-  R({title:'Banana Pancakes',category:'Breakfast',time:20,servings:2,calories:430,art:'pancakes',fav:true,groups:['grains','fruit','dairy'],tags:'weekend, popular',
-   ingredients:['2 ripe bananas','2 eggs','100 g wholemeal flour','150 ml milk','1 tsp baking powder','1 tsp honey','handful of berries'],
-   method:'Mash the bananas and whisk with the eggs and milk.\nFold in the flour and baking powder until just combined.\nCook ladlefuls in a lightly oiled pan for 2 minutes per side.\nServe with berries and honey.'}),
-  R({title:'Creamy Garlic Pasta',category:'Dinner',time:25,servings:4,calories:560,art:'pasta',fav:true,groups:['grains','dairy','veg'],tags:'family, comfort food',
-   ingredients:['320 g wholewheat pasta','200 g Greek yogurt','3 garlic cloves','100 g spinach','50 g parmesan','1 lemon','1 tbsp extra virgin olive oil'],
-   method:'Cook the pasta until al dente; keep a cup of cooking water.\nSoften the garlic in olive oil, add the spinach and wilt.\nStir the yogurt with a splash of pasta water and lemon zest, toss through the pasta off the heat.\nFinish with parmesan and black pepper.'}),
+  R({title:'Greek Yogurt Pancakes',category:'Breakfast',time:20,servings:2,calories:420,art:'pancakes',fav:true,groups:['grains','fruit','dairy','nuts'],tags:'weekend, popular',
+   ingredients:['150 g Greek yogurt','2 eggs','100 g wholemeal flour','1 tsp baking powder','1 tbsp honey','handful of berries','1 tbsp chopped walnuts'],
+   method:'Whisk the yogurt and eggs, then fold in the flour and baking powder.\nCook ladlefuls in a pan with a little olive oil, 2 minutes per side.\nServe with berries, walnuts and a drizzle of honey.'}),
+  R({title:'Tomato & Olive Pasta',category:'Dinner',time:25,servings:4,calories:540,art:'pasta',fav:true,groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
+   ingredients:['320 g wholewheat pasta','400 g cherry tomatoes','handful of Kalamata olives','3 garlic cloves','1 tbsp capers','handful of basil','2 tbsp extra virgin olive oil','50 g parmesan'],
+   method:'Cook the pasta until al dente.\nSoften the garlic in olive oil, add the tomatoes and cook until they burst.\nStir in the olives and capers, then toss through the pasta with basil.\nFinish with parmesan.'}),
   R({title:'Grilled Chicken Bowl',category:'Lunch',time:30,servings:2,calories:520,art:'chickensalad',groups:['poultry','grains','veg','oliveoil'],tags:'high protein, meal prep',
    ingredients:['2 chicken breasts','150 g quinoa','1 avocado','200 g cherry tomatoes','handful of spinach','1 lemon','2 tbsp extra virgin olive oil','1 tsp sesame seeds'],
    method:'Cook the quinoa according to the pack.\nGrill the seasoned chicken for 6 minutes per side, rest, then slice.\nBuild the bowls with quinoa, spinach, tomatoes and avocado, top with the chicken.\nDress with lemon and olive oil, finish with sesame seeds.'}),
@@ -269,7 +269,7 @@ function sampleState(){
  ];
  const rb=t=>s.recipes.find(r=>r.title===t);
  const ws=weekStartOf(today(),s.settings.weekStart),t=today();
- const wk=[['Lunch','Grilled Chicken Bowl'],['Dinner','Veggie Pasta'],['Dinner','Salmon & Quinoa'],['Lunch','Chicken Stir Fry'],['Lunch','Mediterranean Wrap'],['Dinner','Lentil Soup'],['Breakfast','Banana Pancakes']];
+ const wk=[['Lunch','Grilled Chicken Bowl'],['Dinner','Veggie Pasta'],['Dinner','Salmon & Quinoa'],['Dinner','Lemon Herb Chicken'],['Lunch','Mediterranean Wrap'],['Dinner','Lentil Soup'],['Breakfast','Greek Yogurt Pancakes']];
  const ti=(parse(t).getDay()-s.settings.weekStart+7)%7;
  const salm=wk.splice(2,1)[0];wk.splice(ti,0,salm);
  const plan2=wk.map(([sl,ti2],i)=>[i,sl,ti2]).filter(x=>x[0]!==ti).concat([[ti,'Breakfast','Overnight Oats'],[ti,'Lunch','Grilled Chicken Salad'],[ti,'Dinner','Salmon & Quinoa'],[ti,'Snack','Greek Yogurt & Berries']]);

@@ -8,10 +8,10 @@
 | File name | Used for (current demo recipes) |
 |---|---|
 | `herobowl.jpg` | Home hero photo (in use) |
-| `stirfry.jpg` | Chicken Stir Fry |
+| `stirfry.jpg` | Lemon Herb Chicken |
 | `salad.jpg` | Mediterranean Bowl, Mediterranean Wrap |
-| `pancakes.jpg` | Banana Pancakes |
-| `pasta.jpg` | Creamy Garlic Pasta, Veggie Pasta |
+| `pancakes.jpg` | Greek Yogurt Pancakes |
+| `pasta.jpg` | Tomato & Olive Pasta, Veggie Pasta |
 | `chickensalad.jpg` | Grilled Chicken Bowl, Grilled Chicken Salad |
 | `salmon.jpg` | Salmon & Quinoa (a version is in `_unused/`) |
 | `lentil.jpg` | Lentil Soup |

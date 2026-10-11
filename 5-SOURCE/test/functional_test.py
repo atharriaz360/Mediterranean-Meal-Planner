@@ -39,7 +39,7 @@ async def main():
         ok('nav shopping badge = to buy',v['navShop']==str(v['toBuy']),v['navShop']);ok('quick action "12 to buy"',v['qaShop']==f"{v['toBuy']} to buy",v['qaShop'])
         ok('bell = due tasks',v['bell']==str(v['dueTasks']),f"{v['bell']} vs {v['dueTasks']}");ok('prep badge = open tasks',v['prepNav']==str(v['openTasks']))
         ok('7 day cards',v['strip']==7);ok('today trio',v['tri']==['Overnight Oats','Grilled Chicken Salad','Salmon & Quinoa'],v['tri'])
-        ok('popular',v['pop']==['Chicken Stir Fry','Mediterranean Bowl','Banana Pancakes','Creamy Garlic Pasta'],v['pop'])
+        ok('popular',v['pop']==['Lemon Herb Chicken','Mediterranean Bowl','Greek Yogurt Pancakes','Tomato & Olive Pasta'],v['pop'])
         ok('pantry rail',v['pantry']==['Rice','Pasta','Olive Oil','Tomatoes','Eggs'],v['pantry']);ok('6 shopping rows on home',v['shopRows']==6)
         # all pages render + no empty page
         for n in ['home','today','week','recipes','shopping','pantry','balance','prep','goals','calendar','journal','settings']:
@@ -51,9 +51,9 @@ async def main():
         await pg.click('.hm-main .chk >> nth=0');await pg.wait_for_timeout(200)
         await pg.click('.dcard >> nth=1');await pg.wait_for_timeout(300);ok('day card opens day view',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()")
         await pg.click('.pcard >> nth=0');await pg.wait_for_timeout(300);ok('today card opens meal',await E("document.querySelector('#fTitle')?.value==='Overnight Oats'"));await E("closeModal()");await pg.wait_for_timeout(200)
-        await pg.click('.rail .pr-b >> nth=0');await pg.wait_for_timeout(300);ok('popular opens recipe',await E("document.querySelector('#modal').innerText.includes('Chicken Stir Fry')"));await E("closeModal()");await pg.wait_for_timeout(200)
-        await pg.click('.rail .heart >> nth=3');await pg.wait_for_timeout(200);ok('heart unfavourites',await E("!state.recipes.find(r=>r.title==='Creamy Garlic Pasta').fav"));
-        await E("state.recipes.find(r=>r.title==='Creamy Garlic Pasta').fav=true;commit()")
+        await pg.click('.rail .pr-b >> nth=0');await pg.wait_for_timeout(300);ok('popular opens recipe',await E("document.querySelector('#modal').innerText.includes('Lemon Herb Chicken')"));await E("closeModal()");await pg.wait_for_timeout(200)
+        await pg.click('.rail .heart >> nth=3');await pg.wait_for_timeout(200);ok('heart unfavourites',await E("!state.recipes.find(r=>r.title==='Tomato & Olive Pasta').fav"));
+        await E("state.recipes.find(r=>r.title==='Tomato & Olive Pasta').fav=true;commit()")
         for i,(sel,page) in enumerate([('.promo.p1','recipes'),('.promo.p2','shopping'),('.promo.p3','pantry')]):
             await E("go('home')");await pg.click(sel);await pg.wait_for_timeout(150);ok(f'promo → {page}',await E("state.ui.page")==page)
         await E("go('home')");await pg.click('.qa-b >> nth=0');await pg.wait_for_timeout(300);ok('Quick action Plan Meals opens meal form',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()");await pg.wait_for_timeout(200)
