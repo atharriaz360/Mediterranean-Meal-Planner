@@ -11,14 +11,18 @@ Current version only. Everything below matches the current build (forest green �
 | Online app (buyers) | `2-HOST-ONLINE/` → Vercel | Redeploy with the new build. This link is printed in the Start Here PDF |
 | Live demo (shoppers) | `3-HOST-DEMO/` → its own Vercel project | Nothing is saved; "Get it on Etsy" button. Optional: add its link to the description once live |
 
-## 1. Title (109/140, 15 words)
+## 1. Title (99/140, 13 words — passes Etsy's "14 words or less" check)
 ```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Healthy Eating Planner, Works Offline
+Mediterranean Meal Planner App, Weekly Menu, Recipe Organizer, Auto Grocery List, Works Offline
+```
+*Alternative (11 words, 87 chars):*
+```
+Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Works Offline
 ```
 
-## 2. Tags (13/13, each ≤ 20 chars)
+## 2. Tags (13/13, each ≤ 20 chars, zero wasted slots)
 ```
-mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, family meal plan, recipe book app, meal plan template, menu planning app, offline meal app
+mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, pantry tracker, recipe book app, meal plan template, family meal plan, offline meal app
 ```
 
 ## 3. Description (paste as-is)
