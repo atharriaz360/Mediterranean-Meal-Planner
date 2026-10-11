@@ -6,7 +6,7 @@ Current version only. Everything below matches the current build (forest green �
 | Item | File | Notes |
 |---|---|---|
 | Digital files | `1-SELL-THIS/Mediterranean-Meal-Planner-Digital-Download.zip` + `1-SELL-THIS/Mediterranean-Meal-Planner-Start-Here.pdf` | The zip holds the app (one HTML file), the PDF and `LICENSE.txt`; it is rebuilt automatically by `python3 build.py --sync` |
-| Photos (10) | `6-ETSY-LISTING/images/01-hero.jpg` … `10-how-it-works.jpg` | 3000×2250, 4:3, JPG, 300–570 KB each. Order + alt text in section 6 |
+| Photos (10) | `6-ETSY-LISTING/images/01-hero.jpg` … `10-how-it-works.jpg` | 3000×2250, 4:3, JPG, 400–590 KB each. Order + alt text in section 6 |
 | Video | `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` | 15.0 s, 1920×1080, no audio. Details in section 7 |
 | Online app (buyers) | `2-HOST-ONLINE/` → Vercel | Redeploy with the new build. This link is printed in the Start Here PDF |
 | Live demo (shoppers) | `3-HOST-DEMO/` → its own Vercel project | Nothing is saved; "Get it on Etsy" button. Optional: add its link to the description once live |
@@ -86,15 +86,15 @@ Open the Start Here PDF first. It shows how to open your app on computer and pho
 ```
 
 ## 6. Photos
-All 10 are real screenshots of the current build with sample data, in laptop/iPhone frames. **3000×2250 px (4:3 landscape), JPG, 300–570 KB each.**
+All 10 are real screenshots of the current build with sample data, in laptop/iPhone frames. **3000×2250 px (4:3 landscape), JPG, 400–590 KB each.**
 
 Etsy rules these follow (Etsy Help + Seller Handbook, checked 11 Oct 2026):
 - at least 2000 px wide and tall; first photo landscape or square; same shape for every photo;
 - enough border to crop — the hero's devices sit inside the centre 4:5 area Etsy search shows;
-- Seller Handbook *suggests* avoiding text overlays on the first thumbnail for search; the hero keeps text minimal (title, one feature line, 3 chips) and is mostly the real app. Image 2 is the text-free version — swap it to first place if Etsy Stats show low clicks after 14 days;
+- Seller Handbook *suggests* avoiding text overlays on the first thumbnail for search (advice, not a rule). The hero keeps text minimal: title, one benefit line, one badge and a small footer; the real app fills most of the frame.
 - photos show the real item; no stars, reviews or "bestseller" badges; no health claims.
 
-Offline and phone/tablet/computer claims are shown on the hero, image 4, image 10 and the video — confirm them on a real iPhone (Safari) and Android (Chrome) after redeploying `2-HOST-ONLINE`: Add to Home Screen, airplane mode, reopen, add a meal.
+Offline and phone/tablet/computer claims appear on image 4, image 10, the video end card and the description (not on the hero) — confirm them on a real iPhone (Safari) and Android (Chrome) after redeploying `2-HOST-ONLINE`: Add to Home Screen, airplane mode, reopen, add a meal.
 
 | # | File | Job |
 |---|------|-----|
@@ -145,14 +145,6 @@ Offline and phone/tablet/computer claims are shown on the hero, image 4, image 1
 Private, offline planner apps for real life
 ```
 
-**About: story**
-```
-Hi, I'm Athar, a software engineer and UI designer. I build calm, beautiful planner apps you download once and keep: meal planning, family organising, ADHD-friendly planning, wedding planning and more.
-
-Every planner works offline in your browser on phone, tablet or computer. There's no account and no subscription, and your data stays on your own device.
-
-Questions before you buy? Send me a message. I usually reply within a day.
-```
 
 **FAQs (replace all the current ones)**
 - *How do I get my files?* Right after payment, go to You → Purchases and reviews → Download files.
