@@ -98,7 +98,7 @@ Only verified claims are used. Not claimed until tested on real devices: offline
 
 | # | File | Job |
 |---|------|-----|
-| 1 | `01-hero.jpg` | Thumbnail: "The Ultimate Meal Planner", strip weekly plan · recipe book · auto grocery list, the real dashboard on a large laptop with a small iPhone, chips instant download · no subscription · no account. |
+| 1 | `01-hero.jpg` | Thumbnail: small italic "Mediterranean" over big "Meal Planner", strip weekly menu · recipes · auto grocery list, laptop showing the real Home dashboard + phone showing the Week Plan, chips instant download · no subscription · no account. |
 | 2 | `02-week-plan.jpg` | “What’s for dinner?” at 6 pm → know every meal before the week starts. |
 | 3 | `03-plan-to-list.jpg` | Handwritten lists → the grocery list writes itself (same items merged, by aisle, skips pantry). |
 | 4 | `04-on-your-phone.jpg` | No list at the shop → your whole plan in your pocket. |
@@ -112,7 +112,7 @@ Only verified claims are used. Not claimed until tested on real devices: offline
 ### Alt text (Etsy: Photos → hover the photo → "Add alt text")
 | # | Alt text |
 |---|----------|
-| 1 | The Ultimate Meal Planner digital app on a laptop and an iPhone showing the home dashboard with this week's meals, with weekly plan, recipe book and automatic grocery list, instant download, no subscription, no account |
+| 1 | Mediterranean Meal Planner digital app: home dashboard with this week's meals on a laptop and the weekly meal plan on an iPhone, with weekly menu, recipes and automatic grocery list, instant download, no subscription, no account |
 | 2 | Weekly meal planner on a laptop with breakfast, lunch, dinner and snacks for each day, headline Know every meal before the week starts |
 | 3 | Two iPhone screens: the weekly meal plan and the grocery list sorted by aisle, headline Your grocery list writes itself |
 | 4 | Three iPhone screens of the meal planner: today's meals, the home dashboard and the shopping list, headline Your whole plan, in your pocket |
