@@ -13,7 +13,7 @@ Current version only. Everything below matches the current build (forest green �
 
 ## 1. Title (109/140, 15 words)
 ```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Healthy Eat Planner
+Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Healthy Eating Planner, Works Offline
 ```
 
 ## 2. Tags (13/13, each ≤ 20 chars)
@@ -98,7 +98,7 @@ Offline and phone/tablet/computer claims are shown on the hero, image 4, image 1
 
 | # | File | Job |
 |---|------|-----|
-| 1 | `01-hero.jpg` | Thumbnail: small italic "Mediterranean" over big "Meal Planner", strip weekly menu · recipes · auto grocery list, laptop showing the real Home dashboard + phone showing the Week Plan, chips instant download · no subscription · works offline · phone + computer. |
+| 1 | `01-hero.jpg` | Thumbnail: "Mediterranean Meal Planner" + "Plan meals. Simplify shopping.", laptop with the real Home dashboard, phone with the real grocery list, the app's own bowl photo at the corner, one main badge "No subscription · Buy once", small footer weekly plan · recipes · auto grocery list. |
 | 2 | `02-week-plan.jpg` | “What’s for dinner?” at 6 pm → know every meal before the week starts. |
 | 3 | `03-plan-to-list.jpg` | Handwritten lists → the grocery list writes itself (same items merged, by aisle, skips pantry). |
 | 4 | `04-on-your-phone.jpg` | No list at the shop → your whole plan in your pocket. |
@@ -112,7 +112,7 @@ Offline and phone/tablet/computer claims are shown on the hero, image 4, image 1
 ### Alt text (Etsy: Photos → hover the photo → "Add alt text")
 | # | Alt text |
 |---|----------|
-| 1 | Mediterranean Meal Planner digital app: home dashboard with this week's meals on a laptop and the weekly meal plan on an iPhone, with weekly menu, recipes and automatic grocery list, instant download, no subscription, works offline, phone and computer |
+| 1 | Mediterranean Meal Planner digital app: home dashboard on a laptop and the grocery list on an iPhone, headline Plan meals, simplify shopping, no subscription, weekly plan, recipes and automatic grocery list |
 | 2 | Weekly meal planner on a laptop with breakfast, lunch, dinner and snacks for each day, headline Know every meal before the week starts |
 | 3 | Two iPhone screens: the weekly meal plan and the grocery list sorted by aisle, headline Your grocery list writes itself |
 | 4 | Three iPhone screens of the meal planner: today's meals, the home dashboard and the shopping list, headline Your whole plan, in your pocket, works offline on phone, tablet and computer |
@@ -126,7 +126,7 @@ Offline and phone/tablet/computer claims are shown on the hero, image 4, image 1
 ## 7. Video
 - File: `6-ETSY-LISTING/video/Mediterranean-Meal-Planner-Etsy-Video-15s.mp4` — 15.0 s, 1920×1080 (16:9), MP4/H.264, 30 fps, no audio track.
 - Real app interactions played at 1.5× speed; no browser bar, no private link.
-- Scenes (one benefit badge each): dashboard (*Your whole week at a glance*) → Week Plan, one tap (*One tap builds your grocery list*) → shopping list by aisle, 3 items ticked (*Sorted by aisle. Tick off as you shop*) → Lentil Soup recipe opens (*Every recipe in one place*) → pantry use-by highlight (*Use what you have. Waste less*) → dark mode (*Private. No account. No subscription*) → end card (Mediterranean Meal Planner · no subscription · works offline · phone + computer).
+- Scenes (one benefit badge each): dashboard (*Your whole week at a glance*) → Week Plan, one tap (*One tap builds your grocery list*) → shopping list by aisle, 3 items ticked (*Sorted by aisle. Tick off as you shop*) → Lentil Soup recipe opens (*Every recipe in one place*) → pantry use-by highlight (*Use what you have. Waste less*) → dark mode (*Private. No account. No subscription*) → end card (Mediterranean Meal Planner · Plan meals. Simplify shopping. · no subscription · works offline · phone + computer).
 - **Video spec used** (Etsy Help page could not be fetched on 11 Oct; these are the commonly cited Etsy limits — check the upload screen): 5–15 s, MP4/MOV, up to 100 MB, 1080p recommended, sound is removed by Etsy, so the video tells its story with on-screen badges only.
 - Etsy has no alt-text field for videos.
 
@@ -187,4 +187,5 @@ Questions before you buy? Send me a message. I usually reply within a day.
 - [ ] `python3 test/functional_test.py` and `python3 test/robustness_test.py` pass after the final build
 
 ## Change log
+- 2026-10-11: sample recipes made fully Mediterranean (Lemon Herb Chicken, Greek Yogurt Pancakes, Tomato & Olive Pasta); new hero.
 - 2026-10-11: redesign (green · gold · ivory); hero + 9 supporting photos at 3000×2250; 15 s video; shorter description; zip, PDF and licence rebuilt.
