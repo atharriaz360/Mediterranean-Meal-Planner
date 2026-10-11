@@ -108,7 +108,7 @@ async def main():
         pd.on('pageerror',lambda e:errs2.append(str(e)))
         await pd.goto(F+'demo/index.html');await pd.wait_for_timeout(800)
         ok('demo: no onboarding popup',not await pd.evaluate("document.querySelector('#overlay').classList.contains('open')"))
-        ok('demo: bar visible',await pd.evaluate("!document.querySelector('#demoBar').hidden"))
+        ok('demo: no demo bar on screen',await pd.evaluate("document.querySelector('#demoBar').hidden"))
         ok('demo: same rings as full app',await pd.evaluate("[...document.querySelectorAll('.rg b')].map(e=>e.innerText)")==v['rings'])
         await pd.evaluate("go('settings')");await pd.click('[data-action=eraseAll]');await pd.wait_for_timeout(300)
         ok('demo: erase asks to confirm',await pd.evaluate("document.querySelector('#overlay').classList.contains('open')"))

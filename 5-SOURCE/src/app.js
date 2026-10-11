@@ -463,7 +463,7 @@ mq.addEventListener?.('change',()=>{if(state.settings.theme==='system'){applyThe
 /* ---------------- banners ---------------- */
 function renderBanners(){
  const b=[];const t=today();
- if(DEMO){const b2=$('#demoBar');b2.hidden=false;b2.innerHTML=`<span>Live demo · <b>Mediterranean Meal Planner</b> · changes aren’t saved</span>${ETSY_URL.startsWith('https://www.etsy.com/listing/')?`<a class="btn gold sm" href="${esc(ETSY_URL)}" target="_blank" rel="noopener">Get it on Etsy</a>`:''}`;$('#banners').innerHTML='';return}
+ if(DEMO){$('#banners').innerHTML='';return}
  if(Store.temporary)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Temporary planner — nothing is being saved</b>Your saved plans couldn’t be opened just now and are untouched. Reload the page to try again.</div><button class="btn sm primary" onclick="location.reload()">Reload</button></div>`);
  else if(Store.mode==='memory')b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>This browser can’t save your planner</b>Changes will be lost when you close this tab. Open the file in Chrome, Safari, Edge or Firefox — not a file preview — or use your online link.</div></div>`);
  else if(!lastSaveOk)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Your last change wasn’t saved</b>Storage may be full. Export a backup now, then remove a few large photos.</div><button class="btn sm primary" data-action="exportBackup">Export backup</button></div>`);
