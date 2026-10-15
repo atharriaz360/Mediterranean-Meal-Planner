@@ -15,15 +15,13 @@ Current version only. Everything below matches the current build (forest green �
 ```
 Mediterranean Meal Planner App, Weekly Menu, Recipe Organizer, Auto Grocery List, Works Offline
 ```
-*Alternative (11 words, 87 chars):*
-```
-Mediterranean Meal Planner App, Weekly Menu, Recipe Book, Grocery List, Works Offline
-```
 
-## 2. Tags (13/13, each ≤ 20 chars, zero wasted slots)
+## 2. Tags (13/13, each ≤ 20 chars, none shared with any other shop kit; checked 2026-10-16)
 ```
-mediterranean diet, weekly menu planner, grocery list app, recipe organizer, meal prep planner, healthy eating plan, digital meal plan, diet planner, pantry tracker, recipe book app, meal plan template, family meal plan, offline meal app
+mediterranean diet, weekly menu planner, grocery list app, mediterranean menu, greek meal planner, healthy eating plan, digital meal plan, recipe collection, pantry tracker, recipe book app, meal plan template, weekly dinner plan, offline meal app
 ```
+Swapped out 4 tags that other kits also use: recipe organizer, meal prep planner, family meal plan (Weekly Meal Planner kit) and diet planner (LuxeForm kit).
+
 
 ## 3. Description (paste as-is)
 Short and scannable. The first 2 lines show in search previews and Google. Every feature line was checked against the app.
@@ -44,7 +42,7 @@ Plan the week, keep your recipes, shop with one list sorted by aisle. No account
 
 ━━ HOW IT WORKS ━━
 1. Buy and download instantly
-2. Computer: open the file in Chrome, Safari, Edge or Firefox
+2. Computer: open the file in your browser (works in Chrome, Safari, Edge and Firefox)
 3. Phone: open your link from the Start Here guide and tap "Add to Home Screen"
 4. Plan your week. Works offline
 
@@ -55,11 +53,13 @@ Plan the week, keep your recipes, shop with one list sorted by aisle. No account
 
 ━━ GOOD TO KNOW ━━
 • Digital download. Nothing is shipped
-• Needs a modern browser
 • Data saves in your browser. Use Backup often; clearing browser data can erase it
 • No automatic sync between devices (move data with Backup → Restore)
 • Personal use only. Not medical or diet advice
-• Questions? Message me, I reply fast
+• Product name: Mediterranean Meal Planner (by KaelLabs)
+
+━━ SUPPORT ━━
+Questions or download trouble? Message me on Etsy. I reply as soon as possible.
 
 Designed and built by me (KaelLabs). AI tools assisted with parts of the coding, images and listing copy, and the food photo on the Home screen was made with AI image tools. Every feature was reviewed and tested by hand. Photos show real app screens with example data.
 ```
@@ -183,5 +183,6 @@ Private, offline planner apps for real life
 - [ ] `python3 test/functional_test.py` and `python3 test/robustness_test.py` pass after the final build
 
 ## Change log
+- 2026-10-16: new 2-page Start Here PDF (cream and navy, hosted link and QR). Tags: 4 swapped to remove overlap with other kits. Description: browser caveat removed, SUPPORT line added, project name bullet added. Alternative title removed. Zip rebuilt.
 - 2026-10-11: sample recipes made fully Mediterranean (Lemon Herb Chicken, Greek Yogurt Pancakes, Tomato & Olive Pasta); new hero.
 - 2026-10-11: redesign (green · gold · ivory); hero + 9 supporting photos at 3000×2250; 15 s video; shorter description; zip, PDF and licence rebuilt.
