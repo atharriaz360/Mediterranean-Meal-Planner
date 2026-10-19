@@ -16,7 +16,7 @@ Current version only. Everything below matches the current build (forest green �
 Mediterranean Meal Planner App, Weekly Menu, Recipe Organizer, Auto Grocery List, Works Offline
 ```
 
-## 2. Tags (13/13, each ≤ 20 chars, none shared with any other shop kit; checked 2026-10-16)
+## 2. Tags (13/13, each ≤ 20 chars, none shared with any other KaelLabs kit; checked 2026-10-16)
 ```
 mediterranean diet, weekly menu planner, grocery list app, mediterranean menu, greek meal planner, healthy eating plan, digital meal plan, recipe collection, pantry tracker, recipe book app, meal plan template, weekly dinner plan, offline meal app
 ```
