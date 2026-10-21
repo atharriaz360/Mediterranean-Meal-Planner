@@ -1,11 +1,11 @@
-import base64, json, re, pathlib, shutil, sys
+import base64, hashlib, json, re, pathlib, shutil, sys
 ETSY_URL = 'https://www.etsy.com/listing/4581630401'  # live-demo "Get it on Etsy" button; set '' to hide
 SYNC = '--sync' in sys.argv  # copy builds into the delivery folders (1-SELL-THIS, 3-HOST-DEMO, 2-HOST-ONLINE)
 W = pathlib.Path(__file__).parent
 ICONS = (W / 'dist/icons') if (W / 'dist/icons/icon-180.png').exists() else (W / '../2-HOST-ONLINE/icons')
 VERSION = '1.0'
 b64 = lambda p: base64.b64encode((W / p).read_bytes()).decode()
-css = (W / 'src/styles.css').read_text().replace('__FRAUNCES__', b64('node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2'))
+css = (W / 'src/styles.css').read_text()
 body = (W / 'src/body.html').read_text()
 wm = json.loads((W / 'brand/wordmark-path.json').read_text())
 mark_inner = (W / 'brand/mark-inner.txt').read_text()
@@ -28,9 +28,12 @@ def page(demo=False):
     js = js_base.replace('__DEMO__', '1' if demo else '0').replace('__ETSY__', ETSY_URL if demo else '')
     title = 'Mediterranean Meal Planner · Live Demo' if demo else 'Mediterranean Meal Planner'
     return f'''<!doctype html>
-<html lang="en">
+<html lang="en" class="booting no-transition">
 <head>
 <meta charset="utf-8">
+<script>
+(()=>{{let p={{}};try{{p=JSON.parse(localStorage.getItem('mediterranean-meal-planner:appearance')||'{{}}')}}catch(e){{}}const root=document.documentElement;root.dataset.theme=p.theme==='dark'||(p.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';const accents={{forest:['#1F4A38','#163629'],midnight:['#20395C','#162944'],burgundy:['#6A2B3B','#4E1F2B']}};const a=accents[p.accent]||accents.forest;root.style.setProperty('--primary',a[0]);root.style.setProperty('--primary-deep',a[1])}})();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="Mediterranean Meal Planner is a private, offline Mediterranean meal planner: weekly meal plan, recipes, shopping list, pantry, balance tracker and more.">
@@ -45,7 +48,6 @@ def page(demo=False):
 <!--
   Mediterranean Meal Planner v{VERSION}
   Designed by KaelLabs. Licensed for personal use by the original purchaser; see LICENSE.txt.
-  Heading font: Fraunces, © The Fraunces Project Authors, SIL Open Font License 1.1.
   All illustrations and icons are original to this product.
 -->
 <style>
@@ -78,11 +80,12 @@ for f in ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png
     "icons": [{"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
               {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
               {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]}, indent=1))
+cache_version=hashlib.sha256((host / 'index.html').read_bytes()).hexdigest()[:12]
 (host / 'sw.js').write_text(f'''// Mediterranean Meal Planner offline cache v{VERSION}
-const C='mediterranean-meal-planner-v{VERSION}';const FILES=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
+const PREFIX='mediterranean-meal-planner:'+self.registration.scope+':';const C=PREFIX+'{cache_version}';const FILES=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
 self.addEventListener('install',e=>{{e.waitUntil(caches.open(C).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()))}});
-self.addEventListener('activate',e=>{{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))}});
-self.addEventListener('fetch',e=>{{if(e.request.method!=='GET')return;e.respondWith(fetch(e.request).then(r=>{{const cp=r.clone();caches.open(C).then(c=>c.put(e.request,cp));return r}}).catch(()=>caches.match(e.request).then(r=>r||caches.match('./index.html'))))}});
+self.addEventListener('activate',e=>{{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x.startsWith(PREFIX)&&x!==C).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))}});
+self.addEventListener('fetch',e=>{{if(e.request.method!=='GET'||!e.request.url.startsWith(self.registration.scope))return;e.respondWith(fetch(e.request).then(r=>{{if(r.ok){{const cp=r.clone();e.waitUntil(caches.open(C).then(c=>c.put(e.request,cp)).catch(()=>{{}}))}}return r}}).catch(()=>caches.open(C).then(async c=>(await c.match(e.request))||(e.request.mode==='navigate'?await c.match('./index.html'):null)||Response.error())))}});
 ''')
 if SYNC:
     R = W.parent

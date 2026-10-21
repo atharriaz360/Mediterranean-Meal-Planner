@@ -122,3 +122,4 @@ async def main():
     for r in R: print(('PASS ' if r[1] else 'FAIL ')+r[0]+(' :: '+str(r[2]) if not r[1] and r[2] else ''))
     print(f'{len(R)-len(bad)}/{len(R)} pass')
 asyncio.run(main())
+if any(not result[1] for result in R):raise SystemExit(1)

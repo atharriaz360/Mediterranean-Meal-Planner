@@ -26,10 +26,9 @@ async def run():
         await pi.wait_for_timeout(1000)
         print("WebKit iPhone Errors:", ei)
         
-        # 3. Print
-        await pw.pdf(path="dist/print_test.pdf", print_background=True)
-        print("PDF saved: dist/print_test.pdf")
-        
+        assert not ew and not ei, 'WebKit page errors'
+        # PDF output is covered by test_print.py; WebKit does not support page.pdf().
+
         await bw.close()
 
 asyncio.run(run())

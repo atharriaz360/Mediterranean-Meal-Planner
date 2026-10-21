@@ -7,6 +7,32 @@ const APP={name:'Mediterranean Meal Planner',version:'__VERSION__',key:'mediterr
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+/* Keep matching records and controls in place so updates preserve focus and scroll. */
+function updateHTML(root,html){
+ const active=document.activeElement,selection=active&&'selectionStart' in active?[active.selectionStart,active.selectionEnd,active.selectionDirection]:null;
+ const template=document.createElement('template');template.innerHTML=html;
+ const attrs=['data-meal','data-recipe','data-shop','data-shopedit','data-pantryedit','data-task','data-taskedit','data-goaledit','data-noteedit','data-go','data-fav','data-day'];
+ const key=node=>{if(node.nodeType!==1)return '';if(node.id)return 'id:'+node.id;for(const attr of attrs){if(node.hasAttribute(attr))return attr+':'+node.getAttribute(attr)}const child=node.matches('.li,.rwrap,.card')?node.querySelector(attrs.map(a=>'['+a+']').join(',')):null;return child?node.tagName+':'+attrs.filter(a=>child.hasAttribute(a)).map(a=>a+':'+child.getAttribute(a)).join('|'):''};
+ const same=(a,b)=>a.nodeType===b.nodeType&&a.nodeName===b.nodeName;
+ const sync=(target,source)=>{
+  if(target.nodeType!==1){if(target.nodeValue!==source.nodeValue)target.nodeValue=source.nodeValue;return}
+  const focused=target===document.activeElement;
+  for(const attr of [...target.attributes])if(!source.hasAttribute(attr.name))target.removeAttribute(attr.name);
+  for(const attr of source.attributes)if(target.getAttribute(attr.name)!==attr.value)target.setAttribute(attr.name,attr.value);
+  children(target,source);
+  if(target instanceof HTMLInputElement){if(target.type!=='file'&&!focused&&target.value!==source.value)target.value=source.value;if(target.checked!==source.checked)target.checked=source.checked}
+  if((target instanceof HTMLTextAreaElement||target instanceof HTMLSelectElement)&&!focused&&target.value!==source.value)target.value=source.value;
+ };
+ const children=(target,source)=>{
+  const old=[...target.childNodes],used=new Set(),keyed=new Map(old.map(n=>[key(n),n]).filter(([k])=>k));let cursor=target.firstChild;
+  for(const fresh of [...source.childNodes]){const k=key(fresh);let node=k?keyed.get(k):old.find(n=>!used.has(n)&&!key(n)&&same(n,fresh));if(node&&(!same(node,fresh)||used.has(node)))node=null;
+   if(node){used.add(node);if(node!==cursor)target.insertBefore(node,cursor);sync(node,fresh)}else{node=fresh.cloneNode(true);target.insertBefore(node,cursor)}cursor=node.nextSibling;
+  }
+  for(const node of old)if(!used.has(node))node.remove();
+ };
+ children(root,template.content);
+ if(active?.isConnected&&document.activeElement!==active){active.focus({preventScroll:true});if(selection&&selection[0]!==null)active.setSelectionRange(...selection)}
+}
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const pad=n=>String(n).padStart(2,'0');
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
@@ -168,11 +194,11 @@ function mealImg(m){const r=m.recipeId&&state.recipes.find(x=>x.id===m.recipeId)
 /* ---------------- storage: IndexedDB → localStorage → memory ---------------- */
 const DATA_FLAG='mediterranean-meal-planner:has-idb-data';
 const Store={
- mode:'memory',db:null,
+ mode:'memory',db:null,revision:0,conflict:false,
  async init(){
   try{
    if(!('indexedDB' in window))throw 0;
-   const open=()=>new Promise((res,rej)=>{const t=setTimeout(()=>rej('timeout'),4000);const q=indexedDB.open('mediterranean-meal-planner-planner',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{clearTimeout(t);res(q.result)};q.onerror=()=>{clearTimeout(t);rej(q.error)};q.onblocked=()=>{clearTimeout(t);rej('blocked')}});
+   const open=()=>new Promise((res,rej)=>{let settled=false;const fail=e=>{if(settled)return;settled=true;clearTimeout(t);rej(e)};const t=setTimeout(()=>fail(new Error('timeout')),4000);const q=indexedDB.open('mediterranean-meal-planner-planner',1);q.onupgradeneeded=()=>{if(!q.result.objectStoreNames.contains('kv'))q.result.createObjectStore('kv')};q.onsuccess=()=>{if(settled){q.result.close();return}settled=true;clearTimeout(t);q.result.onversionchange=()=>{q.result.close();this.conflict=true;if(state){lastSaveOk=false;renderBanners();setSaveState('bad','Reload required')}};res(q.result)};q.onerror=()=>fail(q.error);q.onblocked=()=>fail(new Error('blocked'))});
    try{this.db=await open()}catch(e){await new Promise(r=>setTimeout(r,400));this.db=await open()}
    await this.idbSet('__probe',1);this.mode='idb';return;
   }catch(e){this.db=null}
@@ -180,16 +206,24 @@ const Store={
   if(hadIdb){this.mode='unavailable';return}
   try{localStorage.setItem('__olv_probe','1');localStorage.removeItem('__olv_probe');this.mode='local'}catch(e){this.mode='memory'}
  },
- idbSet(k,v){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readwrite');tx.objectStore('kv').put(v,k);tx.oncomplete=()=>{if(k==='state'){try{localStorage.setItem(DATA_FLAG,'1')}catch(e){}}res(true)};tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error||new Error('aborted'))})},
+ idbSet(k,v){return new Promise((res,rej)=>{
+  const tx=this.db.transaction('kv','readwrite'),store=tx.objectStore('kv');let conflict=false,next=this.revision;
+  if(k==='state'){
+   const q=store.get(k);q.onsuccess=()=>{if((q.result?._storageRevision||0)!==this.revision){conflict=true;this.conflict=true;tx.abort();return}next=this.revision+1;store.put({...v,_storageRevision:next},k)};
+  }else store.put(v,k);
+  tx.oncomplete=()=>{if(k==='state'){this.revision=next;try{localStorage.setItem(DATA_FLAG,'1')}catch(e){}}res(true)};
+  tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(conflict?new Error('Planner changed in another tab. Reload before saving.'):tx.error||new Error('aborted'));
+ })},
  idbGet(k){return new Promise((res,rej)=>{const tx=this.db.transaction('kv','readonly');const q=tx.objectStore('kv').get(k);let v;q.onsuccess=()=>{v=q.result};tx.oncomplete=()=>res(v);tx.onerror=()=>rej(tx.error||q.error);tx.onabort=()=>rej(tx.error||new Error('aborted'))})},
  async get(k){
-  if(this.mode==='idb'){const v=await this.idbGet(k);if(v!==undefined)return v;}
-  try{const raw=localStorage.getItem('mediterranean-meal-planner:'+k);if(raw)return JSON.parse(raw)}catch(e){}
+  if(this.mode==='idb'){const v=await this.idbGet(k);if(v!==undefined){if(k==='state')this.revision=v?._storageRevision||0;return v;}}
+  const raw=localStorage.getItem('mediterranean-meal-planner:'+k);if(raw){const value=JSON.parse(raw);if(k==='state'&&this.mode==='local')this.revision=value?._storageRevision||0;return value}
   return undefined;
  },
  async set(k,v){
+  if(this.conflict)throw new Error('Reload required before saving');
   if(this.mode==='idb'){await this.idbSet(k,v);return true}
-  if(this.mode==='local'){localStorage.setItem('mediterranean-meal-planner:'+k,JSON.stringify(v));return true}
+  if(this.mode==='local'){const key='mediterranean-meal-planner:'+k;if(k==='state'){const current=JSON.parse(localStorage.getItem(key)||'null');if((current?._storageRevision||0)!==this.revision){this.conflict=true;throw new Error('Planner changed in another tab')}const next=this.revision+1;localStorage.setItem(key,JSON.stringify({...v,_storageRevision:next}));this.revision=next}else localStorage.setItem(key,JSON.stringify(v));return true}
   return false;
  }
 };
@@ -296,11 +330,11 @@ const numOr=(v,min,max)=>{if(v===''||v==null)return '';const n=+v;return Number.
 const oneOf=(v,list,d)=>list.includes(v)?v:d;
 const obj=v=>v&&typeof v==='object'&&!Array.isArray(v)?v:{};
 const arr=v=>Array.isArray(v)?v:[];
-const groupsOf=v=>[...new Set(arr(v).filter(k=>G[k]))];
+const groupsOf=v=>[...new Set(arr(v).filter(k=>Object.hasOwnProperty.call(G,k)))];
 /* Every record that enters state passes through here: ids, enums, dates and image data are whitelisted, so a crafted backup cannot inject markup or break views. */
 function normalize(x){
  if(!x||typeof x!=='object'||Array.isArray(x))throw new Error('This file isn’t a Mediterranean Meal Planner backup.');
- const b=blankState(),P=obj(x.profile),S=obj(x.settings),U=obj(x.ui),seen=new Set(),idMap={};
+ const b=blankState(),P=obj(x.profile),S=obj(x.settings),U=obj(x.ui),seen=new Set(),idMap=Object.create(null);
  const cid=(v,map)=>{let id=typeof v==='string'&&ID_RE.test(v)&&!seen.has(v)?v:uid();while(seen.has(id))id=uid();seen.add(id);if(map&&typeof v==='string')map[v]=id;return id};
  const o=b;
  o.createdAt=typeof x.createdAt==='string'&&!isNaN(Date.parse(x.createdAt))?x.createdAt:b.createdAt;
@@ -314,7 +348,7 @@ function normalize(x){
  o.recipes=arr(x.recipes).filter(r=>r&&typeof r==='object').map(r=>({id:cid(r.id,idMap),title:str(r.title,160).trim()||'Recipe',category:oneOf(r.category,RECIPE_CATS,'Dinner'),
   time:numOr(r.time===''?'':parseInt(r.time),0,1440),servings:numOr(r.servings===''?'':parseInt(r.servings),1,100),calories:numOr(r.calories,0,10000),groups:groupsOf(r.groups),
   tags:str(r.tags,300),ingredients:(Array.isArray(r.ingredients)?r.ingredients:String(r.ingredients||'').split('\n')).map(v=>str(v,300).trim()).filter(Boolean).slice(0,200),
-  method:str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&ART[r.art]?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
+  method:str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&Object.hasOwnProperty.call(ART,r.art)?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
  o.meals=arr(x.meals).filter(m=>m&&typeof m==='object'&&isDate(m.date)).map(m=>({id:cid(m.id),date:m.date,slot:oneOf(m.slot,SLOTS,'Dinner'),title:str(m.title,160).trim()||'Meal',
   recipeId:typeof m.recipeId==='string'&&idMap[m.recipeId]?idMap[m.recipeId]:null,calories:numOr(m.calories,0,10000),groups:groupsOf(m.groups),status:m.status==='Eaten'?'Eaten':'Planned',notes:str(m.notes,2000),isSample:!!m.isSample}));
  o.shopping=arr(x.shopping).filter(i=>i&&typeof i==='object'&&str(i.name).trim()).map(i=>({id:cid(i.id),name:str(i.name,160).trim(),qty:str(i.qty,60),aisle:AISLES.includes(i.aisle)?i.aisle:guessAisle(str(i.name)),done:!!i.done,isSample:!!i.isSample}));
@@ -348,13 +382,14 @@ const hasSamples=()=>COLLECTIONS.some(k=>state[k].some(x=>x.isSample));
 const userCount=()=>COLLECTIONS.reduce((n,k)=>n+state[k].filter(x=>!x.isSample).length,0);
 
 /* ---------------- saving ---------------- */
-let saveTimer=null,lastSaveOk=true,persistAsked=false,snapshot=null;
+let saveTimer=null,lastSaveOk=true,persistAsked=false,snapshot=null,saveQueue=Promise.resolve(),savingCount=0;
 function setSaveState(kind,text){const el=$('#saveState');if(!el)return;el.className='save-state '+(kind||'');el.querySelector('span').textContent=text}
 async function flush(){
  clearTimeout(saveTimer);saveTimer=null;
  if(DEMO){setSaveState('','Live demo · not saved');return true}
  try{
-  const ok=await Store.set('state',state);
+  const payload=JSON.parse(JSON.stringify(state));
+  savingCount++;const pending=saveQueue.then(()=>Store.set('state',payload));saveQueue=pending.catch(()=>{});let ok;try{ok=await pending}finally{savingCount--}
   if(!ok){setSaveState('bad','Not saving — see banner');renderBanners();return false}
   if(!lastSaveOk){lastSaveOk=true;renderBanners()}setSaveState('','Saved in this browser');
   if(!persistAsked&&userCount()>0&&navigator.storage?.persist){persistAsked=true;try{await navigator.storage.persist()}catch(e){}}
@@ -366,27 +401,41 @@ async function flush(){
  }
 }
 function save(){if(DEMO){setSaveState('','Live demo · not saved');return}setSaveState('warn','Saving…');clearTimeout(saveTimer);saveTimer=setTimeout(flush,250)}
+window.addEventListener('beforeunload',e=>{if(!DEMO&&!Store.temporary&&Store.mode!=='memory'&&(saveTimer||savingCount||!lastSaveOk)){e.preventDefault();e.returnValue=''}});
 window.addEventListener('pagehide',()=>{if(saveTimer)flush()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&saveTimer)flush()});
 function commit(){save();refresh()}
 function takeSnapshot(){snapshot=JSON.parse(JSON.stringify(state))}
+function undoChanges(before,after,current){
+ if(JSON.stringify(before)===JSON.stringify(after))return current;
+ if(JSON.stringify(current)===JSON.stringify(after))return before;
+ if(Array.isArray(before)&&Array.isArray(after)&&Array.isArray(current)){
+  const old=new Map(before.map(x=>[x.id,x])),changed=new Map(after.map(x=>[x.id,x]));
+  const result=current.flatMap(item=>{const id=item.id;if(!old.has(id)&&changed.has(id)&&JSON.stringify(item)===JSON.stringify(changed.get(id)))return [];return [old.has(id)&&changed.has(id)?undoChanges(old.get(id),changed.get(id),item):item]});
+  before.forEach((item,i)=>{if(!changed.has(item.id)&&!result.some(x=>x.id===item.id))result.splice(Math.min(i,result.length),0,item)});return result;
+ }
+ if(before&&after&&current&&typeof before==='object'&&typeof after==='object'&&typeof current==='object'&&!Array.isArray(before)){
+  const result={...current};for(const key of new Set([...Object.keys(before),...Object.keys(after)])){const value=undoChanges(before[key],after[key],current[key]);if(value===undefined)delete result[key];else result[key]=value}return result;
+ }
+ return current;
+}
 function restoreSnapshot(){if(!snapshot)return;state=snapshot;snapshot=null;applyTheme();commit();toast('Restored')}
 
 /* ---------------- toasts ---------------- */
 function toast(msg,type='',undo){
  const el=document.createElement('div');el.className='toast '+(type==='err'?'err':'');el.setAttribute('role',type==='err'?'alert':'status');
  const sp=document.createElement('span');sp.textContent=msg;el.appendChild(sp);
- if(undo){const b=document.createElement('button');b.textContent='Undo';b.onclick=()=>{undo();el.remove()};el.appendChild(b)}
+ if(undo){if(undo===restoreSnapshot){const captured=snapshot,after=JSON.parse(JSON.stringify(state));undo=()=>{if(!captured)return;state=undoChanges(captured,after,state);snapshot=null;applyTheme();commit();toast('Restored')}}const b=document.createElement('button');b.textContent='Undo';b.onclick=()=>{undo();el.remove()};el.appendChild(b)}
  $('#toasts').appendChild(el);setTimeout(()=>el.remove(),undo?6500:3800);
 }
 
 /* ---------------- modal ---------------- */
 let modalReturnFocus=null,modalOnClose=null;
 function openModal({title,body,buttons=[],size='',left=null,onClose=null}){
- const m=$('#modal');modalReturnFocus=document.activeElement;modalOnClose=onClose;
+ const m=$('#modal');delete m.dataset.busy;modalReturnFocus=document.activeElement;modalOnClose=onClose;
  m.className='modal '+size;
  m.innerHTML=`<div class="m-h"><h2 id="mTitle">${title}</h2><button class="btn icon ghost" data-close aria-label="Close">${ic('x')}</button></div><div class="m-b">${body}</div>${buttons.length||left?`<div class="m-f">${left?`<div class="left">${left}</div>`:''}${buttons.map((b,i)=>`<button class="btn ${b.cls||''}" data-mb="${i}">${b.label}</button>`).join('')}</div>`:''}`;
- buttons.forEach((b,i)=>m.querySelector(`[data-mb="${i}"]`).onclick=async()=>{const r=await b.onClick?.(m);if(r!==false)closeModal()});
+ buttons.forEach((b,i)=>m.querySelector(`[data-mb="${i}"]`).onclick=async e=>{if(m.dataset.busy==='true')return;m.dataset.busy='true';const button=e.currentTarget;button.disabled=true;try{if(b.onClick&&button.classList.contains('primary')&&![...m.querySelectorAll('input[type=number],input[type=date]')].every(input=>input.reportValidity()))return;const r=await b.onClick?.(m);if(r!==false)closeModal()}catch(err){toast(err?.message||'Couldn’t complete this action. Please try again.','err')}finally{delete m.dataset.busy;button.disabled=false}});
  m.querySelector('[data-close]').onclick=closeModal;
  $('#overlay').classList.add('open');document.body.style.overflow='hidden';
  setTimeout(()=>{const f=m.querySelector('[autofocus]')||m.querySelector('.m-b input:not([type=file]):not([type=checkbox]),.m-b textarea,.m-b select');(f||m.querySelector('[data-close]')).focus()},40);
@@ -427,20 +476,20 @@ const PAGES=[
 const NAV_GROUPS=[['Plan',['home','today','week','calendar']],['Kitchen',['recipes','shopping','pantry','prep']],['Wellbeing',['balance','goals','journal']],['',['settings']]];
 function renderNav(){
  const cnt={shopping:state.shopping.filter(x=>!x.done).length,prep:state.tasks.filter(t=>t.status!=='Done').length};
- $('#nav').innerHTML=NAV_GROUPS.map(([label,ids])=>`${label?`<div class="nav-label">${label}</div>`:'<div style="height:10px"></div>'}${ids.map(id=>{const p=PAGES.find(x=>x[0]===id);return `<button data-go="${id}" class="${state.ui.page===id?'active':''}" ${state.ui.page===id?'aria-current="page"':''}>${ic(p[1])}<span>${p[2]}</span>${cnt[id]?`<span class="count">${cnt[id]}</span>`:''}</button>`}).join('')}`).join('');
+ updateHTML($('#nav'),NAV_GROUPS.map(([label,ids])=>`${label?`<div class="nav-label">${label}</div>`:'<div style="height:10px"></div>'}${ids.map(id=>{const p=PAGES.find(x=>x[0]===id);return `<button data-go="${id}" class="${state.ui.page===id?'active':''}" ${state.ui.page===id?'aria-current="page"':''}>${ic(p[1])}<span>${p[2]}</span>${cnt[id]?`<span class="count">${cnt[id]}</span>`:''}</button>`}).join('')}`).join(''));
  const due=state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=today()).length;
- $('#bellBtn').innerHTML=ic('bell')+(due?`<i class="bdg">${due>9?'9+':due}</i>`:'');
+ updateHTML($('#bellBtn'),ic('bell')+(due?`<i class="bdg">${due>9?'9+':due}</i>`:''));
  const bn=[['home','home','Home'],['week','week','Week'],['recipes','book','Recipes'],['shopping','cart','Shop'],['more','more','More']];
- $('#bottomNav').innerHTML=bn.map(([id,icn,l])=>`<button ${id==='more'?'data-action="menu"':`data-go="${id}"`} class="${state.ui.page===id?'active':''}">${ic(icn)}<span>${l}</span></button>`).join('');
+ updateHTML($('#bottomNav'),bn.map(([id,icn,l])=>`<button ${id==='more'?'data-action="menu"':`data-go="${id}"`} class="${state.ui.page===id?'active':''}">${ic(icn)}<span>${l}</span></button>`).join(''));
 }
-function go(page,{push=true}={}){
+function go(page,{push=true,persist=true}={}){
  if(!PAGES.some(p=>p[0]===page))page='home';
  state.ui.page=page;
  $$('.page').forEach(p=>p.classList.toggle('active',p.id==='page-'+page));
  closeSidebar();renderPage(page);renderNav();renderBanners();
  if(push&&location.hash!=='#/'+page){try{history.pushState(null,'','#/'+page)}catch(e){location.hash='#/'+page}}
  document.title=`${PAGES.find(p=>p[0]===page)[2]} · Mediterranean Meal Planner`;
- window.scrollTo(0,0);save();
+ window.scrollTo(0,0);if(persist)save();
 }
 window.addEventListener('popstate',()=>{const p=(location.hash.match(/^#\/(\w+)/)||[])[1];if(p&&p!==state.ui.page)go(p,{push:false})});
 function refresh(){renderPage(state.ui.page);renderNav();renderBanners()}
@@ -451,27 +500,29 @@ $('#scrim').onclick=closeSidebar;
 /* ---------------- theme ---------------- */
 const mq=matchMedia('(prefers-color-scheme: dark)');
 function applyTheme(){
- const t=state.settings.theme;const dark=t==='dark'||(t==='system'&&mq.matches);
+ const t=state.settings.theme;try{localStorage.setItem(APP.key+':appearance',JSON.stringify({theme:t,accent:state.settings.accent}))}catch(e){}const dark=t==='dark'||(t==='system'&&mq.matches);
  document.documentElement.dataset.theme=dark?'dark':'light';
  const a=ACCENTS[state.settings.accent]||ACCENTS.forest;
  document.documentElement.style.setProperty('--primary',a[0]);document.documentElement.style.setProperty('--primary-deep',a[1]);
  $('meta[name=theme-color]')?.setAttribute('content',dark?'#0F1713':a[0]);
- $('#themeBtn').innerHTML=ic(dark?'sun':'moon');
+ updateHTML($('#themeBtn'),ic(dark?'sun':'moon'));
 }
-mq.addEventListener?.('change',()=>{if(state.settings.theme==='system'){applyTheme();refresh()}});
+mq.addEventListener?.('change',()=>{if(state?.settings.theme==='system'){applyTheme();refresh()}});
 
 /* ---------------- banners ---------------- */
 function renderBanners(){
  const b=[];const t=today();
- if(DEMO){$('#banners').innerHTML='';return}
- if(Store.temporary)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Temporary planner — nothing is being saved</b>Your saved plans couldn’t be opened just now and are untouched. Reload the page to try again.</div><button class="btn sm primary" onclick="location.reload()">Reload</button></div>`);
+ if(DEMO){updateHTML($('#banners'),'');return}
+ if(Store.conflict)b.push(`<div class="banner warn" role="alert"><div class="grow"><b>Reload before saving</b>Another tab or app update changed storage. Export this tab’s changes before reloading.</div><button class="btn sm" data-action="exportBackup">Export backup</button><button class="btn sm primary" data-action="reload">Reload</button></div>`);
+ else if(Store.temporary)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Temporary planner — nothing is being saved</b>Your saved plans couldn’t be opened just now and are untouched. Reload the page to try again.</div><button class="btn sm primary" data-action="reload">Reload</button></div>`);
  else if(Store.mode==='memory')b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>This browser can’t save your planner</b>Changes will be lost when you close this tab. Open the file in Chrome, Safari, Edge or Firefox — not a file preview — or use your online link.</div></div>`);
  else if(!lastSaveOk)b.push(`<div class="banner warn"><div class="ic">${ic('alert')}</div><div class="grow"><b>Your last change wasn’t saved</b>Storage may be full. Export a backup now, then remove a few large photos.</div><button class="btn sm primary" data-action="exportBackup">Export backup</button></div>`);
+ if(Store.mode==='local')b.push(`<div class="banner warn"><div class="grow"><b>Using backup browser storage</b>Storage is limited and may not persist. Export backups regularly.</div></div>`);
  const lb=state.settings.lastBackup,uc=userCount();
  const due=state.settings.backupRemind&&uc>=5&&(!lb||(Date.now()-new Date(lb).getTime())>7*864e5)&&(!state.ui.backupSnooze||state.ui.backupSnooze<=t);
  if(due&&['home','settings','week'].includes(state.ui.page))b.push(`<div class="banner"><div class="ic">${ic('shield')}</div><div class="grow"><b>Time for a quick backup</b>${lb?'Your last backup was '+fmtDate(ymd(new Date(lb)))+'.':'You haven’t backed up yet.'} Save a copy so you never lose your plans.</div><button class="btn sm ghost" data-action="snoozeBackup">Later</button><button class="btn sm primary" data-action="exportBackup">${ic('down')}Back up</button></div>`);
  if(hasSamples()&&state.ui.page==='home')b.push(`<div class="banner"><div class="ic">${ic('spark')}</div><div class="grow"><b>You’re looking at a sample week</b>Explore how everything works, then clear the examples and make it yours.</div><button class="btn sm" data-action="clearSamples">Clear sample data</button></div>`);
- $('#banners').innerHTML=b.join('');
+ updateHTML($('#banners'),b.join(''));
 }
 
 /* ---------------- global search ---------------- */
@@ -581,7 +632,7 @@ function pHome(){
  const pop=state.recipes.slice().sort((a,b)=>(!!b.fav-!!a.fav)||(a.fav?0:(cnt[b.id]||0)-(cnt[a.id]||0))).slice(0,4);
  const lowPantry=state.pantry.filter(x=>x.expiry&&x.expiry<=addDays(t,14)).length;
  const pantry=state.pantry.slice(0,5),shop=state.shopping.slice(0,6);
- $('#page-home').innerHTML=`
+ updateHTML($('#page-home'),`
  <div class="g-home"><div class="hm-main">
   <section class="hero" aria-label="Welcome">
    <div class="hero-in">
@@ -617,7 +668,7 @@ function pHome(){
   <section class="card rl"><div class="card-h"><h3>Your Pantry</h3><button class="link" data-go="pantry">View all →</button></div>
    <div class="list">${pantry.map(p=>`<div class="li"><span class="pi">${ic(PANTRY_IC(p.name))}</span><div class="grow"><div class="t">${esc(p.name)}</div></div>${p.expiry&&p.expiry<=addDays(t,5)?expiryPill(p.expiry):''}<span class="qty">${esc(p.qty||'')}</span></div>`).join('')||emptyState('jar','Pantry is empty','Track what you have to waste less.',`<button class="btn sm primary" data-action="addPantry">${ic('plus')}Add item</button>`)}</div>
   </section>
- </aside></div>`;
+ </aside></div>`);
 }
 const SPRIG=`<path d="__STEM__" fill="none" stroke="#5E8A4A" stroke-width="2.4" stroke-linecap="round"/><path d="__LEAVES__" fill="#5E8A4A"/><path d="M27 40.6 Q28.5 43 28.6 44.5" fill="none" stroke="#5E8A4A" stroke-width="1.4" stroke-linecap="round"/><ellipse cx="29.2" cy="48.6" rx="3.8" ry="4.9" transform="rotate(-18 29.2 48.6)" fill="#D9683A"/>`;
 
@@ -627,7 +678,7 @@ function pToday(){
  const tasks=state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=t).concat(state.tasks.filter(x=>x.status==='Done'&&x.date===t));
  const tip=TIPS[(parse(t).getDate()+parse(t).getMonth())%TIPS.length];
  const cal=ms.reduce((a,m)=>a+(+m.calories||0),0);
- $('#page-today').innerHTML=head('Today',esc(fmtDate(t,'long')),`<button class="btn" data-action="addTask">${ic('plus')}Task</button><button class="btn primary" data-action="addMeal">${ic('plus')}Meal</button>`)+`
+ updateHTML($('#page-today'),head('Today',esc(fmtDate(t,'long')),`<button class="btn" data-action="addTask">${ic('plus')}Task</button><button class="btn primary" data-action="addMeal">${ic('plus')}Meal</button>`)+`
  <div class="grid g-main">
   <div class="card"><div class="card-h"><h3>Meals</h3>${state.settings.showCalories&&cal?`<span class="pill p">${cal} kcal planned</span>`:''}</div>
    <div class="list">${SLOTS.map(s=>{const x=ms.filter(m=>m.slot===s);return `<div class="li" style="align-items:flex-start"><span class="pill" style="min-width:86px;justify-content:center;margin-top:8px"><span class="dot" style="background:${SLOT_COLOR[s]}"></span>${s}</span><div class="grow" style="display:grid;gap:6px">${x.map(m=>`<div class="row"><input type="checkbox" class="chk" data-eat="${m.id}" ${m.status==='Eaten'?'checked':''} aria-label="Mark ${esc(m.title)} as eaten">${mealChip(m)}</div>`).join('')||`<button class="btn sm ghost" style="justify-self:start" data-add-meal="${t}|${s}">${ic('plus')}Add ${s.toLowerCase()}</button>`}</div></div>`}).join('')}</div>
@@ -635,14 +686,14 @@ function pToday(){
   <div style="display:grid;gap:16px;align-content:start;grid-template-columns:minmax(0,1fr)">
    <div class="card"><div class="card-h"><h3>Water</h3><span class="pill p">${w} / ${wg}</span></div>
     <div class="row" style="gap:18px;align-items:center"><div class="ring" style="--p:${Math.min(100,Math.round(w/wg*100))}"><div><span><b>${Math.min(100,Math.round(w/wg*100))}%</b><br><small>of goal</small></span></div></div>
-    <div class="glasses">${Array.from({length:Math.max(wg,w)},(_,i)=>`<button class="glass ${i<w?'on':''}" data-glass="${i+1}" aria-label="${i+1} glasses"><svg viewBox="0 0 30 40"><path class="fill" d="M6.5 12h17l-1.7 23.5a2 2 0 0 1-2 1.8h-9.6a2 2 0 0 1-2-1.8z"/><path class="outline" d="M4 4h22l-2.3 31.5a2.5 2.5 0 0 1-2.5 2.3H8.8a2.5 2.5 0 0 1-2.5-2.3z"/></svg></button>`).join('')}</div></div>
+    <div class="glasses">${Array.from({length:Math.min(100,Math.max(wg,w))},(_,i)=>`<button class="glass ${i<w?'on':''}" data-glass="${i+1}" aria-label="${i+1} glasses"><svg viewBox="0 0 30 40"><path class="fill" d="M6.5 12h17l-1.7 23.5a2 2 0 0 1-2 1.8h-9.6a2 2 0 0 1-2-1.8z"/><path class="outline" d="M4 4h22l-2.3 31.5a2.5 2.5 0 0 1-2.5 2.3H8.8a2.5 2.5 0 0 1-2.5-2.3z"/></svg></button>`).join('')}</div></div>
    </div>
    <div class="card"><div class="card-h"><h3>Tasks</h3><button class="link" data-go="prep">All →</button></div><div class="list">${tasks.map(taskRow).join('')||emptyState('check','Nothing due today','Enjoy your meals.')}</div></div>
    <div class="card" style="background:var(--tint);border-color:transparent"><div class="row" style="align-items:flex-start;gap:12px"><div style="color:var(--accent-text)">${ic('leaf','ti')}</div><div><b class="serif" style="font-size:16px">Tip of the day</b><p style="margin:4px 0 0">${tip}</p></div></div><style>.ti{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2}</style></div>
   </div>
- </div>`;
+ </div>`);
 }
-function addWater(n){const t=today();state.water[t]=Math.max(0,(+state.water[t]||0)+n);commit();toast(`${state.water[t]} glass${state.water[t]===1?'':'es'} of water today`)}
+function addWater(n){const t=today();state.water[t]=clamp((+state.water[t]||0)+n,0,100);commit();toast(`${state.water[t]} glass${state.water[t]===1?'':'es'} of water today`)}
 
 /* ---------------- WEEK PLAN ---------------- */
 function pWeek(){
@@ -651,9 +702,9 @@ function pWeek(){
  SLOTS.forEach(s=>{grid+=`<div class="ws"><span class="dot" style="background:${SLOT_COLOR[s]};margin-right:6px"></span>${s}</div>`+days.map(d=>`<div class="wc ${d===t?'today':''}">${mealsOn(d).filter(m=>m.slot===s).map(mealChip).join('')}<button class="plus" data-add-meal="${d}|${s}" aria-label="Add ${s} on ${fmtDate(d,'long')}">+</button></div>`).join('')});
  if(state.settings.showCalories)grid+=`<div class="wt" style="display:flex;align-items:center;justify-content:center">Total</div>`+days.map(d=>{const c=mealsOn(d).reduce((a,m)=>a+(+m.calories||0),0);return `<div class="wt">${c?`<b>${c}</b> kcal`:'—'}</div>`}).join('');
  const list=days.map(d=>{const ms=mealsOn(d);return `<div class="card" style="padding:14px"><div class="card-h" style="margin-bottom:8px"><h3 style="${d===t?'color:var(--accent-text)':''}">${relDay(d)}</h3>${state.settings.showCalories&&ms.length?`<span class="pill">${ms.reduce((a,m)=>a+(+m.calories||0),0)} kcal</span>`:''}</div><div style="display:grid;gap:6px">${SLOTS.map(s=>{const x=ms.filter(m=>m.slot===s);return x.length?x.map(mealChip).join(''):`<button class="btn sm ghost no-print" style="justify-content:flex-start;color:var(--muted)" data-add-meal="${d}|${s}">${ic('plus')}${s}</button>`}).join('')}</div></div>`}).join('');
- $('#page-week').innerHTML=`${printHead('Week plan · '+weekLabel(ws))}`+head('Week Plan','Plan breakfast to dinner. Tap any meal to edit it.',`<div class="week-nav"><button class="btn icon" data-week="-1" aria-label="Previous week">${ic('left')}</button><strong>${weekLabel(ws)}</strong><button class="btn icon" data-week="1" aria-label="Next week">${ic('right')}</button></div>${state.ui.weekOffset?`<button class="btn" data-week="0">This week</button>`:''}`)+`
+ updateHTML($('#page-week'),`${printHead('Week plan · '+weekLabel(ws))}`+head('Week Plan','Plan breakfast to dinner. Tap any meal to edit it.',`<div class="week-nav"><button class="btn icon" data-week="-1" aria-label="Previous week">${ic('left')}</button><strong>${weekLabel(ws)}</strong><button class="btn icon" data-week="1" aria-label="Next week">${ic('right')}</button></div>${state.ui.weekOffset?`<button class="btn" data-week="0">This week</button>`:''}`)+`
  <div class="toolbar no-print"><button class="btn primary" data-action="addMeal">${ic('plus')}Add meal</button><button class="btn" data-action="genShopping">${ic('wand')}<span>Build shopping list</span></button><button class="btn" data-action="copyWeek">${ic('copy')}<span>Copy last week</span></button><button class="btn" data-action="printWeek">${ic('print')}<span class="lbl-sm">Print</span></button>${weekMeals(ws).length?`<button class="btn ghost" data-action="clearWeek" style="margin-left:auto;color:var(--bad)">${ic('trash')}<span class="lbl-sm">Clear week</span></button>`:''}</div>
- <div class="week">${grid}</div><div class="wlist">${list}</div>`;
+ <div class="week">${grid}</div><div class="wlist">${list}</div>`);
 }
 function mealModal({id=null,date=null,slot=null,recipeId=null}={}){
  const old=id?state.meals.find(m=>m.id===id):null;const r0=recipeId?state.recipes.find(r=>r.id===recipeId):null;
@@ -662,7 +713,7 @@ function mealModal({id=null,date=null,slot=null,recipeId=null}={}){
   body:`<div class="form">
    <div class="field full"><label for="fTitle">What are you having?</label><input id="fTitle" list="recipeList" value="${esc(v.title)}" placeholder="Pick a recipe or type anything — e.g. Leftover soup" autocomplete="off"><datalist id="recipeList">${state.recipes.map(r=>`<option value="${esc(r.title)}">`).join('')}</datalist><span class="hint" id="fLinked">${v.recipeId?'Linked to your recipe — ingredients can go straight to your shopping list.':''}</span></div>
    <div class="field full"><span class="flabel">Meal</span>${segmented('fSlot',SLOTS,v.slot)}</div>
-   ${fld('Date','fDate',v.date,'date')}${fld('Calories (optional)','fCal',v.calories,'number','min="0" step="10" inputmode="numeric"')}
+   ${fld('Date','fDate',v.date,'date')}${fld('Calories (optional)','fCal',v.calories,'number','min="0" max="10000" inputmode="numeric"')}
    ${groupChips(v.groups)}
    ${area('Notes (optional)','fNotes',v.notes,2,'Leftovers for tomorrow’s lunch, double the recipe…')}
    <label class="row full"><input type="checkbox" class="chk" id="fEaten" ${v.status==='Eaten'?'checked':''}> <span>Mark as eaten</span></label>
@@ -696,12 +747,11 @@ function pRecipes(){
  const f=state.ui.recipeFilter||'All',q=($('#rSearch')?.value||'').toLowerCase();
  const cats=['All','Favourites','Breakfast','Lunch','Dinner','Snack','Dessert','Side'];
  const rows=state.recipes.filter(r=>(f==='All'||(f==='Favourites'?r.fav:r.category===f))&&(!q||`${r.title} ${r.tags} ${r.ingredients.join(' ')}`.toLowerCase().includes(q))).sort((a,b)=>(b.fav-a.fav)||a.title.localeCompare(b.title));
- const hadFocus=document.activeElement?.id==='rSearch';
- $('#page-recipes').innerHTML=head('Recipes',`${state.recipes.length} recipe${state.recipes.length===1?'':'s'} in your collection`,`<button class="btn primary" data-action="addRecipe">${ic('plus')}New recipe</button>`)+`
+ updateHTML($('#page-recipes'),head('Recipes',`${state.recipes.length} recipe${state.recipes.length===1?'':'s'} in your collection`,`<button class="btn primary" data-action="addRecipe">${ic('plus')}New recipe</button>`)+`
  <div class="toolbar"><input id="rSearch" type="search" placeholder="Search by name or ingredient…" value="${esc(q)}"><div class="chips">${cats.map(c=>`<button class="chip ${c===f?'on':''}" data-rfilter="${c}">${c}</button>`).join('')}</div></div>
  <div class="rgrid">${rows.map(r=>`<div class="rwrap"><div class="card rcard" role="button" tabindex="0" data-recipe="${r.id}"><img class="img" src="${recipeImg(r)}" alt="" loading="lazy"><div class="bd"><span class="pill p" style="align-self:flex-start">${esc(r.category)}</span><h3>${esc(r.title)}</h3><div class="meta">${r.time?`<span class="row" style="gap:4px">${ic('clock','mi')}${esc(r.time)} min</span>`:''}${r.servings?`<span class="row" style="gap:4px">${ic('users','mi')}${esc(r.servings)}</span>`:''}${kcal(r.calories)?`<span>${kcal(r.calories)}</span>`:''}${gdots(r.groups)}</div></div></div><button class="fav ${r.fav?'on':''}" data-fav="${r.id}" aria-label="${r.fav?'Remove from':'Add to'} favourites" aria-pressed="${!!r.fav}">${STAR}</button></div>`).join('')||`<div style="grid-column:1/-1">${emptyState('book',q||f!=='All'?'No matching recipes':'Your recipe box is empty','Save the dishes you love and plan them in one tap.',`<button class="btn primary" data-action="addRecipe">${ic('plus')}Add your first recipe</button>`)}</div>`}</div>
- <style>.mi{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}</style>`;
- const s=$('#rSearch');s.addEventListener('input',debounce(()=>pRecipes(),160));if(hadFocus){s.focus();s.setSelectionRange(s.value.length,s.value.length)}
+ <style>.mi{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2}</style>`);
+ const s=$('#rSearch');if(!s.oninput)s.oninput=debounce(()=>pRecipes(),160);
 }
 function recipeDetail(id){
  const r=state.recipes.find(x=>x.id===id);if(!r)return;
@@ -720,9 +770,9 @@ function recipeModal(id=null){
  const m=openModal({title:old?'Edit recipe':'New recipe',size:'wide',body:`<div class="form">
   ${fld('Recipe name','fTitle',old?.title||'','text','placeholder="e.g. Grandma’s lemon chicken"','full')}
   ${sel('Category','fCat',['Breakfast','Lunch','Dinner','Snack','Dessert','Side'],old?.category||'Dinner')}
-  ${fld('Prep + cook time (minutes)','fTime',old?.time||'','number','min="0" inputmode="numeric"')}
-  ${fld('Servings','fServ',old?.servings||2,'number','min="1" inputmode="numeric"')}
-  ${fld('Calories per serving (optional)','fCal',old?.calories||'','number','min="0" inputmode="numeric"')}
+  ${fld('Prep + cook time (minutes)','fTime',old?.time??'','number','min="0" max="1440" inputmode="numeric"')}
+  ${fld('Servings','fServ',old?.servings||2,'number','min="1" max="100" inputmode="numeric"')}
+  ${fld('Calories per serving (optional)','fCal',old?.calories??'','number','min="0" max="10000" inputmode="numeric"')}
   ${groupChips(old?.groups||[])}
   ${area('Ingredients — one per line','fIng',(old?.ingredients||[]).join('\n'),7,'1 can chickpeas\n2 tomatoes\n1 tbsp olive oil','')}
   ${area('Method — one step per line','fMethod',old?.method||'',7,'Chop the vegetables…\nWhisk the dressing…','')}
@@ -773,13 +823,13 @@ function pShopping(){
  const f=state.ui.shopFilter||'open',items=state.shopping.filter(i=>f==='all'||(f==='open'?!i.done:i.done));
  const total=state.shopping.length,done=state.shopping.filter(i=>i.done).length;
  const by=AISLES.map(a=>[a,items.filter(i=>i.aisle===a).sort((x,y)=>x.done-y.done||x.name.localeCompare(y.name))]).filter(x=>x[1].length);
- $('#page-shopping').innerHTML=printHead('Shopping list')+head('Shopping',total?`${done} of ${total} bought`:'Everything you need, sorted by aisle.',`<button class="btn" data-action="copyList">${ic('copy')}<span class="lbl-sm">Copy</span></button><button class="btn" data-action="printShopping">${ic('print')}<span class="lbl-sm">Print</span></button><button class="btn primary" data-action="genShopping">${ic('wand')}From week plan</button>`)+`
+ updateHTML($('#page-shopping'),printHead('Shopping list')+head('Shopping',total?`${done} of ${total} bought`:'Everything you need, sorted by aisle.',`<button class="btn" data-action="copyList">${ic('copy')}<span class="lbl-sm">Copy</span></button><button class="btn" data-action="printShopping">${ic('print')}<span class="lbl-sm">Print</span></button><button class="btn primary" data-action="genShopping">${ic('wand')}From week plan</button>`)+`
  <div class="card">
   <form class="addbar no-print" id="shopAdd" autocomplete="off"><input id="sName" placeholder="Add an item — e.g. Cherry tomatoes" aria-label="Item"><input id="sQty" placeholder="Qty" aria-label="Quantity"><select id="sAisle" aria-label="Aisle"><option value="">Auto aisle</option>${AISLES.map(a=>`<option>${a}</option>`).join('')}</select><button class="btn primary" type="submit">${ic('plus')}Add</button></form>
   ${total?`<div class="bar no-print" style="margin:14px 0 4px"><i style="width:${done/total*100}%"></i></div>`:''}
   <div class="toolbar no-print" style="margin:12px 0 0">${segmented('shopSeg',['To buy','Bought','All'],{open:'To buy',done:'Bought',all:'All'}[f])}${done?`<button class="btn sm ghost" data-action="clearBought" style="margin-left:auto">${ic('trash')}Clear bought (${done})</button>`:''}</div>
-  ${by.map(([a,list])=>`<div class="aisle"><h4>${a} <span class="n">· ${list.length}</span></h4><div class="list">${list.map(i=>`<div class="li ${i.done?'done':''}"><input type="checkbox" class="chk" data-shop="${i.id}" ${i.done?'checked':''} aria-label="${esc(i.name)}"><div class="grow" data-shopedit="${i.id}" style="cursor:pointer"><div class="t">${esc(i.name)}</div>${i.qty?`<div class="s">${esc(i.qty)}</div>`:''}</div><button class="btn sm icon ghost no-print" data-del="shopping|${i.id}" aria-label="Delete ${esc(i.name)}">${ic('x')}</button></div>`).join('')}</div></div>`).join('')||emptyState('cart',f==='done'?'Nothing ticked off yet':'Your list is empty','Add items above, or build it from this week’s meal plan in one tap.')}
- </div>`;
+  ${by.map(([a,list])=>`<div class="aisle"><h4>${a} <span class="n">· ${list.length}</span></h4><div class="list">${list.map(i=>`<div class="li ${i.done?'done':''}"><input type="checkbox" class="chk" data-shop="${i.id}" ${i.done?'checked':''} aria-label="${esc(i.name)}"><div class="grow" data-shopedit="${i.id}" role="button" tabindex="0" style="cursor:pointer"><div class="t">${esc(i.name)}</div>${i.qty?`<div class="s">${esc(i.qty)}</div>`:''}</div><button class="btn sm icon ghost no-print" data-del="shopping|${i.id}" aria-label="Delete ${esc(i.name)}">${ic('x')}</button></div>`).join('')}</div></div>`).join('')||emptyState('cart',f==='done'?'Nothing ticked off yet':'Your list is empty','Add items above, or build it from this week’s meal plan in one tap.')}
+ </div>`);
  $('#shopAdd').onsubmit=e=>{e.preventDefault();const n=$('#sName').value.trim();if(!n)return;state.shopping.push({id:uid(),name:n,qty:$('#sQty').value.trim(),aisle:$('#sAisle').value||guessAisle(n),done:false,isSample:false});commit();$('#sName').focus()};
  $$('#shopSeg button').forEach(b=>b.onclick=()=>{state.ui.shopFilter={'To buy':'open',Bought:'done',All:'all'}[b.dataset.v];commit()});
  setTimeout(()=>{if(document.activeElement===document.body&&window.innerWidth>860)$('#sName')?.focus({preventScroll:true})},0);
@@ -801,8 +851,8 @@ async function copyList(){
 function expiryPill(d){if(!d)return '';const t=today(),diff=Math.round((parse(d)-parse(t))/864e5);if(diff<0)return `<span class="pill bad">Expired</span>`;if(diff===0)return `<span class="pill warn">Today</span>`;if(diff<=5)return `<span class="pill warn">${diff} day${diff===1?'':'s'}</span>`;return `<span class="pill">${fmtDate(d,'short')}</span>`}
 function pPantry(){
  const rows=state.pantry.slice().sort((a,b)=>(a.expiry||'9999').localeCompare(b.expiry||'9999'));
- $('#page-pantry').innerHTML=head('Pantry','What you already have — so you buy less and waste less.',`<button class="btn primary" data-action="addPantry">${ic('plus')}Add item</button>`)+`
- <div class="card tbl-wrap">${rows.length?`<table class="tbl"><thead><tr><th>Item</th><th>Aisle</th><th>Qty</th><th>Use by</th><th class="r"></th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.aisle)}</td><td>${esc(p.qty)}</td><td>${expiryPill(p.expiry)||'<span class="muted">—</span>'}</td><td class="r" style="white-space:nowrap"><button class="btn sm ghost" data-restock="${p.id}" title="Add to shopping list">${ic('cart')}<span class="lbl-sm">Restock</span></button><button class="btn sm icon ghost" data-pantryedit="${p.id}" aria-label="Edit">${ic('edit')}</button></td></tr>`).join('')}</tbody></table>`:emptyState('jar','Your pantry is empty','Track staples and use-by dates. Items here are skipped when you build a shopping list.',`<button class="btn primary" data-action="addPantry">${ic('plus')}Add item</button>`)}</div>`;
+ updateHTML($('#page-pantry'),head('Pantry','What you already have — so you buy less and waste less.',`<button class="btn primary" data-action="addPantry">${ic('plus')}Add item</button>`)+`
+ <div class="card tbl-wrap">${rows.length?`<table class="tbl"><thead><tr><th>Item</th><th>Aisle</th><th>Qty</th><th>Use by</th><th class="r"></th></tr></thead><tbody>${rows.map(p=>`<tr><td><b>${esc(p.name)}</b></td><td class="muted">${esc(p.aisle)}</td><td>${esc(p.qty)}</td><td>${expiryPill(p.expiry)||'<span class="muted">—</span>'}</td><td class="r" style="white-space:nowrap"><button class="btn sm ghost" data-restock="${p.id}" title="Add to shopping list">${ic('cart')}<span class="lbl-sm">Restock</span></button><button class="btn sm icon ghost" data-pantryedit="${p.id}" aria-label="Edit">${ic('edit')}</button></td></tr>`).join('')}</tbody></table>`:emptyState('jar','Your pantry is empty','Track staples and use-by dates. Items here are skipped when you build a shopping list.',`<button class="btn primary" data-action="addPantry">${ic('plus')}Add item</button>`)}</div>`);
 }
 function pantryModal(id=null){
  const old=id?state.pantry.find(x=>x.id===id):null;
@@ -819,7 +869,7 @@ function pBalance(){
  const avg=calDays.length?Math.round(calDays.reduce((a,c)=>a+c,0)/calDays.length):0;
  const status=k=>{const g=GUIDES[k],v=b.tally[k];if(!g)return '';if(g.max!=null)return v<=g.max?'<span class="pill ok">On track</span>':'<span class="pill warn">A bit high</span>';return v>=g.min?'<span class="pill ok">On track</span>':`<span class="pill">${g.min-v} to go</span>`};
  const maxT=Math.max(4,...Object.values(b.tally));
- $('#page-balance').innerHTML=head('Balance','How this week’s plan lines up with a Mediterranean-style pattern.',`<div class="week-nav"><button class="btn icon" data-week="-1" aria-label="Previous week">${ic('left')}</button><strong>${weekLabel(ws)}</strong><button class="btn icon" data-week="1" aria-label="Next week">${ic('right')}</button></div>`)+`
+ updateHTML($('#page-balance'),head('Balance','How this week’s plan lines up with a Mediterranean-style pattern.',`<div class="week-nav"><button class="btn icon" data-week="-1" aria-label="Previous week">${ic('left')}</button><strong>${weekLabel(ws)}</strong><button class="btn icon" data-week="1" aria-label="Next week">${ic('right')}</button></div>`)+`
  <div class="grid g4">
   <div class="card stat"><span class="k">${ic('leaf')}Plant-forward meals</span><span class="v">${b.plant}<small>%</small></span></div>
   <div class="card stat"><span class="k">${ic('fish')}Fish & seafood</span><span class="v">${b.tally.fish}<small> meals</small></span></div>
@@ -834,17 +884,17 @@ function pBalance(){
    ${state.settings.showCalories?`<div class="card"><div class="card-h"><h3>Calories by day</h3></div>${svgBars(days.map(d=>({s:fmtDate(d,'weekday'),t:fmtDate(d),today:d===t})),cal.map(c=>[c]),['var(--primary)'],{h:180,unit:' kcal'})}</div>`:''}
    <div class="card" style="background:var(--tint);border-color:transparent"><h3 style="margin:0 0 8px;font-size:17px">How Balance works</h3><p class="small" style="margin:0 0 8px">Tag each meal or recipe with its food groups. Balance counts them across the week and compares them with common Mediterranean-style eating patterns: plenty of vegetables, legumes, whole grains and olive oil, fish a couple of times a week, and red meat only now and then.</p><p class="small muted" style="margin:0">This is a planning aid, not medical or nutritional advice. For personal dietary needs, talk to a qualified professional.</p></div>
   </div>
- </div>`;
+ </div>`);
 }
 
 /* ---------------- PREP LIST ---------------- */
 const PRIO_C={High:'bad',Medium:'warn',Low:''};
-function taskRow(tk){const over=tk.status!=='Done'&&tk.date&&tk.date<today();return `<div class="li ${tk.status==='Done'?'done':''}"><input type="checkbox" class="chk" data-task="${tk.id}" ${tk.status==='Done'?'checked':''} aria-label="${esc(tk.title)}"><div class="grow" data-taskedit="${tk.id}" style="cursor:pointer"><div class="t">${esc(tk.title)}</div><div class="s" style="${over?'color:var(--bad)':''}">${tk.date?(over?'Overdue · ':'')+relDay(tk.date):'No date'}</div></div><span class="pill ${PRIO_C[tk.priority]||''}">${esc(tk.priority)}</span></div>`}
+function taskRow(tk){const over=tk.status!=='Done'&&tk.date&&tk.date<today();return `<div class="li ${tk.status==='Done'?'done':''}"><input type="checkbox" class="chk" data-task="${tk.id}" ${tk.status==='Done'?'checked':''} aria-label="${esc(tk.title)}"><div class="grow" data-taskedit="${tk.id}" role="button" tabindex="0" style="cursor:pointer"><div class="t">${esc(tk.title)}</div><div class="s" style="${over?'color:var(--bad)':''}">${tk.date?(over?'Overdue · ':'')+relDay(tk.date):'No date'}</div></div><span class="pill ${PRIO_C[tk.priority]||''}">${esc(tk.priority)}</span></div>`}
 function pPrep(){
  const open=state.tasks.filter(t=>t.status!=='Done').sort((a,b)=>(a.date||'9').localeCompare(b.date||'9')),done=state.tasks.filter(t=>t.status==='Done');
- $('#page-prep').innerHTML=head('Prep List','Soak, chop, marinate, batch-cook — your kitchen to-dos.',`<button class="btn primary" data-action="addTask">${ic('plus')}Add task</button>`)+`
+ updateHTML($('#page-prep'),head('Prep List','Soak, chop, marinate, batch-cook — your kitchen to-dos.',`<button class="btn primary" data-action="addTask">${ic('plus')}Add task</button>`)+`
  <div class="grid g2"><div class="card"><div class="card-h"><h3>To do</h3><span class="pill p">${open.length}</span></div><div class="list">${open.map(taskRow).join('')||emptyState('check','All done','Nothing left to prep.')}</div></div>
- <div class="card"><div class="card-h"><h3>Done</h3>${done.length?`<button class="link" data-action="clearDone">Clear</button>`:''}</div><div class="list">${done.map(taskRow).join('')||emptyState('list','Nothing finished yet','Completed tasks land here.')}</div></div></div>`;
+ <div class="card"><div class="card-h"><h3>Done</h3>${done.length?`<button class="link" data-action="clearDone">Clear</button>`:''}</div><div class="list">${done.map(taskRow).join('')||emptyState('list','Nothing finished yet','Completed tasks land here.')}</div></div></div>`);
 }
 function taskModal(id=null){
  const old=id?state.tasks.find(x=>x.id===id):null;
@@ -857,11 +907,11 @@ function taskModal(id=null){
 /* ---------------- GOALS & WATER ---------------- */
 function pGoals(){
  const t=today(),days=Array.from({length:7},(_,i)=>addDays(t,i-6)),wg=state.settings.waterGoal;
- $('#page-goals').innerHTML=head('Goals & Water','Small, steady habits.',`<button class="btn primary" data-action="addGoal">${ic('plus')}New goal</button>`)+`
- <div class="grid g-main"><div class="grid g2" style="align-content:start">${state.goals.map(g=>`<div class="card"><div class="card-h" style="align-items:flex-start"><h3 style="cursor:pointer" data-goaledit="${g.id}">${esc(g.title)}</h3>${g.progress>=100?'<span class="pill ok">Done</span>':`<span class="pill p">${g.progress}%</span>`}</div>${g.description?`<p class="muted small" style="margin:-6px 0 12px">${esc(g.description)}</p>`:''}<div class="bar"><i style="width:${clamp(g.progress,0,100)}%;${g.progress>=100?'background:var(--ok)':''}"></i></div><div class="row" style="justify-content:space-between;margin-top:12px"><span class="small muted">${g.deadline?'By '+fmtDate(g.deadline):''}</span><div class="actions"><button class="btn sm icon" data-goal="${g.id}|-10" aria-label="Less progress">−</button><button class="btn sm icon" data-goal="${g.id}|10" aria-label="More progress">+</button></div></div></div>`).join('')||`<div class="card" style="grid-column:1/-1">${emptyState('target','No goals yet','Pick one small habit — like fish twice a week.',`<button class="btn primary" data-action="addGoal">${ic('plus')}New goal</button>`)}</div>`}</div>
+ updateHTML($('#page-goals'),head('Goals & Water','Small, steady habits.',`<button class="btn primary" data-action="addGoal">${ic('plus')}New goal</button>`)+`
+ <div class="grid g-main"><div class="grid g2" style="align-content:start">${state.goals.map(g=>`<div class="card"><div class="card-h" style="align-items:flex-start"><h3 role="button" tabindex="0" style="cursor:pointer" data-goaledit="${g.id}">${esc(g.title)}</h3>${g.progress>=100?'<span class="pill ok">Done</span>':`<span class="pill p">${g.progress}%</span>`}</div>${g.description?`<p class="muted small" style="margin:-6px 0 12px">${esc(g.description)}</p>`:''}<div class="bar"><i style="width:${clamp(g.progress,0,100)}%;${g.progress>=100?'background:var(--ok)':''}"></i></div><div class="row" style="justify-content:space-between;margin-top:12px"><span class="small muted">${g.deadline?'By '+fmtDate(g.deadline):''}</span><div class="actions"><button class="btn sm icon" data-goal="${g.id}|-10" aria-label="Less progress">−</button><button class="btn sm icon" data-goal="${g.id}|10" aria-label="More progress">+</button></div></div></div>`).join('')||`<div class="card" style="grid-column:1/-1">${emptyState('target','No goals yet','Pick one small habit — like fish twice a week.',`<button class="btn primary" data-action="addGoal">${ic('plus')}New goal</button>`)}</div>`}</div>
  <div class="card" style="align-self:start"><div class="card-h"><h3>Water, last 7 days</h3><button class="btn sm primary" data-action="water">${ic('drop')}+1 glass</button></div>
   ${svgBars(days.map(d=>({s:fmtDate(d,'weekday'),t:fmtDate(d),today:d===t})),days.map(d=>[+state.water[d]||0]),['#4FA3C7'],{h:180,unit:' glasses'})}
-  <p class="small muted" style="margin:10px 0 0">Daily goal: ${wg} glasses · change it in Settings.</p></div></div>`;
+  <p class="small muted" style="margin:10px 0 0">Daily goal: ${wg} glasses · change it in Settings.</p></div></div>`);
 }
 function goalModal(id=null){
  const old=id?state.goals.find(x=>x.id===id):null;
@@ -878,9 +928,9 @@ function pCalendar(){
  const y=state.ui.calYear,mo=state.ui.calMonth,first=new Date(y,mo,1),ws=state.settings.weekStart,lead=(first.getDay()-ws+7)%7,t=today();
  const start=ymd(new Date(y,mo,1-lead));const cells=Array.from({length:42},(_,i)=>addDays(start,i));const rows=cells.slice(35).every(d=>parse(d).getMonth()!==mo)?35:42;
  const dn=Array.from({length:7},(_,i)=>fmtDate(addDays(start,i),'weekday'));
- $('#page-calendar').innerHTML=head('Calendar','Your meals and prep at a glance. Tap a day to plan it.',`<div class="week-nav"><button class="btn icon" data-month="-1" aria-label="Previous month">${ic('left')}</button><strong>${first.toLocaleDateString(undefined,{month:'long',year:'numeric'})}</strong><button class="btn icon" data-month="1" aria-label="Next month">${ic('right')}</button></div><button class="btn" data-month="0">Today</button>`)+`
+ updateHTML($('#page-calendar'),head('Calendar','Your meals and prep at a glance. Tap a day to plan it.',`<div class="week-nav"><button class="btn icon" data-month="-1" aria-label="Previous month">${ic('left')}</button><strong>${first.toLocaleDateString(undefined,{month:'long',year:'numeric'})}</strong><button class="btn icon" data-month="1" aria-label="Next month">${ic('right')}</button></div><button class="btn" data-month="0">Today</button>`)+`
  <div class="cal">${dn.map(d=>`<div class="ch">${d}</div>`).join('')}${cells.slice(0,rows).map(d=>{const ms=mealsOn(d),ts=state.tasks.filter(x=>x.date===d&&x.status!=='Done'),ev=[...ms.map(m=>`<span class="ev" style="border-left-color:${SLOT_COLOR[m.slot]}">${esc(m.title)}</span>`),...ts.map(x=>`<span class="ev task">${esc(x.title)}</span>`)];return `<button class="cd ${parse(d).getMonth()!==mo?'out':''} ${d===t?'today':''}" data-day="${d}" aria-label="${fmtDate(d,'long')}: ${ms.length} meals"><span class="n">${parse(d).getDate()}</span>${ev.slice(0,3).join('')}${ev.length>3?`<span class="more">+${ev.length-3} more</span>`:''}</button>`}).join('')}</div>
- ${legend([...SLOTS.map(s=>[s,SLOT_COLOR[s]]),['Prep task','var(--terra)']])}`;
+ ${legend([...SLOTS.map(s=>[s,SLOT_COLOR[s]]),['Prep task','var(--terra)']])}`);
 }
 function dayModal(d){
  const ms=mealsOn(d),ts=state.tasks.filter(x=>x.date===d);
@@ -891,8 +941,8 @@ function dayModal(d){
 /* ---------------- JOURNAL ---------------- */
 function pJournal(){
  const rows=state.notes.slice().sort((a,b)=>(b.pinned-a.pinned)||String(b.date).localeCompare(String(a.date)));
- $('#page-journal').innerHTML=head('Journal','Meal ideas, reflections, family favourites.',`<button class="btn primary" data-action="addNote">${ic('plus')}New note</button>`)+
- (rows.length?`<div class="ngrid">${rows.map(n=>`<div class="card note" data-noteedit="${n.id}" role="button" tabindex="0">${n.pinned?`<span class="pin">${ic('pin')}</span>`:''}<h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><small>${fmtDate(n.date)}</small></div>`).join('')}</div>`:`<div class="card">${emptyState('pen','No notes yet','Write down what worked, what the kids loved, or ideas for next week.',`<button class="btn primary" data-action="addNote">${ic('plus')}New note</button>`)}</div>`);
+ updateHTML($('#page-journal'),head('Journal','Meal ideas, reflections, family favourites.',`<button class="btn primary" data-action="addNote">${ic('plus')}New note</button>`)+
+ (rows.length?`<div class="ngrid">${rows.map(n=>`<div class="card note" data-noteedit="${n.id}" role="button" tabindex="0">${n.pinned?`<span class="pin">${ic('pin')}</span>`:''}<h3>${esc(n.title)}</h3><p>${esc(n.text)}</p><small>${fmtDate(n.date)}</small></div>`).join('')}</div>`:`<div class="card">${emptyState('pen','No notes yet','Write down what worked, what the kids loved, or ideas for next week.',`<button class="btn primary" data-action="addNote">${ic('plus')}New note</button>`)}</div>`));
 }
 function noteModal(id=null){
  const old=id?state.notes.find(x=>x.id===id):null;
@@ -906,7 +956,7 @@ function noteModal(id=null){
 async function pSettings(){
  const s=state.settings,info=await storageInfo();
  const where=DEMO?{memory:'Live demo — nothing is saved'}:{idb:'This browser’s app storage (IndexedDB)',local:'This browser’s local storage',memory:'Not saving — this browser blocks storage'}[Store.mode];
- $('#page-settings').innerHTML=head('Settings','Make Mediterranean Meal Planner yours, and keep your data safe.')+`
+ updateHTML($('#page-settings'),head('Settings','Make Mediterranean Meal Planner yours, and keep your data safe.')+`
  <div class="grid g2" style="align-items:start">
   <div class="card"><div class="card-h"><h3>You</h3></div>
    <div class="set-row"><div class="lbl"><b>Your first name</b><span>Used in the greeting on Home</span></div><input type="text" id="sName" value="${esc(state.profile.name)}" placeholder="Optional"></div>
@@ -940,8 +990,8 @@ async function pSettings(){
    <div class="set-row"><div class="lbl"><b>Check everything works</b><span>Runs a quick health check — doesn’t change your data</span></div><button class="btn" data-action="diagnostics">Run check</button></div>
    <p class="small muted" style="margin:12px 0 0">Mediterranean Meal Planner v${APP.version} · Designed by KaelLabs</p>
   </div>
- </div>`;
- const bindSet=(id,fn)=>$('#'+id).addEventListener('change',e=>{fn(e.target);save();applyTheme();renderNav();renderBanners()});
+ </div>`);
+ const bindSet=(id,fn)=>{$('#'+id).onchange=e=>{fn(e.target);save();applyTheme();renderNav();renderBanners()}};
  bindSet('sName',el=>state.profile.name=el.value.trim());bindSet('sPlanner',el=>state.profile.plannerName=el.value.trim()||'My Mediterranean Planner');
  bindSet('sWeek',el=>{s.weekStart=+el.value;state.ui.weekOffset=0});bindSet('sDate',el=>s.dateFormat=el.value);
  bindSet('sWater',el=>s.waterGoal=clamp(parseInt(el.value)||8,1,20));bindSet('sCal',el=>s.showCalories=el.checked);bindSet('sRemind',el=>{s.backupRemind=el.checked});
@@ -950,7 +1000,13 @@ async function pSettings(){
 }
 
 /* ---------------- data actions ---------------- */
-function upsert(coll,obj){const i=state[coll].findIndex(x=>x.id===obj.id);if(i<0)state[coll].push(obj);else state[coll][i]={...state[coll][i],...obj};commit()}
+function upsert(coll,record){
+ if(!COLLECTIONS.includes(coll))throw new Error('Unknown collection');
+ const candidate={...state,[coll]:[record],recipes:coll==='recipes'?[record]:state.recipes};
+ const value=normalize(candidate)[coll].find(x=>x.id===record.id);
+ if(!value)throw new Error('Check the date and required fields.');
+ const i=state[coll].findIndex(x=>x.id===value.id);if(i<0)state[coll].push(value);else state[coll][i]={...state[coll][i],...value};commit();
+}
 function removeItem(coll,id,msg){const i=state[coll].findIndex(x=>x.id===id);if(i<0)return;const [old]=state[coll].splice(i,1);commit();toast(msg,'',()=>{state[coll].splice(Math.min(i,state[coll].length),0,old);commit()})}
 async function clearSamples(){
  if(!await confirmBox('All example meals, recipes and lists will be removed. Anything you added yourself stays.',{title:'Clear sample data?',ok:'Clear samples'}))return;
@@ -964,7 +1020,7 @@ async function eraseAll(){
 function download(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
 function exportBackup(){if(DEMO)return toast('Backups are in the full version');state.settings.lastBackup=new Date().toISOString();state.ui.backupSnooze=null;download(`mediterranean-meal-planner-backup-${today()}.json`,JSON.stringify({app:'mediterranean-meal-planner',version:2,exportedAt:new Date().toISOString(),state},null,1),'application/json');commit();toast('Backup saved to your downloads')}
 function exportCSV(){if(DEMO)return toast('Export is in the full version');
- const q=v=>`"${String(v??'').replace(/"/g,'""')}"`,rows=[['Type','Date','Meal / Category','Title','Calories','Status / Qty','Details']];
+ const q=v=>{let text=String(v??'');if(/^[\s]*[=+@-]/.test(text)||/^[\t\r\n]/.test(text))text="'"+text;return `"${text.replace(/"/g,'""')}"`},rows=[['Type','Date','Meal / Category','Title','Calories','Status / Qty','Details']];
  state.meals.slice().sort((a,b)=>a.date.localeCompare(b.date)).forEach(m=>rows.push(['Meal',m.date,m.slot,m.title,m.calories,m.status,(m.groups||[]).map(k=>G[k]?.label).join('; ')]));
  state.recipes.forEach(r=>rows.push(['Recipe','',r.category,r.title,r.calories,'',r.ingredients.join('; ')]));
  state.shopping.forEach(i=>rows.push(['Shopping','',i.aisle,i.name,'',i.qty,i.done?'Bought':'To buy']));
@@ -976,7 +1032,7 @@ function importBackup(file){
  if(DEMO)return toast('Restore is in the full version');if(!file)return;if(file.size>60*1024*1024){toast('That file is too large to be a backup','err');return}
  const rd=new FileReader();rd.onload=async()=>{try{const x=migrate(JSON.parse(rd.result));const n=COLLECTIONS.reduce((a,k)=>a+x[k].length,0);
   if(!await confirmBox(`This backup has ${n} items. Restoring replaces what’s in this browser now.`,{title:'Restore backup?',ok:'Restore'}))return;
-  takeSnapshot();x.settings.onboarded=true;state=x;applyTheme();await flush();go('home');toast('Backup restored','',restoreSnapshot)}catch(e){toast(e.message.includes('Mediterranean Meal Planner')?e.message:'That file couldn’t be read as a backup.','err')}};
+  takeSnapshot();x.settings.onboarded=true;state=x;applyTheme();const saved=await flush();go('home');toast(saved?'Backup restored':'Backup loaded in this tab, but could not be saved. Export a copy before closing.',saved?'':'err',restoreSnapshot)}catch(e){toast(e.message.includes('Mediterranean Meal Planner')?e.message:'That file couldn’t be read as a backup.','err')}};
  rd.onerror=()=>toast('Couldn’t read that file','err');rd.readAsText(file);
 }
 
@@ -1031,7 +1087,7 @@ async function diagnostics(){
 }
 
 /* ---------------- event delegation ---------------- */
-const ACTIONS={menu:openSidebar,toggleTheme:()=>{state.settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';applyTheme();commit()},quickAdd,
+const ACTIONS={reload:()=>location.reload(),menu:openSidebar,toggleTheme:()=>{state.settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';applyTheme();commit()},quickAdd,
  addMeal:()=>mealModal({}),addRecipe:()=>recipeModal(),addTask:()=>taskModal(),addGoal:()=>goalModal(),addNote:()=>noteModal(),addPantry:()=>pantryModal(),water:()=>addWater(1),
  genShopping,copyWeek,clearWeek,printWeek,printShopping,copyList,clearSamples,loadSamples,eraseAll,exportBackup,exportCSV,importBackup:()=>$('#importFile').click(),onboarding:()=>onboarding(0),diagnostics,
  snoozeBackup:()=>{state.ui.backupSnooze=addDays(today(),3);commit()},
@@ -1067,7 +1123,7 @@ document.addEventListener('change',e=>{
  else if(d.task){const t=state.tasks.find(x=>x.id===d.task);if(t){t.status=e.target.checked?'Done':'Open';commit();if(t.status==='Done')toast('Nice — task done','',()=>{t.status='Open';commit()})}}
  else if(d.eat){const m=state.meals.find(x=>x.id===d.eat);if(m){m.status=e.target.checked?'Eaten':'Planned';commit()}}
 });
-document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-recipe],[role=button][data-noteedit]')){e.preventDefault();e.target.click()}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('[role=button][data-recipe],[role=button][data-noteedit],[role=button][data-shopedit],[role=button][data-taskedit],[role=button][data-goaledit]')){e.preventDefault();e.target.click()}});
 
 /* ---------------- boot ---------------- */
 function bootBlocked(){return new Promise(res=>{const d=document.createElement('div');d.className='boot-block';d.setAttribute('role','alertdialog');d.setAttribute('aria-labelledby','bbT');
@@ -1078,14 +1134,15 @@ async function boot(){
  if(DEMO)document.documentElement.classList.add('is-demo');else await Store.init();
  let saved,readFail=false,corrupt=false;
  if(!DEMO&&Store.mode!=='unavailable'){try{saved=await Store.get('state')}catch(e){readFail=true}}
- if(!DEMO&&!saved&&!readFail&&Store.mode==='idb'){try{const raw=localStorage.getItem('mediterranean-meal-planner:state');if(raw)saved=JSON.parse(raw)}catch(e){}}
- if(!DEMO&&(Store.mode==='unavailable'||readFail)){await bootBlocked();Store.mode='memory';Store.temporary=true;saved=null}
- try{state=saved?migrate(saved):sampleState()}catch(e){corrupt=true;try{await Store.set('state_recovery_'+Date.now(),saved)}catch(_){}state=sampleState();state.settings.onboarded=true}
+
+ if(!DEMO&&(Store.mode==='unavailable'||readFail)){await bootBlocked();Store.mode='memory';Store.temporary=true;saved=undefined}
+ try{state=saved!==undefined?migrate(saved):sampleState()}catch(e){corrupt=true;try{const key='state_recovery_'+Date.now();if(!await Store.set(key,saved)||JSON.stringify(await Store.get(key))!==JSON.stringify(saved))throw new Error('Recovery copy failed')}catch(_){await bootBlocked();Store.mode='memory';Store.temporary=true}state=sampleState();state.settings.onboarded=true}
  if(DEMO)state.settings.onboarded=true;
  applyTheme();
  const h=(location.hash.match(/^#\/(\w+)/)||[])[1];
- go(h||state.ui.page||'home',{push:false});
- if((!saved||corrupt)&&!DEMO&&!Store.temporary)await flush();
+ go(h||state.ui.page||'home',{push:false,persist:false});
+ document.documentElement.classList.remove('booting');requestAnimationFrame(()=>requestAnimationFrame(()=>document.documentElement.classList.remove('no-transition')));
+ if((saved===undefined||corrupt)&&!DEMO&&!Store.temporary)await flush();
  if(corrupt)setTimeout(()=>toast('Your saved planner couldn’t be read, so a fresh one was started. The damaged copy was kept safely in this browser — message us on Etsy and we’ll help you recover it.','err'),600);
  if(!state.settings.onboarded)setTimeout(()=>onboarding(0),250);
  // Installable app when hosted online (service workers can't run from a downloaded file)
