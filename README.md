@@ -19,7 +19,12 @@ python3 build.py --sync
 Builds the full app, the hosted copy and the demo from the same source into `dist/`. With `--sync` it copies them into `1-SELL-THIS/`, `2-HOST-ONLINE/`, `3-HOST-DEMO/` and rebuilds the zip. Never edit the built HTML by hand — edit `src/` and rebuild.
 
 ## Start-Here PDF
-Edit `5-SOURCE/guide/start-here.html`, then `node 5-SOURCE/guide/make-guide.js "https://your-online-link"` and copy the PDF into `1-SELL-THIS/` before `build.py --sync`.
+2-page A4, forest green + sun gold, same layout as the ADHD Budget guide. Edit `5-SOURCE/guide/make-guide.cjs` (content, online link, QR from `guide/qr-online.png`), then from the project root:
+```
+node 5-SOURCE/guide/make-guide.cjs     # writes 1-SELL-THIS/Mediterranean-Meal-Planner-Start-Here.pdf
+cd 5-SOURCE && python3 build.py --sync # rebuilds app + zip with the new PDF
+```
+`guide/start-here.html` + `guide/make-guide.js` are the old v1 guide (not used).
 
 ## Tests (need `pip install playwright` + `python3 -m playwright install chromium`)
 ```
