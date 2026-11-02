@@ -1,0 +1,121 @@
+{
+  "files": [
+    {
+      "file": "01-hero.jpg",
+      "bytes": 804355,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "02-dashboard-unedited.jpg",
+      "bytes": 821486,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "03-plan-to-list.jpg",
+      "bytes": 971167,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "04-week-plan.jpg",
+      "bytes": 712905,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "05-on-your-phone.jpg",
+      "bytes": 805603,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "06-recipes.jpg",
+      "bytes": 870937,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "07-pantry.jpg",
+      "bytes": 852448,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "08-balance.jpg",
+      "bytes": 408317,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "09-tools.jpg",
+      "bytes": 484705,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "10-private.jpg",
+      "bytes": 795865,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    },
+    {
+      "file": "11-how-it-works.jpg",
+      "bytes": 290785,
+      "size": [
+        3000,
+        2250
+      ],
+      "format": "JPEG",
+      "icc": "sRGB"
+    }
+  ],
+  "raw_dashboard_sha256": "a4d889abcb380c4f69761091a4edbee626721a4bbf51b231d53cb471f3892c30",
+  "raw_dashboard_direct_capture": true,
+  "dashboard_viewport": [
+    1500,
+    1125
+  ],
+  "dashboard_device_scale_factor": 2
+}

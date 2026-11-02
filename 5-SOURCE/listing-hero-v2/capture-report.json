@@ -1,0 +1,43 @@
+{
+  "app": "/Users/macbook/Documents/Etsy/Mediterranean-Meal-Planner/1-SELL-THIS/Mediterranean-Meal-Planner.html",
+  "before": {
+    "total": 12,
+    "done": 3
+  },
+  "after_build": {
+    "total": 47,
+    "done": 3
+  },
+  "after_tick": {
+    "total": 47,
+    "done": 4
+  },
+  "build_button_bbox": {
+    "x": 393.03125,
+    "y": 206.34375,
+    "width": 180.390625,
+    "height": 44
+  },
+  "checkbox_bbox": {
+    "x": 278,
+    "y": 407.734375,
+    "width": 44,
+    "height": 44
+  },
+  "confirmation": "35 items added from 10 recipes \u00b7 26 merged \u00b7 13 already in pantry\nUndo",
+  "shopping_heading": "Shopping\n\n4 of 47 bought\n\nCopy\nPrint\nFrom week plan\nAuto aisle\nProduce\nHerbs & Spices\nBakery & Grains\nLegumes & Canned\nFish & Meat\nDairy & Eggs\nOils & Condiments\nNuts & Seeds\nFrozen\nOther\nAdd\nTo buy\nBought\nAll\nClear bought (4)\nPRODUCE\n\u00b7 14\nBerries\nhandful\nCarrots\n2\nCherry tomatoes\n1 box\nCucumber\n1\nG",
+  "page_errors": [],
+  "same_session": true,
+  "demo_bars_visible": false,
+  "tablet_viewport": [
+    1400,
+    1050
+  ],
+  "tablet_scale": 2,
+  "phone_viewport": [
+    393,
+    852
+  ],
+  "phone_scale": 3,
+  "note": "Phone capture uses the same session and sample data; grocery generation and checkbox were real UI clicks. End card is the existing exact listing hero, which depicts the earlier sample snapshot."
+}

@@ -1,37 +1,99 @@
-# Canva background brief — Mediterranean Meal Planner (v2 lifestyle images)
+# Canva backgrounds — Mediterranean Meal Planner
+Updated: 2026-11-01
 
-Save each Canva result here as bg-01.jpg ... bg-09.jpg (highest resolution Canva allows, landscape).
-Claude will crop to 3000x2250 and add the REAL app screens, device frames, shadows and text.
+- INFERENCE: Build the hero first using supplied `1.jpg`. Supporting background mappings are below.
+- VERIFIED: Source folder: `5-SOURCE/canva-bg/`. Supplied JPGs and older PNGs inspected below.
+- UNKNOWN: Current Canva stock availability, export limits and licences. These are generation/search directions, not verified Canva asset names.
 
-## Paste this at the END of every prompt
-Photorealistic editorial lifestyle photograph, shot on a full-frame camera with a 50mm lens, natural window light, soft shadows, true-to-life colours, slight film grain, warm Mediterranean palette of ivory linen, olive green, terracotta, lemon yellow and soft gold. Calm, unhurried, lived-in but tidy. No text, no letters, no logos, no labels, no brand names, no screens, no phones, no laptops, no tablets, no watermark. Leave the described empty area completely clear and evenly lit.
+## Supplied backgrounds — inspected 2026-11-01
 
-## bg-01  HERO (eye level)
-A sunlit rustic Mediterranean kitchen table at golden hour, camera at table height looking straight on. Warm late-afternoon sunlight from the left casting long soft window-frame shadows across a pale limewashed wall. Left edge: a ceramic bowl of lemons with leaves and a small olive branch. Right edge: a terracotta jug, a glass bottle of olive oil and a sprig of rosemary on a linen napkin. The entire centre 60% of the table and wall is empty, clean and softly lit. Table surface is light olive wood. Edges of the frame slightly darker, centre brightest.
+- VERIFIED: `1.jpg` through `6.jpg` exist; each is 3002×3002 px. All six were visually inspected in a contact sheet.
+- VERIFIED: Older `1.png` through `6.png` also exist; each is 1672×941 px. These are different scenes, not copies of the JPGs.
+- VERIFIED: `Hero.jpg` is absent from the folder at this check.
+- INFERENCE: Use the supplied JPG set; no new Canva generation needed. The prompts below are optional replacement references only.
 
-## bg-02  WEEK PLAN — "Sunday reset" (eye level)
-A quiet Sunday morning at a light oak table by a window, camera at table height. Left third: a cup of coffee on a saucer, an open linen notebook with a pencil, a small vase of wild herbs. Soft cool-morning light with warm highlights. The right two-thirds of the table and the plain warm-white wall behind are empty and evenly lit.
+| Supplied file | VERIFIED scene | INFERENCE use |
+|---|---|---|
+| `1.jpg` | Forest-green wall, wood table, lemons left, jug right | Main hero |
+| `2.jpg` | Ivory linen flat lay with produce at edges | Grocery list |
+| `3.jpg` | Ivory wall, table, coffee and notebook left | Weekly plan |
+| `4.jpg` | Pale wood flat lay with soup, lemon and spoon | Recipes |
+| `5.jpg` | Pantry jars left, ivory wall, oil right | Pantry |
+| `6.jpg` | Dark wall and table, candle left, linen and foliage right | Privacy / dark mode |
 
-## bg-03  GROCERY LIST — "Market day" (top-down flat lay)
-Overhead flat-lay, camera pointing straight down. A natural linen cloth on a wooden table. Around the edges: a woven market basket with vine tomatoes, lemons, a bunch of parsley, a crusty bread loaf, a paper bag of chickpeas, red onions, a cucumber. The middle 55% of the frame is empty linen, flat and evenly lit, nothing overlapping it.
+- INFERENCE: Place each square image inside a 3000×2250 layout using a reviewed crop. Avoid stretching. Preserve the tabletop for device placement; do not assume a centered crop fits every scene.
+- INFERENCE: Keep the existing market scene `6.png` for the phone-at-market slide if needed. Use solid fills for balance, tools and setup slides.
+- VERIFIED: Final layouts were rebuilt in `6-ETSY-LISTING/images/2026-11-01-premium/`. The contact sheet, full hero and center-crop preview were visually reviewed.
+- UNKNOWN: Live Etsy thumbnail appearance and buyer response; neither was tested.
 
-## bg-04  ON YOUR PHONE — "At the market" (eye level)
-Shallow-depth-of-field photo of a sunny outdoor Mediterranean produce market stall, heavily blurred background (bokeh) of crates of tomatoes, peppers, lemons and herbs, warm morning light. Foreground is soft and out of focus with plenty of empty space in the centre. No people's faces visible.
+## Export and layout
 
-## bg-05  RECIPES — "Cooking tonight" (top-down flat lay)
-Overhead flat-lay on a weathered pale wooden board. Upper left: a rustic bowl of red lentil soup with a swirl of olive oil and parsley. Lower left: a wooden spoon, a halved lemon, garlic cloves, a few bay leaves. Right edge: a folded linen towel. The centre and right-centre of the frame are empty board, flat and evenly lit.
+- INFERENCE: Use a 3000×2250 px landscape canvas, 4:3. Export the background at the highest available quality, without text or devices.
+- INFERENCE: Save new files under `5-SOURCE/canva-bg/` using the names below. Keep existing files.
+- VERIFIED: A centered 4:5 crop of this canvas retains x=600–2400.
+- INFERENCE: Keep the important composition inside x=660–2340. Put food and props near outer edges. Add real screenshots, device frames and copy separately.
+- INFERENCE: Check the actual Etsy thumbnail before upload. Leave the lower-right area free of essential text.
 
-## bg-06  PANTRY — "Use what you have" (eye level)
-A warm, tidy open pantry shelf with clear glass jars of lentils, chickpeas, pasta, rice and dried herbs, a bottle of olive oil and a basket of lemons, all on the LEFT 40% of the frame. Right 60% is a softly lit plain warm-white wall and empty shelf top, slightly blurred. Gentle side light.
+## 1. Hero — required first
 
-## bg-07  BALANCE — "A colourful week" (top-down flat lay)
-Overhead flat-lay of a Mediterranean mezze table: small bowls of hummus, olives, tomato salad, grilled vegetables, feta, figs, walnuts, flatbread — arranged only around the outer border of the frame. The centre 55% is empty pale stone or linen surface, evenly lit.
+- INFERENCE: Save as `hero-forest-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `dark green kitchen wall`, `olive wood table`, `Mediterranean kitchen dark green`.
+- INFERENCE: Paste this generation prompt:
 
-## bg-08  PRIVATE / DARK MODE — "Evening, dinner's handled" (eye level)
-A calm evening dinner table by a window at blue hour: deep blue dusk outside, warm candlelight inside. Left side: two lit candles in brass holders, a carafe of water, a small olive branch. Right side: a linen napkin and a ceramic plate. The centre of the table and the dark wall behind are empty, softly lit by candle glow. Moody, warm, intimate, low-key lighting.
+```text
+Photorealistic premium Mediterranean kitchen background, landscape 4:3. Straight-on camera at table height. Deep matte forest-green limewashed wall across the upper two-thirds. Pale olive-wood tabletop across the lower third. Soft natural window light from the left, gentle realistic shadows, restrained warm gold highlights. A small bowl of lemons and olive leaves at the far left edge; a terracotta jug at the far right edge. Keep the central 60 percent of the whole frame completely empty, with an even dark wall for ivory headline text and a clear tabletop for a tablet and phone to be added later. Props must stay at the outer edges. No text, letters, numbers, logos, labels, watermark, people, hands, phones, tablets, computers, screens or device-shaped objects.
+```
 
-## bg-09  FAMILY TABLE — "More time for what matters" (eye level, optional emotional image)
-A long Mediterranean family dinner table outdoors under a vine pergola at sunset, warm string lights, plates of shared food, hands passing a bread basket, people shown only from the shoulders down or completely out of focus, no clear faces. Upper-centre area of the frame is soft, blurred greenery and warm light with no detail, suitable for a large headline.
+- INFERENCE: Add these three text tiers after generation: `A REAL APP • NOT A PDF`, `Mediterranean Meal Planner`, `Build your grocery list in one tap`.
+- INFERENCE: Put a real Week Plan screenshot on the tablet and a real Shopping screenshot on the phone. Do not paint or invent app UI.
 
-## Text/plain images (no Canva needed)
-08-12-tools and 10-how-it-works stay on a clean ivory linen texture. Optional: bg-10 "Close-up of plain ivory linen fabric texture, evenly lit, flat, no wrinkles in the centre".
+## 2. Grocery list — optional second priority
+
+- INFERENCE: Save as `grocery-linen-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `Mediterranean groceries flat lay copy space`, `linen market vegetables border`.
+
+```text
+Photorealistic overhead Mediterranean grocery flat lay, landscape 4:3. Warm ivory linen on a pale wood table. Small clusters of tomatoes, lemons, parsley, chickpeas and a woven market basket only along the far left and far right edges. Keep the central 60 percent completely clear, flat and evenly lit for two real phone mockups to be added later. Natural morning light, olive green and terracotta accents, tidy editorial food photography. No text, letters, logos, labels, watermark, people, hands, devices or screens.
+```
+
+## 3. Week plan — optional
+
+- INFERENCE: Save as `week-sunday-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `Sunday coffee table copy space`, `minimal oak desk morning wall`.
+
+```text
+Photorealistic quiet Sunday kitchen table, landscape 4:3, straight-on camera at table height. Pale oak tabletop and plain warm ivory wall. Soft window light. A coffee cup and closed linen notebook at the far left edge, a tiny olive branch at the far right. Central 60 percent of the wall and tabletop empty and evenly lit for a laptop and headline to be added later. Calm Mediterranean palette, gentle shadows. No text, letters, logos, watermark, people, devices or screens.
+```
+
+## 4. Recipes — optional
+
+- INFERENCE: Save as `recipes-lentil-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `lentil soup flat lay copy space`, `Mediterranean cooking pale wood`.
+
+```text
+Photorealistic overhead pale wooden cooking table, landscape 4:3. Small bowl of red lentil soup with parsley in the upper-left corner, lemon half and wooden spoon along the far left border, folded ivory towel at the far right border. The central 60 percent is completely empty pale wood, evenly lit for real app screenshots to be added later. Natural warm daylight, realistic food texture. No text, letters, logos, labels, watermark, people, hands, devices or screens.
+```
+
+## 5. Pantry — optional
+
+- INFERENCE: Save as `pantry-jars-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `pantry glass jars copy space`, `minimal pantry shelf wall`.
+
+```text
+Photorealistic Mediterranean pantry shelf, landscape 4:3, straight-on camera. Clear unlabelled glass jars of lentils, chickpeas and pasta clustered at the far left, small olive-oil bottle at the far right. Warm ivory wall and pale wood shelf. Central 60 percent completely empty and evenly lit for real phone mockups to be added later. Gentle side light, tidy realistic home setting. No text, letters, labels, logos, watermark, people, devices or screens.
+```
+
+## 6. Privacy / dark mode — optional
+
+- INFERENCE: Save as `evening-forest-clean-2026-11.jpg`.
+- INFERENCE: Canva search terms: `dark green table evening copy space`, `moody olive branch candle`.
+
+```text
+Photorealistic calm evening Mediterranean interior, landscape 4:3. Deep forest-green wall and dark wooden tabletop. Small brass candle holder at the far left, folded linen and olive branch at the far right. Soft warm side light, central 60 percent empty with enough light to distinguish device frames to be added later. Restrained, premium, realistic shadows. No text, letters, logos, labels, watermark, people, devices or screens.
+```
+
+## Other slides
+
+- INFERENCE: Use a plain ivory or forest-green background for balance, tools and setup slides. Build this directly in Canva with a solid fill; no generated scene needed.
+- INFERENCE: Skip an extra family-table image for now. Prioritize clear product screens and the grocery benefit.
+- VERIFIED: Supplied files were inspected and mapped during this update. No assets were generated or downloaded.

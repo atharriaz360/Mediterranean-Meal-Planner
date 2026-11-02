@@ -1,0 +1,15 @@
+{
+  "source_app": "/Users/macbook/Documents/Etsy/Mediterranean-Meal-Planner/1-SELL-THIS/Mediterranean-Meal-Planner.html",
+  "viewport": [
+    1500,
+    1125
+  ],
+  "device_scale_factor": 2,
+  "pixels": [
+    3000,
+    2250
+  ],
+  "page_errors": [],
+  "method": "Direct Playwright page.screenshot. Onboarding completed through UI; Home selected through UI. No injected CSS, crop, resize, framing, overlay or retouch. Stock sample data.",
+  "sha256": "a4d889abcb380c4f69761091a4edbee626721a4bbf51b231d53cb471f3892c30"
+}
