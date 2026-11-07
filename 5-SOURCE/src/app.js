@@ -257,7 +257,7 @@ function defaultWeekStart(){try{const l=navigator.language||'';return /^(en-US|e
 function blankState(){
  return {app:'mediterranean-meal-planner',version:2,createdAt:new Date().toISOString(),
   profile:{name:'',plannerName:'My Mediterranean Planner'},
-  settings:{theme:'system',accent:'forest',weekStart:defaultWeekStart(),waterGoal:8,dateFormat:'auto',showCalories:true,backupRemind:true,lastBackup:null,onboarded:false,sampleCleared:false},
+  settings:{theme:'system',accent:'forest',weekStart:defaultWeekStart(),waterGoal:8,dateFormat:'auto',showCalories:true,backupRemind:true,lastBackup:null,onboarded:false,sampleCleared:false,sampleHintHidden:false},
   recipes:[],meals:[],shopping:[],pantry:[],tasks:[],goals:[],notes:[],water:{},
   ui:{page:'home',weekOffset:0,calMonth:null,calYear:null,recipeFilter:'All',shopFilter:'open',backupSnooze:null}};
 }
@@ -341,7 +341,7 @@ function normalize(x){
  o.profile={name:str(P.name,60),plannerName:str(P.plannerName,80)||b.profile.plannerName};
  o.settings={theme:oneOf(S.theme,['system','light','dark'],'system'),accent:oneOf(S.accent,Object.keys(ACCENTS),'forest'),weekStart:oneOf(S.weekStart,[0,1,6],b.settings.weekStart),
   waterGoal:Math.round(numOr(S.waterGoal,1,30)||8),dateFormat:oneOf(S.dateFormat,['auto','DMY','MDY','YMD'],'auto'),showCalories:S.showCalories!==false,backupRemind:S.backupRemind!==false,
-  lastBackup:typeof S.lastBackup==='string'&&!isNaN(Date.parse(S.lastBackup))?S.lastBackup:null,onboarded:!!S.onboarded,sampleCleared:!!S.sampleCleared};
+  lastBackup:typeof S.lastBackup==='string'&&!isNaN(Date.parse(S.lastBackup))?S.lastBackup:null,onboarded:!!S.onboarded,sampleCleared:!!S.sampleCleared,sampleHintHidden:!!S.sampleHintHidden};
  o.ui={page:oneOf(U.page,PAGES.map(p=>p[0]),'home'),weekOffset:Math.round(numOr(U.weekOffset,-520,520)||0),calMonth:Number.isInteger(U.calMonth)&&U.calMonth>=0&&U.calMonth<12?U.calMonth:null,
   calYear:Number.isInteger(U.calYear)&&U.calYear>1900&&U.calYear<3000?U.calYear:null,recipeFilter:oneOf(U.recipeFilter,['All','Favourites',...RECIPE_CATS],'All'),
   shopFilter:oneOf(U.shopFilter,['open','done','all'],'open'),backupSnooze:isDate(U.backupSnooze)?U.backupSnooze:null};
@@ -480,7 +480,7 @@ function renderNav(){
  const due=state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=today()).length;
  updateHTML($('#bellBtn'),ic('bell')+(due?`<i class="bdg">${due>9?'9+':due}</i>`:''));
  const bn=[['home','home','Home'],['week','week','Week'],['recipes','book','Recipes'],['shopping','cart','Shop'],['more','more','More']];
- updateHTML($('#bottomNav'),bn.map(([id,icn,l])=>`<button ${id==='more'?'data-action="menu"':`data-go="${id}"`} class="${state.ui.page===id?'active':''}">${ic(icn)}<span>${l}</span></button>`).join(''));
+ updateHTML($('#bottomNav'),bn.map(([id,icn,l])=>`<button ${id==='more'?'data-action="menu"':`data-go="${id}"`} class="${state.ui.page===id?'active':''}"${state.ui.page===id?' aria-current="page"':''}>${ic(icn)}<span>${l}</span></button>`).join(''));
 }
 function go(page,{push=true,persist=true}={}){
  if(!PAGES.some(p=>p[0]===page))page='home';
@@ -521,7 +521,7 @@ function renderBanners(){
  const lb=state.settings.lastBackup,uc=userCount();
  const due=state.settings.backupRemind&&uc>=5&&(!lb||(Date.now()-new Date(lb).getTime())>7*864e5)&&(!state.ui.backupSnooze||state.ui.backupSnooze<=t);
  if(due&&['home','settings','week'].includes(state.ui.page))b.push(`<div class="banner"><div class="ic">${ic('shield')}</div><div class="grow"><b>Time for a quick backup</b>${lb?'Your last backup was '+fmtDate(ymd(new Date(lb)))+'.':'You haven’t backed up yet.'} Save a copy so you never lose your plans.</div><button class="btn sm ghost" data-action="snoozeBackup">Later</button><button class="btn sm primary" data-action="exportBackup">${ic('down')}Back up</button></div>`);
- if(hasSamples()&&state.ui.page==='home')b.push(`<div class="banner"><div class="ic">${ic('spark')}</div><div class="grow"><b>You’re looking at a sample week</b>Explore how everything works, then clear the examples and make it yours.</div><button class="btn sm" data-action="clearSamples">Clear sample data</button></div>`);
+ if(hasSamples()&&!state.settings.sampleHintHidden&&state.ui.page==='home')b.push(`<div class="banner sample"><div class="ic">${ic('spark')}</div><div class="grow"><b>You’re looking at a sample week</b>Explore how everything works, then clear the examples and make it yours.</div><button class="btn sm" data-action="clearSamples">Clear sample data</button><button class="btn sm icon ghost banner-x" data-action="hideSampleHint" aria-label="Dismiss sample week message" title="Dismiss">${ic('x')}</button></div>`);
  updateHTML($('#banners'),b.join(''));
 }
 
@@ -828,7 +828,7 @@ function pShopping(){
   <form class="addbar no-print" id="shopAdd" autocomplete="off"><input id="sName" placeholder="Add an item — e.g. Cherry tomatoes" aria-label="Item"><input id="sQty" placeholder="Qty" aria-label="Quantity"><select id="sAisle" aria-label="Aisle"><option value="">Auto aisle</option>${AISLES.map(a=>`<option>${a}</option>`).join('')}</select><button class="btn primary" type="submit">${ic('plus')}Add</button></form>
   ${total?`<div class="bar no-print" style="margin:14px 0 4px"><i style="width:${done/total*100}%"></i></div>`:''}
   <div class="toolbar no-print" style="margin:12px 0 0">${segmented('shopSeg',['To buy','Bought','All'],{open:'To buy',done:'Bought',all:'All'}[f])}${done?`<button class="btn sm ghost" data-action="clearBought" style="margin-left:auto">${ic('trash')}Clear bought (${done})</button>`:''}</div>
-  ${by.map(([a,list])=>`<div class="aisle"><h4>${a} <span class="n">· ${list.length}</span></h4><div class="list">${list.map(i=>`<div class="li ${i.done?'done':''}"><input type="checkbox" class="chk" data-shop="${i.id}" ${i.done?'checked':''} aria-label="${esc(i.name)}"><div class="grow" data-shopedit="${i.id}" role="button" tabindex="0" style="cursor:pointer"><div class="t">${esc(i.name)}</div>${i.qty?`<div class="s">${esc(i.qty)}</div>`:''}</div><button class="btn sm icon ghost no-print" data-del="shopping|${i.id}" aria-label="Delete ${esc(i.name)}">${ic('x')}</button></div>`).join('')}</div></div>`).join('')||emptyState('cart',f==='done'?'Nothing ticked off yet':'Your list is empty','Add items above, or build it from this week’s meal plan in one tap.')}
+  ${by.map(([a,list])=>`<div class="aisle"><h4>${a} <span class="n" aria-label="${list.length} items">${list.length}</span></h4><div class="list">${list.map(i=>`<div class="li ${i.done?'done':''}"><input type="checkbox" class="chk" data-shop="${i.id}" ${i.done?'checked':''} aria-label="${esc(i.name)}"><div class="grow" data-shopedit="${i.id}" role="button" tabindex="0" style="cursor:pointer"><div class="t">${esc(i.name)}</div>${i.qty?`<div class="s">${esc(i.qty)}</div>`:''}</div><button class="btn sm icon ghost no-print" data-del="shopping|${i.id}" aria-label="Delete ${esc(i.name)}">${ic('x')}</button></div>`).join('')}</div></div>`).join('')||emptyState('cart',f==='done'?'Nothing ticked off yet':'Your list is empty','Add items above, or build it from this week’s meal plan in one tap.')}
  </div>`);
  $('#shopAdd').onsubmit=e=>{e.preventDefault();const n=$('#sName').value.trim();if(!n)return;state.shopping.push({id:uid(),name:n,qty:$('#sQty').value.trim(),aisle:$('#sAisle').value||guessAisle(n),done:false,isSample:false});commit();$('#sName').focus()};
  $$('#shopSeg button').forEach(b=>b.onclick=()=>{state.ui.shopFilter={'To buy':'open',Bought:'done',All:'all'}[b.dataset.v];commit()});
@@ -1012,7 +1012,7 @@ async function clearSamples(){
  if(!await confirmBox('All example meals, recipes and lists will be removed. Anything you added yourself stays.',{title:'Clear sample data?',ok:'Clear samples'}))return;
  takeSnapshot();COLLECTIONS.forEach(k=>state[k]=state[k].filter(x=>!x.isSample));state.water={};state.settings.sampleCleared=true;commit();toast('Sample data cleared — it’s all yours now','',restoreSnapshot);
 }
-function loadSamples(){const smp=sampleState();takeSnapshot();COLLECTIONS.forEach(k=>state[k]=state[k].concat(smp[k]));state.settings.sampleCleared=false;commit();toast('Sample week loaded','',restoreSnapshot)}
+function loadSamples(){const smp=sampleState();takeSnapshot();COLLECTIONS.forEach(k=>state[k]=state[k].concat(smp[k]));state.settings.sampleCleared=false;state.settings.sampleHintHidden=false;commit();toast('Sample week loaded','',restoreSnapshot)}
 async function eraseAll(){
  if(!await confirmBox('This permanently deletes every meal, recipe, list and note in this browser. Make a backup first if you might want them later.',{title:'Erase everything?',ok:'Erase everything',danger:true}))return;
  const keep={theme:state.settings.theme,accent:state.settings.accent};takeSnapshot();state=blankState();Object.assign(state.settings,keep,{onboarded:true,sampleCleared:true});applyTheme();commit();go('home');toast('Planner erased','',restoreSnapshot);
@@ -1090,6 +1090,7 @@ async function diagnostics(){
 const ACTIONS={reload:()=>location.reload(),menu:openSidebar,toggleTheme:()=>{state.settings.theme=document.documentElement.dataset.theme==='dark'?'light':'dark';applyTheme();commit()},quickAdd,
  addMeal:()=>mealModal({}),addRecipe:()=>recipeModal(),addTask:()=>taskModal(),addGoal:()=>goalModal(),addNote:()=>noteModal(),addPantry:()=>pantryModal(),water:()=>addWater(1),
  genShopping,copyWeek,clearWeek,printWeek,printShopping,copyList,clearSamples,loadSamples,eraseAll,exportBackup,exportCSV,importBackup:()=>$('#importFile').click(),onboarding:()=>onboarding(0),diagnostics,
+ hideSampleHint:()=>{state.settings.sampleHintHidden=true;commit();toast('Message hidden — manage samples in Settings','',()=>{state.settings.sampleHintHidden=false;commit()})},
  snoozeBackup:()=>{state.ui.backupSnooze=addDays(today(),3);commit()},
  clearBought:()=>{takeSnapshot();const n=state.shopping.filter(i=>i.done).length;state.shopping=state.shopping.filter(i=>!i.done);commit();toast(`Cleared ${n} bought item${n===1?'':'s'}`,'',restoreSnapshot)},
  clearDone:()=>{takeSnapshot();state.tasks=state.tasks.filter(t=>t.status!=='Done');commit();toast('Finished tasks cleared','',restoreSnapshot)}};
