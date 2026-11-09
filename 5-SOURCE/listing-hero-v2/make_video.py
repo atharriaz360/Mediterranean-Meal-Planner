@@ -1,58 +1,284 @@
-import ast,json,sys
+"""Build the Etsy video from fresh buyer HTML captures and the current hero."""
+import argparse
+from hashlib import sha256
+from io import BytesIO
+import json
 from pathlib import Path
-HERE=Path(__file__).resolve().parent;ROOT=HERE.parents[1]
-sys.path.insert(0,str(ROOT/'5-SOURCE/listing'))
-import render_listing as base
-css=base.CSS
-for node in ast.parse((ROOT/'5-SOURCE/listing/render_premium.py').read_text()).body:
- if isinstance(node,ast.AugAssign) and isinstance(node.target,ast.Attribute) and node.target.attr=='CSS':css+=ast.literal_eval(node.value)
-report=json.loads((HERE/'capture-report.json').read_text())
-def uri(p):return p.as_uri()
-def device(name,kind='phone',second=False):
- asset=ROOT/'5-SOURCE/listing/assets'/('iphone-15-pro-photo.png' if kind=='phone' else 'ipad-pro-photo.png')
- return f'<div class="device {kind} {"second" if second else ""}"><img class="hardware" src="{uri(asset)}"><div class="display"><img src="{uri(HERE/"captures"/(name+".png"))}"></div>'+ (f'<img class="island" src="{uri(asset)}">' if kind=='phone' else '')+'</div>'
-def scene(n,title,eyebrow,bg,content,dark=False):
- photo=ROOT/'5-SOURCE/canva-bg'/bg
- return f'<section id="s{n}" class="scene {"dark" if dark else ""}"><img class="bg" src="{uri(photo)}"><div class="wash"></div><header><div class="eyebrow">{eyebrow}</div><h1>{title}</h1></header>{content}</section>'
-# CSS reuses the photographic device compositing from the final image set.
-css+='''html,body{width:1440px;height:1080px;overflow:hidden;background:#10291c}.stage{width:3000px;height:2250px;position:relative;transform:scale(.48);transform-origin:0 0}.scene{position:absolute;inset:0;opacity:0;overflow:hidden}.scene header{left:320px;width:2360px;top:150px}.scene h1{font-size:170px;line-height:1.05;margin-top:32px}.scene h1 em{font-weight:400;color:#99722b}.scene.dark h1 em{color:#efd293}.scene .eyebrow{font-size:42px;letter-spacing:7px}.scene .tablet{left:420px;top:650px;width:1750px;height:1339px}.scene .phone{left:2090px;top:850px;width:470px;height:976px}.scene .wide{left:650px;top:650px;width:1700px;height:1301px}.scene .duophone{position:absolute;inset:0}.duophone .phone{left:820px;top:650px;width:590px;height:1225px}.duophone .phone.second{left:1600px;top:735px}.scene .subline{position:absolute;top:2030px;left:330px;width:2340px;text-align:center;font-size:52px;color:#254c39}.scene.dark .subline{color:#fff5dd}.mess{position:absolute;padding:50px 60px;background:#fff6df;color:#183e2d;font-size:58px;box-shadow:0 25px 60px #0004;border-radius:16px;max-width:900px}.mess.m1{left:460px;top:1060px;rotate:-7deg}.mess.m2{left:1660px;top:1100px;rotate:6deg}.mess.m3{left:1030px;top:1530px;rotate:-3deg}.cursor{position:absolute;z-index:9;filter:drop-shadow(0 5px 3px #0005);width:65px;height:85px}.tap{position:absolute;z-index:8;border:8px solid #dcb45c;border-radius:50%;width:120px;height:120px;pointer-events:none}.grid{left:450px;top:670px;width:2100px;grid-template-columns:repeat(4,1fr);gap:20px}.tile img{height:310px}.tile span{font-size:32px;padding:9px}.count{position:absolute;top:375px;left:0;right:0;text-align:center;font:400 190px Georgia;color:#fff5dd}.tools h1{font-size:125px}.grain{position:absolute;inset:0;pointer-events:none;opacity:.018;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23n)' d='M0 0h160v160H0z'/%3E%3C/svg%3E")}.end img{width:3000px;height:2250px;object-fit:cover;position:absolute;inset:0}.end{z-index:10}
-'''
-body=scene(0,'Still planning <em>everywhere?</em>','MEDITERRANEAN MEAL PLANNER','1.jpg','<div class="mess m1">Meals in notes</div><div class="mess m2">Recipes in tabs</div><div class="mess m3">Another shopping list</div>',True)
-# Before and after states below were captured after real UI actions.
-builddev=device('week-before','wide').replace('<div class="display">','<div class="display" id="action-display">')
-builddev=builddev.replace('</div></div>',f'<img id="built" src="{uri(HERE/"captures/shopping-built.png")}" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"><img id="ticked" src="{uri(HERE/"captures/shopping-ticked.png")}" style="position:absolute;inset:0;width:100%;height:100%;opacity:0"></div></div>')
-cursor='<svg id="cursor" class="cursor" viewBox="0 0 30 40"><path d="M3 2V32l8-8 7 14 6-3-7-13 11-1Z" fill="white" stroke="#173e2b" stroke-width="2"/></svg><div id="tap" class="tap"></div>'
-body+=scene(1,'Your grocery list. <em>One tap.</em>','FROM YOUR REAL WEEK PLAN','2.jpg',builddev+cursor+'<div class="subline" id="action-note">Choose meals → Build list → Tick as you shop</div>')
-body+=scene(2,'Recipes, <em>all together.</em>','YOUR COOKING COLLECTION','4.jpg',device('recipes','tablet')+device('recipes-phone'))
-body+=scene(3,'Know what’s <em>already there.</em>','PANTRY + USE-BY DATES','5.jpg',device('pantry','tablet')+device('pantry-phone'))
-body+=scene(4,'Track your <em>daily habits.</em>','BALANCE · GOALS · WATER','3.jpg',device('balance','tablet')+device('goals-phone')+'<div class="subline">Planning aid · Not medical advice</div>')
-body+=scene(5,'Your plans. <em>Your device.</em>','DARK MODE · BACKUP & RESTORE','6.jpg',device('settings-dark','tablet')+device('shopping-phone')+'<div class="subline">Local browser storage · Back up regularly</div>',True)
-labels=[('home','Home'),('week-before','Week plan'),('home','Today*'),('calendar','Calendar'),('recipes','Recipes'),('shopping-ticked','Shopping'),('pantry','Pantry'),('prep','Prep'),('balance','Balance'),('goals','Goals & water'),('journal','Journal'),('settings','Settings')]
-# Today is captured separately; no substituted UI in the overview.
-labels[2]=('today','Today')
-grid='<div class="grid">'+''.join(f'<div class="tile"><img src="{uri(HERE/"captures"/(n+".png"))}"><span>{l}</span></div>' for n,l in labels)+'</div>'
-body+=scene(6,'One app. <em>Your daily tools.</em>','12 REAL APP VIEWS','6.jpg',grid,True)
-hero=ROOT/'6-ETSY-LISTING/images/2026-11-01-premium/01-hero.jpg'
-body+=f'<section id="s7" class="scene end"><img id="end-hero" src="{uri(hero)}"></section>'
-box=report['build_button_bbox'];check=report['checkbox_bbox']
-# Wide tablet display bounds in stage pixels: normalized photographic aperture.
-def point(b):return [650+1700*.0409+(b['x']+b['width']/2)/1400*(1700*.9212),650+1301*.0529+(b['y']+b['height']/2)/1050*(1301*.8964)]
-coords=json.dumps({'build':point(box),'tick':point(check)})
-js='''const P=COORDS;const el=id=>document.getElementById(id),cl=x=>Math.min(1,Math.max(0,x));const ease=x=>1-Math.pow(1-cl(x),3);const smooth=x=>{x=cl(x);return x*x*(3-2*x)};
-const starts=[0,1.65,5.3,6.8,8.3,9.8,11.1,12.3];
-window.R=function(t){
- for(let i=0;i<8;i++){const a=starts[i],end=i<7?starts[i+1]+.35:15;const incoming=i===0?1:smooth((t-a)/.35),outgoing=i===7?1:1-smooth((t-end+.35)/.35);const s=el('s'+i);s.style.opacity=t<a||t>end?0:incoming*outgoing;
-  const local=Math.max(0,t-a);const bg=s.querySelector('.bg');if(bg)bg.style.transform=`scale(${1+Math.min(local,5)*.01})`;
-  for(const [j,sel] of [[0,'.eyebrow'],[1,'h1']]){const q=s.querySelector(sel);if(q){const k=i===0?1:ease((local-.08-j*.12)/.42);q.style.opacity=k;q.style.transform=`translateY(${40*(1-k)}px)`}}
-  s.querySelectorAll('.device').forEach((d,j)=>{const k=ease((local-.12-j*.1)/.45);d.style.translate=j===1?`${(1-k)*350}px 0`:`0 ${(1-k)*100}px`});
- }
- document.querySelectorAll('.mess').forEach((e,i)=>{const k=ease((t-i*.12)/.45),bye=smooth((t-1.05)/.65);e.style.opacity=k*(1-bye);e.style.translate=`0 ${(1-k)*120+bye*80}px`;e.style.filter=`blur(${bye*12}px)`});
- el('built').style.opacity=smooth((t-2.95)/.22);el('ticked').style.opacity=smooth((t-4.15)/.18);
- let px=P.build[0],py=P.build[1];const travel=smooth((t-3.4)/.65);px+=(P.tick[0]-px)*travel;py+=(P.tick[1]-py)*travel;
- const zoom=1+.15*smooth((t-2.9)/1.3);const action=document.querySelector('#s1 .wide');action.style.transformOrigin='50% 50%';action.style.transform=`scale(${zoom})`;px=1500+(px-1500)*zoom;py=1300.5+(py-1300.5)*zoom;const cur=el('cursor');cur.style.left=px+'px';cur.style.top=py+'px';cur.style.opacity=t>2.25&&t<4.55?1:0;
- const q=t<3.4?(t-2.83)/.4:(t-4.05)/.4;const tap=el('tap');tap.style.left=(px-60)+'px';tap.style.top=(py-60)+'px';tap.style.scale=.5+cl(q)*1.0;tap.style.opacity=q>=0&&q<=1?1-q:0;
- el('end-hero').style.transform=`scale(${1.06-.06*ease((t-12.3)/.8)})`;
- if(t>=13.1){el('s7').style.opacity=1;el('end-hero').style.transform='scale(1)'}
-};R(0);'''.replace('COORDS',coords)
-(HERE/'video.html').write_text(f'<!doctype html><meta charset="utf-8"><style>{css}</style><div class="stage">{body}<div class="grain"></div></div><script>{js}</script>')
-print('VERIFIED: video.html generated.')
+import subprocess
+
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont, ImageStat
+from playwright.sync_api import sync_playwright
+
+WIDTH, HEIGHT, FPS, FRAMES = 2160, 1080, 30, 444
+SPEED = 1.3
+SIZE = (WIDTH, HEIGHT)
+SAFE = (432, 1728)
+VIDEO = 'Mediterranean-Meal-Planner-Listing-Video-v2.mp4'
+SHEET = 'Mediterranean-Meal-Planner-Video-v2-Contact-Sheet.png'
+SCREEN_X, SCREEN_Y, SCREEN_W = 450, 238, 820
+
+
+def digest(path):
+    return sha256(path.read_bytes()).hexdigest()
+
+
+def font(size, serif=False):
+    mac = Path('/System/Library/Fonts/Supplemental')
+    if mac.exists():
+        path = mac / ('Georgia Bold.ttf' if serif else 'Arial Bold.ttf')
+    else:
+        path = Path('/usr/share/fonts/truetype/dejavu') / (
+            'DejaVuSerif-Bold.ttf' if serif else 'DejaVuSans-Bold.ttf')
+    return ImageFont.truetype(str(path), size)
+
+
+def shot(page):
+    return Image.open(BytesIO(page.screenshot(animations='disabled'))).convert('RGB')
+
+
+def capture(app):
+    errors = []
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        page = browser.new_page(viewport={'width': 1280, 'height': 850},
+                                device_scale_factor=1, offline=True, color_scheme='light')
+        page.on('pageerror', lambda error: errors.append(str(error)))
+        page.goto(app.as_uri())
+        page.wait_for_timeout(1100)
+        for _ in range(6):
+            if not page.locator('#overlay.open').count():
+                break
+            page.locator('#modal .m-f button').last.click()
+            page.wait_for_timeout(300)
+        page.wait_for_timeout(4500)
+        page.locator('#overlay.open').wait_for(state='hidden')
+        page.locator('[data-go="week"]').first.click()
+        page.locator('#page-week.active').wait_for()
+        page.wait_for_timeout(650)
+        week = shot(page)
+        build = page.locator('#page-week [data-action="genShopping"]')
+        build_box = build.bounding_box()
+        before = page.evaluate('state.shopping.length')
+        build.click()
+        page.locator('#page-shopping.active').wait_for()
+        page.locator('#toasts .toast').first.wait_for(state='visible')
+        toast = page.locator('#toasts .toast').first.inner_text()
+        built_toast = shot(page)
+        after = page.evaluate('state.shopping.length')
+        assert after > before, (before, after)
+        page.locator('#toasts .toast').first.wait_for(state='hidden', timeout=15000)
+        built = shot(page)
+        check = page.locator('#page-shopping input[type=checkbox]:not(:checked)').first
+        tick_box = check.bounding_box()
+        count_before = page.evaluate('state.shopping.filter(item => item.done).length')
+        check.click()
+        count_after = page.evaluate('state.shopping.filter(item => item.done).length')
+        assert count_after == count_before + 1
+        ticked = shot(page)
+        page.locator('[data-go="recipes"]').first.click()
+        page.locator('#page-recipes.active').wait_for()
+        page.wait_for_timeout(400)
+        recipes = shot(page)
+        assert not errors, errors
+        browser.close()
+    return (week, built_toast, built, ticked, recipes), (build_box, tick_box), {
+        'shopping_items': [before, after], 'checked_items': [count_before, count_after],
+        'actual_build_confirmation': toast, 'page_errors': errors,
+    }
+
+
+def blend(a, b, progress):
+    progress = min(1, max(0, progress))
+    return Image.blend(a, b, progress * progress * (3 - 2 * progress))
+
+
+def compose(hero, photos, boxes):
+    backdrop = hero.resize(SIZE, Image.Resampling.LANCZOS).filter(ImageFilter.GaussianBlur(55))
+    backdrop = Image.blend(backdrop, Image.new('RGB', SIZE, '#16241c'), .78)
+    end = backdrop.copy()
+    end.paste(hero.resize((1296, 972), Image.Resampling.LANCZOS), (432, 54))
+
+    hook = backdrop.copy()
+    hook.paste(hero.resize((1120, 840), Image.Resampling.LANCZOS), (520, 148))
+    heading = font(64, True)
+    accent = '#f0c777'
+    d = ImageDraw.Draw(hook)
+    d.text((1080, 39), 'Still planning everywhere?', font=heading, fill='#fff9ec', anchor='mt')
+
+    def panel(photo, lines, step):
+        scene = backdrop.copy()
+        d = ImageDraw.Draw(scene)
+        height = round(photo.height * SCREEN_W / photo.width)
+        d.rounded_rectangle((SCREEN_X - 10, SCREEN_Y - 10,
+                             SCREEN_X + SCREEN_W + 10, SCREEN_Y + height + 10),
+                            14, fill='#242923', outline='#7e7766', width=2)
+        scene.paste(photo.resize((SCREEN_W, height), Image.Resampling.LANCZOS),
+                    (SCREEN_X, SCREEN_Y))
+        x = 1306
+        d.text((x, 328), step, font=font(64), fill=accent, anchor='lt')
+        d.rectangle((x, 407, x + 95, 411), fill=accent)
+        for i, line in enumerate(lines):
+            assert x + d.textlength(line, font=heading) <= SAFE[1], line
+            d.text((x, 461 + 76 * i), line, font=heading,
+                   fill=accent if i else '#fff9ec', anchor='lt')
+        return scene
+
+    week, toast, built, ticked, recipes = photos
+    scenes = [
+        panel(week, ['Plan your', 'week'], 'STEP 1'),
+        panel(toast, ['Plan your', 'week'], 'STEP 1'),
+        panel(built, ['Build your', 'grocery list'], 'STEP 2'),
+        panel(ticked, ['Tick as', 'you shop'], 'STEP 3'),
+        panel(recipes, ['Save your', 'recipes'], 'STEP 4'),
+    ]
+
+    def ripple(scene, box, progress):
+        if not 0 <= progress < 1:
+            return scene
+        x = SCREEN_X + (box['x'] + box['width'] / 2) * SCREEN_W / 1280
+        y = SCREEN_Y + (box['y'] + box['height'] / 2) * SCREEN_W / 1280
+        layer = Image.new('RGBA', SIZE)
+        radius = 10 + 38 * (1 - (1 - progress)**3)
+        ImageDraw.Draw(layer).ellipse((x-radius, y-radius, x+radius, y+radius),
+                                      outline=(240, 199, 119, round(245*(1-progress))), width=4)
+        return Image.alpha_composite(scene.convert('RGBA'), layer).convert('RGB')
+
+    def end_push(progress):
+        scale = .975 + .025 * (1 - (1 - progress)**3)
+        width = round(1296 * scale)
+        height = round(972 * scale)
+        image = backdrop.copy()
+        image.paste(hero.resize((width, height), Image.Resampling.LANCZOS),
+                    ((WIDTH - width) // 2, (HEIGHT - height) // 2))
+        return image
+
+    panel_box = (440, 228, 1281, 794)
+    panel_images = [scene.crop(panel_box) for scene in scenes]
+
+    def drift(scene_index, authored_elapsed, duration):
+        # Hold captions still and ease the app panel toward the viewer.
+        progress = min(1, max(0, authored_elapsed / duration))
+        scale = 1 + .018 * (4 * progress * (1 - progress))
+        panel_image = panel_images[scene_index]
+        w, h = panel_image.size
+        scaled = panel_image.resize((round(w * scale), round(h * scale)),
+                                    Image.Resampling.BICUBIC)
+        scene = scenes[scene_index].copy()
+        scene.paste(scaled, (panel_box[0] - (scaled.width - w) // 2,
+                             panel_box[1] - (scaled.height - h) // 2))
+        return scene
+
+    def frame(index):
+        # The scene is authored at normal speed, then sampled 1.3 times faster.
+        t = index / FPS * SPEED
+        def since(seconds):
+            return (t - seconds * SPEED) / SPEED
+        if since(1.8) < 0:
+            return hook
+        if since(3.35) < 0:
+            scene = blend(hook, scenes[0], since(1.8) / .27) if since(2.07) < 0 else scenes[0]
+            if since(2.07) >= 0 and since(3.20) < 0:
+                return drift(0, since(2.07) * SPEED, 1.13 * SPEED)
+            return ripple(scene, boxes[0], since(3.20) / .25)
+        if since(4.2) < 0:
+            return ripple(scenes[1], boxes[0], since(3.20) / .25)
+        if since(6.5) < 0:
+            scene = blend(scenes[1], scenes[2], since(4.2) / .27) if since(4.47) < 0 else scenes[2]
+            if since(4.47) >= 0 and since(6.35) < 0:
+                return drift(2, since(4.47) * SPEED, 1.88 * SPEED)
+            return ripple(scene, boxes[1], since(6.35) / .25)
+        if since(8.6) < 0:
+            return ripple(scenes[3], boxes[1], since(6.35) / .25)
+        if since(11.4) < 0:
+            return blend(scenes[3], scenes[4], since(8.6) / (.35 / SPEED)) if since(8.87) < 0 else drift(4, since(8.87) * SPEED, 2.53 * SPEED)
+        if since(11.67) < 0:
+            return blend(scenes[4], end_push(0), since(11.4) / (.35 / SPEED))
+        if since(12.15) < 0:
+            return end_push(since(11.67) / (.624 / SPEED))
+        return end
+    return frame, end
+
+
+def export(out, frame, end):
+    video = out / VIDEO
+    command = [
+        'ffmpeg', '-hide_banner', '-loglevel', 'error', '-y', '-f', 'rawvideo',
+        '-pixel_format', 'rgb24', '-video_size', '2160x1080', '-framerate', str(FPS),
+        '-i', '-', '-an', '-c:v', 'libx264', '-profile:v', 'high', '-pix_fmt', 'yuv420p',
+        '-preset', 'fast', '-crf', '19', '-movflags', '+faststart', str(video),
+    ]
+    with subprocess.Popen(command, stdin=subprocess.PIPE) as encoder:
+        last_image = last_bytes = None
+        for i in range(FRAMES):
+            image = frame(i)
+            if image is not last_image:
+                last_image, last_bytes = image, image.tobytes()
+            encoder.stdin.write(last_bytes)
+        encoder.stdin.close()
+        if encoder.wait():
+            raise RuntimeError('FFmpeg encode failed')
+
+    data = json.loads(subprocess.check_output([
+        'ffprobe', '-v', 'error', '-show_streams', '-show_format', '-of', 'json', str(video),
+    ]))
+    stream, = data['streams']
+    assert stream['codec_type'] == 'video' and stream['codec_name'] == 'h264'
+    assert stream['profile'] == 'High' and stream['pix_fmt'] == 'yuv420p'
+    assert (stream['width'], stream['height'], stream['r_frame_rate']) == (WIDTH, HEIGHT, '30/1')
+    assert int(stream['nb_frames']) == FRAMES and float(data['format']['duration']) == 14.8
+    payload = video.read_bytes()
+    assert len(payload) < 12_000_000 and 0 < payload.find(b'moov') < payload.find(b'mdat')
+
+    samples = [round(i * (FRAMES-1) / 15) for i in range(16)]
+    select = '+'.join(f'eq(n,{i})' for i in samples)
+    decoded = subprocess.check_output([
+        'ffmpeg', '-v', 'error', '-i', str(video), '-vf', f"select='{select}',scale=432:216",
+        '-fps_mode', 'passthrough', '-f', 'rawvideo', '-pix_fmt', 'rgb24', '-',
+    ])
+    stride = 432 * 216 * 3
+    assert len(decoded) == 16 * stride
+    sheet = Image.new('RGB', (1728, 976), '#101712')
+    draw = ImageDraw.Draw(sheet)
+    for i, number in enumerate(samples):
+        x, y = i % 4 * 432, i // 4 * 244
+        tile = Image.frombytes('RGB', (432, 216), decoded[i*stride:(i+1)*stride])
+        sheet.paste(tile, (x, y))
+        draw.text((x+9, y+220), f'{number / FPS:.2f}s', font=font(17), fill='white')
+    sheet.save(out / SHEET)
+    decoded_last = Image.frombytes('RGB', (432, 216), decoded[-stride:])
+    expected_last = end.resize((432, 216), Image.Resampling.LANCZOS)
+    mean_error = max(ImageStat.Stat(ImageChops.difference(decoded_last, expected_last)).mean)
+    assert mean_error < 3, mean_error
+    return {'duration_seconds': 14.8, 'frames': FRAMES, 'fps': FPS,
+            'dimensions': [WIDTH, HEIGHT], 'profile': 'H.264 High / yuv420p',
+            'audio_streams': 0, 'faststart': True, 'bytes': len(payload),
+            'video_sha256': digest(video), 'contact_frames': 16,
+            'hero_hold_seconds': 2.63, 'last_frame_max_mean_channel_error': round(mean_error, 3), 'motion_timing_multiplier': SPEED}
+
+
+def main():
+    cli = argparse.ArgumentParser()
+    cli.add_argument('--root', type=Path, default=Path(__file__).resolve().parents[2])
+    cli.add_argument('--out', type=Path)
+    args = cli.parse_args()
+    root = args.root.resolve()
+    out = args.out or root / '6-ETSY-LISTING'
+    app = root / '1-SELL-THIS/Mediterranean-Meal-Planner.html'
+    hero_file = root / '6-ETSY-LISTING/images/01-hero-flatlay.jpg'
+    hero_report = json.loads(hero_file.with_name('hero-flatlay-capture.json').read_text())
+    assert digest(app) == hero_report['source_sha256']
+    assert digest(hero_file) == hero_report['hero_sha256']
+    photos, boxes, interactions = capture(app)
+    assert digest(app) == hero_report['source_sha256']
+    assert digest(hero_file) == hero_report['hero_sha256']
+    hero = Image.open(hero_file).convert('RGB')
+    frame, end = compose(hero, photos, boxes)
+    report = export(out, frame, end)
+    report.update(interactions, buyer_html_sha256=digest(app), hero_sha256=digest(hero_file),
+                  end_card='Current hero fitted intact within 20–80% safe width, held without overlays.')
+    (out / 'video-checks.json').write_text(json.dumps(report, indent=2) + '\n')
+    print(json.dumps(report, indent=2))
+
+
+if __name__ == '__main__':
+    main()

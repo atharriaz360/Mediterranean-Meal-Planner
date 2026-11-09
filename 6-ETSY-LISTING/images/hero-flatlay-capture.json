@@ -1,0 +1,28 @@
+{
+  "source_app": "1-SELL-THIS/Mediterranean-Meal-Planner.html",
+  "source_sha256": "8d18b9c4dcedb4e65b733091457ff1c5e0b9a7353188f2c1c6f88c2a717dd582",
+  "hero_sha256": "c79dd0961de5d6e6907e65db6a967676138fd49595658a5736af0aee07e1e8fe",
+  "pixels": [
+    3000,
+    2250
+  ],
+  "bytes": 993176,
+  "quality": 90,
+  "desktop_viewport": [
+    1440,
+    900
+  ],
+  "phone_viewport": [
+    393,
+    852
+  ],
+  "mobile_bottom_nav": [
+    "Home",
+    "Week",
+    "Recipes",
+    "Shop",
+    "More"
+  ],
+  "page_errors": [],
+  "method": "Direct Chromium captures from buyer HTML offline; same sample session; phone Shopping opened via Build shopping list. Phone capture fitted below a simulated Dynamic Island with a separate home-indicator area. Rounded glass masks only the display corners."
+}
