@@ -5,39 +5,44 @@ W = pathlib.Path(__file__).parent
 ICONS = (W / 'dist/icons') if (W / 'dist/icons/icon-180.png').exists() else (W / '../2-HOST-ONLINE/icons')
 VERSION = '1.0'
 b64 = lambda p: base64.b64encode((W / p).read_bytes()).decode()
-css = (W / 'src/styles.css').read_text()
-body = (W / 'src/body.html').read_text()
+css = (W / 'src/styles.css').read_text().replace('__COAST__', b64('photos/coast.jpg')).replace('__MELA_COAST_STRIP__', b64('photos/reference/coast-strip.png'))
+body = (W / 'src/body.html').read_text().replace('__REFERENCE_OVERVIEW__', b64('photos/reference-overview.png'))
 wm = json.loads((W / 'brand/wordmark-path.json').read_text())
 mark_inner = (W / 'brand/mark-inner.txt').read_text()
 gen = (W / 'brand/gen.js').read_text()
 import subprocess
 sprig = json.loads(subprocess.check_output(['node', '-e', "const g=require('./brand/gen.js');console.log(JSON.stringify(g))"], cwd=W))
-body = body.replace('__MARK_INNER__', mark_inner).replace('__WM_W__', str(wm['w'] + 2)).replace('__WM_D__', wm['d'])
+body = body.replace('__MARK_INNER__', mark_inner).replace('__WM_W__', str(wm['w'] + 2)).replace('__WM_D__', wm['d']).replace('__STEM__', sprig['stem']).replace('__LEAVES__', sprig['leaves'])
 js_src = '\n'.join((W / f'src/{n}.js').read_text() for n in ['app'])
 js_src = js_src.replace('__VERSION__', VERSION).replace('__STEM__', sprig['stem']).replace('__LEAVES__', sprig['leaves'])
 photos = {}
 for f in sorted((W / 'photos').glob('*.jpg')) if (W / 'photos').exists() else []:
+    if f.stem == 'coast': continue
     photos[f.stem] = 'data:image/jpeg;base64,' + base64.b64encode(f.read_bytes()).decode()
     if f.stat().st_size > 90_000: print(f'warning: photos/{f.name} is {f.stat().st_size // 1024} KB; resize to 800x600, quality ~70')
-js_base = f"const PHOTOS={json.dumps(photos)};\nconst MARK_INNER={json.dumps(mark_inner)};const WM_D={json.dumps(wm['d'])};\n" + js_src
+for f in sorted((W / 'photos/icons').glob('*.webp')) if (W / 'photos/icons').exists() else []:
+    photos['icon-' + f.stem] = 'data:image/webp;base64,' + base64.b64encode(f.read_bytes()).decode()
+reference_art = {f.stem: 'data:image/png;base64,' + b64(f.relative_to(W))
+                 for f in sorted((W / 'photos/reference').glob('*.png')) if f.stem != 'coast-strip'}
+js_base = f"const PHOTOS={json.dumps(photos)};\nconst REFERENCE_ART={json.dumps(reference_art)};\nconst MARK_INNER={json.dumps(mark_inner)};const WM_D={json.dumps(wm['d'])};\n" + js_src
 icon_svg = (W / 'brand/mediterranean-meal-planner-icon.svg').read_text()
 favicon = 'data:image/svg+xml;base64,' + base64.b64encode(icon_svg.encode()).decode()
 apple = 'data:image/png;base64,' + base64.b64encode((ICONS / 'icon-180.png').read_bytes()).decode()
 
-def page(demo=False):
-    js = js_base.replace('__DEMO__', '1' if demo else '0').replace('__ETSY__', ETSY_URL if demo else '')
+def page(demo=False, hosted=False):
+    js = js_base.replace('__DEMO__', '1' if demo else '0').replace('__HOSTED__', '1' if hosted else '0').replace('__ETSY__', ETSY_URL if demo else '')
     title = 'Mediterranean Meal Planner · Live Demo' if demo else 'Mediterranean Meal Planner'
     return f'''<!doctype html>
 <html lang="en" class="booting no-transition">
 <head>
 <meta charset="utf-8">
 <script>
-(()=>{{let p={{}};try{{p=JSON.parse(localStorage.getItem('mediterranean-meal-planner:appearance')||'{{}}')}}catch(e){{}}const root=document.documentElement;root.dataset.theme=p.theme==='dark'||(p.theme!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';const accents={{forest:['#1F4A38','#163629'],midnight:['#20395C','#162944'],burgundy:['#6A2B3B','#4E1F2B']}};const a=accents[p.accent]||accents.forest;root.style.setProperty('--primary',a[0]);root.style.setProperty('--primary-deep',a[1])}})();
+(()=>{{let p={{}};try{{p=JSON.parse(localStorage.getItem('mediterranean-meal-planner:appearance')||'{{}}')}}catch(e){{}}const root=document.documentElement;root.dataset.theme=p.theme==='dark'||(p.theme==='system'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';const accents={{forest:['#1F4A38','#163629'],midnight:['#20395C','#162944'],burgundy:['#6A2B3B','#4E1F2B']}};const a=accents[p.accent]||accents.forest;root.style.setProperty('--primary',a[0]);root.style.setProperty('--primary-deep',a[1])}})();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{title}</title>
 <meta name="description" content="Mediterranean Meal Planner is a private, offline Mediterranean meal planner: weekly meal plan, recipes, shopping list, pantry, balance tracker and more.">
-<meta name="theme-color" content="#1F4A38">
+<meta name="theme-color" content="#f5ecdf">
 <meta name="color-scheme" content="light dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -70,12 +75,12 @@ out.mkdir(exist_ok=True)
 (out / 'demo' / 'index.html').write_text(page(demo=True))
 host = out / 'online'
 (host / 'icons').mkdir(parents=True, exist_ok=True)
-(host / 'index.html').write_text(page())
+(host / 'index.html').write_text(page(hosted=True))
 for f in ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'icon-180.png']:
     (host / 'icons' / f).write_bytes((ICONS / f).read_bytes())
 (host / 'manifest.webmanifest').write_text(json.dumps({
     "name": "Mediterranean Meal Planner", "short_name": "Mediterranean Meal Planner", "start_url": "./", "scope": "./",
-    "display": "standalone", "background_color": "#FAF6EF", "theme_color": "#1F4A38",
+    "display": "standalone", "background_color": "#eee6d8", "theme_color": "#1F4A38",
     "description": "Plan Mediterranean meals, recipes and shopping — private and offline.",
     "icons": [{"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
               {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},

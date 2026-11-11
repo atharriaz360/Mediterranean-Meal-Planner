@@ -1,11 +1,13 @@
+<section id="reference-screen" hidden></section>
 <a href="#main" class="sr-only">Skip to content</a>
 <aside class="sidebar" id="sidebar" aria-label="Main navigation">
   <a class="brand" href="#/home" aria-label="Mediterranean Meal Planner home">
-    <svg class="mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="var(--primary)"/>__MARK_INNER__</svg>
-    <div><svg class="wm" viewBox="0 0 __WM_W__ 30" aria-hidden="true"><path d="__WM_D__"/></svg><small>Meal Planner</small></div>
+    <div id="sampleBrand" class="sample-brand"><svg viewBox="13 9 42 45" aria-hidden="true"><path d="__STEM__" fill="none" stroke="currentColor" stroke-width="2"/><path d="__LEAVES__" fill="currentColor"/></svg><b>Mediterranean</b><em>Meal Planner</em><small>Good food. Simple plans. Good life.</small></div>
+    <svg class="brand-sprig" viewBox="13 9 42 45" aria-hidden="true"><path d="__STEM__" fill="none" stroke="currentColor" stroke-width="2"/><path d="__LEAVES__" fill="currentColor"/></svg>
+    <span>Mediterranean<strong>Meal Planner</strong></span>
   </a>
   <nav class="nav" id="nav"></nav>
-  <div class="side-quote" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19 14 10"/></svg><p>Healthy meals<br>Happy home<br><em>Better you</em></p></div>
+  <div id="sampleSeason" class="sample-season"><svg viewBox="13 9 42 45" aria-hidden="true"><path d="__STEM__" fill="none" stroke="currentColor" stroke-width="2"/><path d="__LEAVES__" fill="currentColor"/></svg><b>This season</b><i>Fresh, simple,<br>made together.</i></div>
   <div class="side-foot">
     <div class="save-state" id="saveState" role="status"><i></i><span>Saved in this browser</span></div>
   </div>
@@ -14,16 +16,18 @@
 <div class="main">
   <header class="topbar">
     <button class="btn icon ghost menu-btn" id="menuBtn" aria-label="Open menu" data-action="menu"></button>
+    <div class="overview-top-title" aria-hidden="true"><b>Overview</b><span id="overviewGreeting"></span></div>
     <div class="search" id="searchBox">
       <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <input id="search" type="search" placeholder="Search recipes, meals, shopping…" autocomplete="off" aria-label="Search your planner" aria-controls="searchResults">
+      <input id="search" type="search" placeholder="Search planner…" autocomplete="off" aria-label="Search your planner" aria-controls="searchResults">
       <kbd id="searchKbd">⌘K</kbd>
       <div class="search-results" id="searchResults" role="listbox"></div>
     </div>
     <div class="top-actions">
       <button class="btn icon ghost hide-sm" data-action="toggleTheme" aria-label="Toggle dark mode" id="themeBtn"></button>
       <button class="btn icon ghost bell" data-go="prep" aria-label="Reminders and prep list" id="bellBtn"></button>
-      <button class="btn gold" data-action="addMeal" id="quickBtn"></button>
+      <button class="btn gold" data-action="addMeal" id="quickBtn" aria-label="Plan meals"></button>
+      <button class="overview-profile" data-go="settings" aria-label="Profile settings"><span id="topProfileInitial" aria-hidden="true"></span><span id="topProfileName"></span></button>
     </div>
   </header>
   <main class="content" id="main" tabindex="-1">

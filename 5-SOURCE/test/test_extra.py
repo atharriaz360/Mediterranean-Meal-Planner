@@ -12,7 +12,7 @@ async def run():
         pw = await cw.new_page()
         ew = []
         pw.on('pageerror', lambda e: ew.append(str(e)))
-        await pw.goto(F+'Mediterranean-Meal-Planner.html')
+        await pw.goto(F+'Mediterranean-Meal-Planner.html'+'#/planner')
         await pw.wait_for_timeout(1000)
         print("WebKit Desktop Errors:", ew)
         
@@ -22,7 +22,7 @@ async def run():
         pi = await ci.new_page()
         ei = []
         pi.on('pageerror', lambda e: ei.append(str(e)))
-        await pi.goto(F+'Mediterranean-Meal-Planner.html')
+        await pi.goto(F+'Mediterranean-Meal-Planner.html'+'#/planner')
         await pi.wait_for_timeout(1000)
         print("WebKit iPhone Errors:", ei)
         

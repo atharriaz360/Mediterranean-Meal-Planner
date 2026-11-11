@@ -9,7 +9,7 @@ async def run():
         b = await p.chromium.launch()
         c = await b.new_context(viewport={'width':1440,'height':900})
         pg = await c.new_page()
-        await pg.goto(F+'Mediterranean-Meal-Planner.html')
+        await pg.goto(F+'Mediterranean-Meal-Planner.html'+'#/planner')
         await pg.wait_for_timeout(1000)
         
         # Test basic mobile render

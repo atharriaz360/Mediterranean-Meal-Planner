@@ -16,8 +16,10 @@ async def main():
         ctx=await b.new_context(viewport={'width':1440,'height':900},accept_downloads=True)
         pg=await ctx.new_page();errs=[]
         pg.on('pageerror',lambda e:errs.append(str(e)));pg.on('console',lambda m:errs.append(m.text) if m.type=='error' else None)
-        await pg.goto(F+'Mediterranean-Meal-Planner.html');await pg.wait_for_timeout(800)
+        await pg.goto(F+'Mediterranean-Meal-Planner.html#/home')
+        await pg.wait_for_timeout(800)
         ok('onboarding shows on first run',await pg.evaluate("document.querySelector('#overlay').classList.contains('open')"))
+        ok('working home has 4 live metrics',len(await pg.locator('.sample-metric strong').all_inner_texts())==4)
         # finish onboarding by clicking last button repeatedly
         for i in range(6):
             if not await pg.evaluate("document.querySelector('#overlay').classList.contains('open')"):break
@@ -26,38 +28,29 @@ async def main():
         E=lambda js:pg.evaluate(js)
         # values consistency
         v=await E("""()=>{go('home');const t=today(),ws=weekStartOf(t,state.settings.weekStart),days=weekDays(ws);
-          return {rings:[...document.querySelectorAll('.rg b')].map(e=>e.innerText),
+          return {stats:[...document.querySelectorAll('.sample-metric strong')].map(e=>e.innerText),
           planned:days.filter(d=>mealsOn(d).some(m=>m.status!=='Eaten')).length,toBuy:state.shopping.filter(x=>!x.done).length,
           low:state.pantry.filter(x=>x.expiry&&x.expiry<=addDays(t,14)).length,navShop:document.querySelector('[data-go=shopping] .count')?.innerText,
-          qaShop:[...document.querySelectorAll('.qa-b small')][1]?.innerText,strip:document.querySelectorAll('.dcard').length,
-          tri:[...document.querySelectorAll('.pcard b')].map(e=>e.innerText),pop:[...document.querySelectorAll('.rail .pr-b b')].map(e=>e.innerText),
-          pantry:[...document.querySelectorAll('.rail .li .t')].map(e=>e.innerText),shopRows:document.querySelectorAll('.hm-main .chk').length,
+          qaShop:document.querySelector('.qa-b[data-go=shopping] small')?.innerText,strip:document.querySelectorAll('.dcard').length,
+          tri:[...document.querySelectorAll('.pcard b')].map(e=>e.innerText),pop:[...document.querySelectorAll('.overview-popular .pr-b b')].map(e=>e.innerText),
           bell:document.querySelector('#bellBtn .bdg')?.innerText,dueTasks:state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=t).length,
           prepNav:document.querySelector('[data-go=prep] .count')?.innerText,openTasks:state.tasks.filter(x=>x.status!=='Done').length}}""")
-        ok('rings show 4/7 meals planned',v['rings'][0]=='4/7',v['rings'])
-        ok('ring1 = data',v['rings'][0]==f"{v['planned']}/7");ok('ring2 = data',v['rings'][1]==str(v['toBuy']));ok('ring3 = data',v['rings'][2]==str(v['low']))
-        ok('nav shopping badge = to buy',v['navShop']==str(v['toBuy']),v['navShop']);ok('quick action "12 to buy"',v['qaShop']==f"{v['toBuy']} to buy",v['qaShop'])
+        ok('stats show 4/7 meals planned',v['stats'][0]=='4/7',v['stats'])
+        ok('days stat = data',v['stats'][0]==f"{v['planned']}/7");ok('shopping stat = data',v['stats'][1]==str(v['toBuy']));ok('pantry stat = data',v['stats'][2]==str(v['low']))
+        ok('nav shopping badge = to buy',v['navShop']==str(v['toBuy']),v['navShop'])
         ok('bell = due tasks',v['bell']==str(v['dueTasks']),f"{v['bell']} vs {v['dueTasks']}");ok('prep badge = open tasks',v['prepNav']==str(v['openTasks']))
-        ok('7 day cards',v['strip']==7);ok('today trio',v['tri']==['Overnight Oats','Grilled Chicken Salad','Salmon & Quinoa'],v['tri'])
+        ok('overview chart has seven points per series',await E("document.querySelectorAll('.overview-chart circle').length")==14)
         ok('popular',v['pop']==['Lemon Herb Chicken','Mediterranean Bowl','Greek Yogurt Pancakes','Tomato & Olive Pasta'],v['pop'])
-        ok('pantry rail',v['pantry']==['Rice','Pasta','Olive Oil','Tomatoes','Eggs'],v['pantry']);ok('6 shopping rows on home',v['shopRows']==6)
+        await E("go('home')");await pg.click('.sample-metric >> nth=1');await pg.wait_for_timeout(200);ok('to-buy card opens shopping',await E("state.ui.page")=='shopping')
         # all pages render + no empty page
         for n in ['home','today','week','recipes','shopping','pantry','balance','prep','goals','calendar','journal','settings']:
             l=await E(f"()=>{{go('{n}');return document.querySelector('#page-{n}').innerHTML.length}}");await pg.wait_for_timeout(100);l=await E(f"document.querySelector('#page-{n}').innerHTML.length");ok(f'page {n} renders',l>200,l)
         # home interactions
-        await E("go('home')");await pg.click('.hm-main .chk >> nth=0');await pg.wait_for_timeout(200)
-        ok('home checkbox ticks item',await E("state.shopping[0].done===true"))
-        ok('ring2 drops by one',await E("document.querySelectorAll('.rg b')[1].innerText")==str(v['toBuy']-1))
-        await pg.click('.hm-main .chk >> nth=0');await pg.wait_for_timeout(200)
-        await pg.click('.dcard >> nth=1');await pg.wait_for_timeout(300);ok('day card opens day view',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()")
-        await pg.click('.pcard >> nth=0');await pg.wait_for_timeout(300);ok('today card opens meal',await E("document.querySelector('#fTitle')?.value==='Overnight Oats'"));await E("closeModal()");await pg.wait_for_timeout(200)
-        await pg.click('.rail .pr-b >> nth=0');await pg.wait_for_timeout(300);ok('popular opens recipe',await E("document.querySelector('#modal').innerText.includes('Lemon Herb Chicken')"));await E("closeModal()");await pg.wait_for_timeout(200)
-        await pg.click('.rail .heart >> nth=3');await pg.wait_for_timeout(200);ok('heart unfavourites',await E("!state.recipes.find(r=>r.title==='Tomato & Olive Pasta').fav"));
+        await E("go('home')");await pg.click('.overview-popular .pr-b >> nth=0');await pg.wait_for_timeout(300);ok('popular opens recipe',await E("document.querySelector('#modal').innerText.includes('Lemon Herb Chicken')"));await E("closeModal()");await pg.wait_for_timeout(200)
         await E("state.recipes.find(r=>r.title==='Tomato & Olive Pasta').fav=true;commit()")
-        for i,(sel,page) in enumerate([('.promo.p1','recipes'),('.promo.p2','shopping'),('.promo.p3','pantry')]):
-            await E("go('home')");await pg.click(sel);await pg.wait_for_timeout(150);ok(f'promo → {page}',await E("state.ui.page")==page)
-        await E("go('home')");await pg.click('.qa-b >> nth=0');await pg.wait_for_timeout(300);ok('Quick action Plan Meals opens meal form',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()");await pg.wait_for_timeout(200)
-        await pg.click('#quickBtn');await pg.wait_for_timeout(300);ok('top Plan Meals opens form',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()");await pg.wait_for_timeout(200)
+        for i,(sel,page) in enumerate([('.sample-metric >> nth=0','week'),('.sample-metric >> nth=2','pantry'),('.sample-metric >> nth=3','recipes')]):
+            await E("go('home')");await pg.click(sel);await pg.wait_for_timeout(150);ok(f'KPI card → {page}',await E("state.ui.page")==page)
+        await E("go('week')");await pg.click('#page-week .btn.primary >> nth=0');await pg.wait_for_timeout(300);ok('Week Plan Add meal opens form',await E("document.querySelector('#overlay').classList.contains('open')"));await E("closeModal()");await pg.wait_for_timeout(200)
         await pg.click('#bellBtn');await pg.wait_for_timeout(150);ok('bell → prep',await E("state.ui.page")=='prep')
         # add meal
         n0=await E("state.meals.length");await E("mealModal({date:today(),slot:'Snack'})");await save_modal(pg,{'#fTitle':'Test snack'});ok('add meal',await E("state.meals.length")==n0+1)
@@ -75,7 +68,9 @@ async def main():
         await E("go('week')");await pg.click('[data-week="1"]');await pg.wait_for_timeout(150);ok('week next',await E("state.ui.weekOffset")==1);await pg.click('[data-week="0"]');
         await E("go('calendar')");await pg.click('[data-month="1"]');await pg.wait_for_timeout(150);ok('calendar next',True)
         # theme + accent
-        await pg.click('#themeBtn');await pg.wait_for_timeout(150);ok('dark mode toggles',await E("document.documentElement.dataset.theme")=='dark');await pg.click('#themeBtn')
+        ok('light mode is the default',await E("document.documentElement.dataset.theme")=='light')
+        await pg.click('#themeBtn');await pg.wait_for_timeout(150);ok('theme toggles to dark',await E("document.documentElement.dataset.theme")=='dark')
+        await pg.click('#themeBtn');await pg.wait_for_timeout(150);ok('theme toggles back to light',await E("document.documentElement.dataset.theme")=='light')
         await E("go('settings')");ok('3 accents',await E("document.querySelectorAll('.swatches button').length")==3)
         await pg.click('.swatches button >> nth=1');await pg.wait_for_timeout(150);ok('accent changes',await E("getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()")=='#20395C')
         await pg.click('.swatches button >> nth=0')
@@ -106,10 +101,10 @@ async def main():
         # DEMO build
         ctx2=await b.new_context(viewport={'width':1440,'height':900});pd=await ctx2.new_page();errs2=[]
         pd.on('pageerror',lambda e:errs2.append(str(e)))
-        await pd.goto(F+'demo/index.html');await pd.wait_for_timeout(800)
+        await pd.goto(F+'demo/index.html'+'#/planner');await pd.wait_for_timeout(800)
         ok('demo: no onboarding popup',not await pd.evaluate("document.querySelector('#overlay').classList.contains('open')"))
         ok('demo: no demo bar on screen',await pd.evaluate("document.querySelector('#demoBar').hidden"))
-        ok('demo: same rings as full app',await pd.evaluate("[...document.querySelectorAll('.rg b')].map(e=>e.innerText)")==v['rings'])
+        ok('demo: same stats as full app',await pd.evaluate("[...document.querySelectorAll('.sample-metric strong')].map(e=>e.innerText)")==v['stats'])
         await pd.evaluate("go('settings')");await pd.click('[data-action=eraseAll]');await pd.wait_for_timeout(300)
         ok('demo: erase asks to confirm',await pd.evaluate("document.querySelector('#overlay').classList.contains('open')"))
         await pd.evaluate("closeModal()")

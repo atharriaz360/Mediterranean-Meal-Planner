@@ -1,36 +1,96 @@
 {
-  "source_app": "/Users/macbook/Documents/Etsy/Mediterranean-Meal-Planner/1-SELL-THIS/Mediterranean-Meal-Planner.html",
-  "source_sha256": "8d18b9c4dcedb4e65b733091457ff1c5e0b9a7353188f2c1c6f88c2a717dd582",
-  "viewport": [
-    1500,
-    1125
-  ],
-  "device_scale_factor": 2,
-  "page_errors": [],
-  "images": {
-    "02-dashboard-unedited.jpg": {
-      "sha256": "a31610e91efe6ae01922983e71b9fbd9cfe3b8c57d25473efb796cd0d8e72f8a",
-      "pixels": [
-        3000,
-        2250
-      ],
-      "bytes": 808510
-    },
-    "visual preview or excerpt.jpg": {
-      "sha256": "f943e5d7ca021da01ad90beefddb3a0a39871603cb08be6e726ec7126bfee0ff",
-      "pixels": [
-        3000,
-        2250
-      ],
-      "bytes": 529789
-    }
+ "source_app": "1-SELL-THIS/Mediterranean-Meal-Planner.html",
+ "source_sha256": "afc1e3dac2b331a252ef1de46d23e398cf48a191cedf7b0e9ffefd8dd18cfbd3",
+ "desktop_viewport": [
+  1512,
+  982,
+  2
+ ],
+ "mobile_viewport": [
+  393,
+  798,
+  3
+ ],
+ "unedited_viewport": [
+  1500,
+  1125,
+  2
+ ],
+ "page_errors": [],
+ "08-dashboard-unedited.jpg": "Direct Chromium JPEG screenshot of buyer HTML, sample data, onboarding finished, sample banner dismissed, no crop/overlay/retouch.",
+ "images": {
+  "01-hero.jpg": {
+   "sha256": "1edc8b8de9eb889cbff73125b836a6ae0c2d5be57a53211cfbff756306e555cf",
+   "bytes": 945170
   },
-  "mobile_bottom_nav": [
-    "Home",
-    "Week",
-    "Recipes",
-    "Shop",
-    "More"
+  "02-what-you-get.jpg": {
+   "sha256": "e740fda5713418a1f21d03650bd78a2c6f1e7c85ea9f453dd1c7496bb1d3361f",
+   "bytes": 886131
+  },
+  "03-in-your-kitchen.jpg": {
+   "sha256": "78164b45243ba5bdd2fa380e2992ec9dbdb834524b83d732881e864c4d17e6ba",
+   "bytes": 923637
+  },
+  "04-week-plan.jpg": {
+   "sha256": "ffb878ecdba6bd52a05e702ef2c096a4766c83132fa78c341d38aca6325cab58",
+   "bytes": 687877
+  },
+  "05-shopping-list.jpg": {
+   "sha256": "dd63da0a38370610213eeaeaf04ed0cd3921276a12d6ac2a66914d6696d82b9b",
+   "bytes": 928748
+  },
+  "06-overview.jpg": {
+   "sha256": "76b5bf15799277d2f3b405ed77c379e0d9081649a3bc7f0953ba5ddcd537b515",
+   "bytes": 791637
+  },
+  "07-recipes.jpg": {
+   "sha256": "8afa01c345d58358117545d9bf8fe6710bcb2ec358c6d874051420a4fdfbb142",
+   "bytes": 796776
+  },
+  "08-dashboard-unedited.jpg": {
+   "sha256": "73420cfe1c1f4a02bc43cad981fd404dc5bee1a262b3d10dbf52746df01dbd48",
+   "bytes": 629060
+  },
+  "09-every-screen.jpg": {
+   "sha256": "9805b26860ee301632811bd95ece7469954f515d5ec18e6b71cfae0eea630941",
+   "bytes": 782522
+  },
+  "10-pantry-prep.jpg": {
+   "sha256": "8032a74567b73924480a6f6d95cd6660519484169ea76754a428d9e710324d0e",
+   "bytes": 834115
+  },
+  "11-balance.jpg": {
+   "sha256": "2b0aa4ff5de246e697dafbb5243570fc1786e0f215718a3b1e4a66b0b2d28930",
+   "bytes": 674690
+  },
+  "12-private-offline.jpg": {
+   "sha256": "057ec1c3d19afd508f646a800dc0c92546666ceb7f575fefcdbd973fea88e025",
+   "bytes": 737527
+  },
+  "13-digital-download.jpg": {
+   "sha256": "6d81c5776fd3810063c5237edd355cc24cd081d05210e4b5ff69b5f45258d1e5",
+   "bytes": 623004
+  }
+ },
+ "tablet_viewports": [
+  [
+   820,
+   1180,
+   2
   ],
-  "method": "Direct Chromium JPEG screenshots from buyer HTML, offline, sample data, no crop, resize, overlay or retouch."
+  [
+   1180,
+   820,
+   2
+  ]
+ ],
+ "backgrounds": {
+  "01": "canva-bg/2.png",
+  "02,04,06,11,12,13": "canva-bg/3.jpg (50% opacity)",
+  "03": "canva-bg/1.jpg",
+  "05": "canva-bg/6.png",
+  "07": "canva-bg/2.jpg",
+  "09": "photos/coast.jpg",
+  "10": "canva-bg/5.png"
+ }
 }

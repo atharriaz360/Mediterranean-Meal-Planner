@@ -5,7 +5,8 @@ Personal Use Licence · v1.0
 Thank you for your purchase. This licence explains how you may use Mediterranean Meal Planner.
 
 YOU MAY
-• Use Mediterranean Meal Planner for yourself and your own household, on any devices you own.
+• Personal use only.
+• Use Mediterranean Meal Planner for yourself, on devices you own.
 • Keep backup copies of the file for your own use.
 • Print pages (week plans, shopping lists, recipe cards) for personal use.
 
@@ -25,6 +26,6 @@ NO WARRANTY
 Mediterranean Meal Planner is provided "as is". We work hard to keep it reliable and will help you through Etsy messages, but we can't be responsible for data loss caused by clearing browser data, changing browsers or devices without a backup, or third-party software.
 
 THIRD-PARTY COMPONENTS
-Heading typeface: Fraunces, © The Fraunces Project Authors, licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). Icons and food illustrations are original to Mediterranean Meal Planner. The food photo on the Home screen was created for this product with the help of AI image tools.
+Heading typeface: Fraunces, © The Fraunces Project Authors, licensed under the SIL Open Font License 1.1 (https://openfontlicense.org). Line icons are original to Mediterranean Meal Planner. The food photos and food illustrations were created for this product with the help of AI image tools.
 
 Questions? Message us on Etsy.

@@ -11,7 +11,7 @@ async def main():
         async with async_playwright() as p:
             browser=await p.chromium.launch();context=await browser.new_context();page=await context.new_page();errors=[]
             page.on('pageerror',lambda error:errors.append(str(error)))
-            await page.goto(f'http://127.0.0.1:{server.server_port}/');await page.wait_for_selector('#page-home.active')
+            await page.goto(f'http://127.0.0.1:{server.server_port}/'+'#/planner');await page.wait_for_selector('#page-home.active')
             await page.evaluate("async()=>{await navigator.serviceWorker.ready;if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}))}")
             await page.evaluate("closeModal()");await page.wait_for_timeout(600)
             await context.set_offline(True);await page.reload();await page.wait_for_selector('#page-home.active');assert await page.locator('#page-home').inner_text();assert not errors,errors

@@ -4,7 +4,7 @@
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#FAF6EF",
+ "background_color": "#eee6d8",
  "theme_color": "#1F4A38",
  "description": "Plan Mediterranean meals, recipes and shopping \u2014 private and offline.",
  "icons": [
