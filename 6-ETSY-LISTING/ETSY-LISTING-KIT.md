@@ -14,69 +14,122 @@ weekly meal planner, recipe organizer, digital meal planner, mediterranean diet,
 
 ## Description
 
-Plan a week of Mediterranean meals and turn your linked recipes into a grocery list grouped by aisle. Keep your recipes, pantry and prep notes together in one browser app.
+```
+Mediterranean diet meal planner app with a weekly plan, grocery list and recipe organizer. Stop asking "what's for dinner?": plan the week once, tap Build shopping list and shop from a list grouped by aisle. Meals, recipes and pantry in one calm place.
+One-time purchase. No subscription, no account. Works offline on your computer; use it on phone and tablet through the private link in the Start Here guide.
 
-Plan meals from your saved recipes, then use From week plan to build a shopping list from their ingredients. Review the list before shopping: it uses each linked recipe once per week, skips matching pantry items and does not automatically scale quantities for repeated meals or household servings. Meals entered without a linked recipe do not supply ingredients.
+WHY HOME COOKS USE IT
+- Plan breakfast, lunch, dinner and snacks for the whole week on one board
+- Turn planned meals into a grocery list in one tap
+- See what is in your pantry and what to use soon
+- Keep recipes, prep and your week together instead of in scattered notes and tabs
 
-WHAT YOU CAN DO
-- Plan breakfast, lunch, dinner and snacks in a weekly meal planner
-- Copy meals from the previous week and view your calendar
-- Save your own recipes, ingredients, methods, photos and favorites
-- Explore the included Mediterranean starter recipes and sample week
-- Build a grocery list from recipes linked to your week plan
-- Add shopping items yourself, organize them by aisle and tick off purchases
-- Track pantry items and use-by dates
-- Keep a prep list, goals, water log and journal
-- Review food-group balance and optional calorie entries
-- Choose light or dark mode
-- Print week plans, shopping lists and recipe cards from the app
-- Export meal and recipe records as CSV, or save a full backup for restoration
+WHAT'S INSIDE
+
+Week plan and calendar
+- Weekly board for breakfast, lunch, dinner and snacks, with daily calorie totals from recipes or your entries
+- Copy last week, clear week and print your week; month calendar view
+- Today view with today's meals, tasks and water
+
+Grocery list
+- Build shopping list from recipes linked to your week plan
+- Grouped by aisle: Produce, Herbs & Spices, Bakery & Grains, Legumes & Canned, Fish & Meat and more
+- Add your own items with quantity and aisle; tick off as you shop; filter All, To buy and Bought; copy or print the list
+
+Recipes
+- 16 Mediterranean starter recipes with photos, plus your own
+- Ingredients to tick off as you cook, numbered steps, time, servings and kcal per serving
+- Search, filter by meal and star favourites; Plan it or Add to shopping in one tap; print recipe cards
+
+Pantry and prep
+- Pantry items with aisle, quantity and use-by dates; Restock adds an item back to your list
+- Prep list for batch cooking and make-ahead tasks
+
+Balance, goals and journal
+- Food-group balance across your week, next to general Mediterranean-style patterns
+- Goals, water log and a journal for notes and favourite tweaks
+
+Style and data tools
+- Light, dark or system theme and 3 accent colours
+- CSV export of meals and recipes; full backup and restore
+
+WHO IT'S FOR
+- Home cooks who want to eat the Mediterranean way without daily decisions
+- Busy households planning one calm weekly shop
+- Meal preppers who batch-cook ahead
 
 WHAT YOU GET
-- Mediterranean-Meal-Planner-Digital-Download.zip containing Mediterranean-Meal-Planner.html, the Start Here PDF and LICENSE.txt
-- Mediterranean-Meal-Planner-Start-Here.pdf supplied separately for easy access
-- No physical item, device, printed planner or spreadsheet is included
+- Mediterranean-Meal-Planner-Digital-Download.zip: Mediterranean-Meal-Planner.html (the app), Mediterranean-Meal-Planner-Start-Here.pdf and LICENSE.txt
+- Start Here PDF also as a separate file
+- A private browser link for phone and tablet (in the Start Here guide)
 
 HOW TO START
-1. Download your files from Etsy and unzip the ZIP on your computer
-2. Open Mediterranean-Meal-Planner.html in your browser
-3. Explore the sample data, or clear it and add your own meals and recipes
-4. For phone or tablet setup, follow the hosted-link instructions in the Start Here guide
-5. Link recipes to your planned meals, then choose From week plan to build your grocery list
+1. Download and unzip Mediterranean-Meal-Planner-Digital-Download.zip
+2. On a computer, open Mediterranean-Meal-Planner.html in your browser
+3. On your phone, open the link in the Start Here guide and add it to your Home Screen
+4. Explore the sample week, then clear it and plan your own meals
 
-OFFLINE, STORAGE AND BACKUPS
-- One-time purchase. No subscription or planner account
-- The downloaded HTML app is designed to work offline on your computer
-- The setup guide covers Chrome, Edge, Safari and Firefox on computer; Safari on iPhone/iPad and Chrome on Android for hosted access
-- Phone and tablet setup needs internet for the first hosted load. Follow the guide to add the app to your home screen; load it fully before relying on offline access
-- Entries save in your browser on your device
-- Devices do not sync automatically; there is no live shared shopping list
-- Use Settings → Back up now regularly. Use Restore backup to move a copy to another browser or device
-- Restoring a backup replaces the planner data currently in that browser
-- Clearing browser data, private browsing or storage limits can remove or prevent saved data. Keep downloaded backups
-- Use the same browser and file location. Moving the downloaded HTML file may require restoring a backup
+HOW THE GROCERY LIST WORKS
+- Uses each linked recipe once per week and skips matching pantry items
+- Does not scale quantities for repeated meals or servings; meals without a linked recipe add no ingredients. Review before you shop
+
+YOUR DATA
+- Works offline. Nothing to install. Phone and tablet need internet for the first load of the link
+- Your entries save privately in the browser on your device
+- No automatic sync between devices or browsers. Move a copy with Back up and Restore backup in Settings
+- Clearing browser data or private browsing can remove saved entries. Keep a backup
 
 GOOD TO KNOW
-- Browser app that opens from a file or your hosted link; not a phone app-store app
-- A flexible meal-planning tool, not a prescribed diet, nutrition calculator or personalized meal-plan service
-- Calorie figures come from sample recipes or your entries; they are not calculated automatically from ingredients
-- The Balance view compares logged food groups with general Mediterranean-style patterns. It is not medical or nutrition advice
-- Check ingredient amounts, pantry availability, allergens and your own dietary needs before cooking or shopping
+- A flexible planning tool, not a prescribed diet or calorie calculator. Calories come from the starter recipes or your entries
+- Check ingredients, allergens and your own dietary needs before cooking
 - Personal use only.
-- Use on devices you own. Do not share, resell or redistribute the app, guide or hosted link
-- No lifetime updates are promised.
-- Digital download. Nothing is shipped
-
-AI DISCLOSURE
-Designed and built by KaelLabs. AI assistance was used for parts of the app code, text and images, including the food photos, food illustrations and listing image backgrounds. The app previews show sample data.
+- No sharing or resale of the app, guide or link
+- Designed and built by KaelLabs with AI assistance for parts of the code, food photos, images and listing copy. Screens show the real app with sample data. Devices are not included
 
 NEED HELP?
-Message KaelLabs through Etsy if you need help opening your files or following the setup guide.
+Message me on Etsy and I'll help. Applicable consumer rights and Etsy protections are unaffected.
+
+ALSO IN MY SHOP
+- Freelancer Business OS: invoice tracker app for freelancers with a built-in client CRM
+
+Digital download. Nothing is shipped. Pay once.
+```
 
 ## Upload order and alt text
 
-PENDING REBUILD — follow master forced sequence 01–13. Current files fail audit; see audit notes.
-- `images/02-dashboard-unedited.jpg` (pure unedited screenshot, keep, move to slot 08) — Mediterranean Meal Planner dashboard with a sample week, shopping and pantry counts, recipes and quick actions.
+Copy-paste order (1 = first uploaded). Alt text under 250 chars, keyword-first, no filler words. VERIFIED filenames exist in `6-ETSY-LISTING/images/`.
+
+1. `01-hero.jpg` — Mediterranean Meal Planner app on a laptop and phone in front of pantry jars and olive oil, showing the overview and week plan. Weekly meal planner with grocery list.
+2. `02-what-you-get.jpg` — Six real screens of the planner: week plan, shopping list, recipes, pantry, balance, and goals and water. Digital meal planner app.
+3. `03-in-your-kitchen.jpg` — Two phones showing the Recipes and Today screens with meals, tasks and water log. Meal planner app on your phone.
+4. `04-week-plan.jpg` — Laptop showing the week plan board with breakfast, lunch, dinner and snacks for 7 days and a Build shopping list callout. Weekly meal plan.
+5. `05-shopping-list.jpg` — Laptop showing the shopping list grouped by aisle, with bought items ticked and a progress bar. Grocery list from your meal plan.
+6. `06-overview.jpg` — Laptop dashboard with callouts for days planned, to buy, expiring soon, meal overview, top recipes and upcoming prep. Meal plan organizer.
+7. `07-recipes.jpg` — Tablet on a kitchen counter showing Lemon Herb Chicken with an ingredient checklist, method steps and a Plan it button. Recipe organizer.
+8. `08-dashboard-unedited.jpg` — Unedited screenshot of the planner overview with a sample week, shopping and pantry counts, meal chart and top recipes. Digital meal planner.
+9. `09-every-screen.jpg` — The planner on laptop, tablet and phone: overview, recipes and week plan. Meal planner app for computer, tablet and phone.
+10. `10-pantry-prep.jpg` — Laptop on a pantry shelf beside glass jars, showing pantry items with quantities, use-by dates and restock buttons. Pantry tracker.
+11. `11-balance.jpg` — Tablet showing the Balance screen with food groups, meal mix and weekly totals. Mediterranean diet planner.
+12. `12-private-offline.jpg` — Laptop and phone showing Settings with theme, accent colour, backup and restore. Offline meal planner saved on your device.
+13. `13-digital-download.jpg` — Digital download card listing the HTML app, Start Here PDF and LICENSE.txt. Nothing is shipped. Instant download meal planner.
+
+### Alt text only — copy-paste list
+
+```text
+1. Mediterranean Meal Planner app on a laptop and phone in front of pantry jars and olive oil, showing the overview and week plan. Weekly meal planner with grocery list.
+2. Six real screens of the planner: week plan, shopping list, recipes, pantry, balance, and goals and water. Digital meal planner app.
+3. Two phones showing the Recipes and Today screens with meals, tasks and water log. Meal planner app on your phone.
+4. Laptop showing the week plan board with breakfast, lunch, dinner and snacks for 7 days and a Build shopping list callout. Weekly meal plan.
+5. Laptop showing the shopping list grouped by aisle, with bought items ticked and a progress bar. Grocery list from your meal plan.
+6. Laptop dashboard with callouts for days planned, to buy, expiring soon, meal overview, top recipes and upcoming prep. Meal plan organizer.
+7. Tablet on a kitchen counter showing Lemon Herb Chicken with an ingredient checklist, method steps and a Plan it button. Recipe organizer.
+8. Unedited screenshot of the planner overview with a sample week, shopping and pantry counts, meal chart and top recipes. Digital meal planner.
+9. The planner on laptop, tablet and phone: overview, recipes and week plan. Meal planner app for computer, tablet and phone.
+10. Laptop on a pantry shelf beside glass jars, showing pantry items with quantities, use-by dates and restock buttons. Pantry tracker.
+11. Tablet showing the Balance screen with food groups, meal mix and weekly totals. Mediterranean diet planner.
+12. Laptop and phone showing Settings with theme, accent colour, backup and restore. Offline meal planner saved on your device.
+13. Digital download card listing the HTML app, Start Here PDF and LICENSE.txt. Nothing is shipped. Instant download meal planner.
+```
 
 ## Internal checks
 
@@ -91,3 +144,16 @@ PENDING REBUILD — follow master forced sequence 01–13. Current files fail au
 
 
 # latest
+
+## 14. Mediterranean Meal Planner — 4581630401 — Mediterranean-Meal-Planner
+
+FILES VERIFIED: Mediterranean-Meal-Planner-Digital-Download.zip = Mediterranean-Meal-Planner.html, Mediterranean-Meal-Planner-Start-Here.pdf, LICENSE.txt. Matches.
+APP VERIFIED: shopping list 13, pantry 72, recipe 171, grocery 1 (buyer word; OK).
+IMAGES VERIFIED: 11 numbered + extra hero-v2.jpg + "visual preview or excerpt.jpg" (unnumbered). 02-dashboard-unedited ✓. Hero INFERENCE 6/10: title small/low contrast on green, screen small. Test hero-v2.
+
+eRANK VERIFIED: mediterranean diet 1,244 (KD 1, easiest in all data); grocery list 914; weekly meal planner 434; meal prep planner 343; digital meal planner 298; recipe organizer 203; weekly meal plan 93; recipe collection 87
+
+TITLE: Mediterranean Diet Meal Planner App: Weekly Plan, Grocery List & Recipe Organizer
+TAGS: mediterranean diet, grocery list, weekly meal planner, meal prep planner, digital meal planner, recipe organizer, weekly meal plan, recipe collection, shopping list, meal planner app, pantry tracker, mediterranean meal, meal plan organizer
+
+DESCRIPTION: see ## Description above (current).

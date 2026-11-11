@@ -62,14 +62,14 @@ def lap(img,x,y,W):
   return s+f'''<div class="lap" style="left:{x}px;top:{y}px;width:{W}px;--r:{W*.036}px;--rim:{max(3,W*.0016)}px;--hg:{W*.006}px;--bh:{bh}px">
 <div class="lid" style="padding:{top}px {side}px {bot}px"><i class="cam" style="top:{top*.38}px"></i><div class="s"><img src="{C}{img}.png"></div></div>
 <div class="hinge"></div><div class="base"></div></div>''',(x+side,y+top,sw/1512)
-def phone(img,x,y,w,shadowo=.42):
-  t=w*.014;z=w*.034;sw=w-2*t-2*z;k=sw/393;sbh=59*k;hib=21*k;H=sbh+772*k+hib+2*(t+z)
+def phone(img,x,y,w,shadowo=.42,cw=393,ch=772):
+  t=w*.014;z=w*.034;sw=w-2*t-2*z;k=sw/cw;sbh=59*k;hib=21*k if cw==393 else 0;H=sbh+ch*k+hib+2*(t+z)
   s=shadow(x+w*.08,y+H-w*.06,w*.95,w*.13,b=w*.05,o=shadowo)+shadow(x+w*.2,y+w*.3,w*.9,H*.95,b=w*.12,o=.22)
   btns=''.join(f'<div class="btn" style="left:{x-5}px;top:{y+H*a}px;height:{H*b}px"></div>' for a,b in [(.17,.05),(.25,.085),(.35,.085)])+f'<div class="btn" style="left:{x+w-2}px;top:{y+H*.27}px;height:{H*.13}px"></div>'
   sig='<svg width="%d" height="%d" viewBox="0 0 70 22"><g fill="#111"><rect x="0" y="14" width="5" height="8" rx="1.3"/><rect x="7" y="10" width="5" height="12" rx="1.3"/><rect x="14" y="6" width="5" height="16" rx="1.3"/><rect x="21" y="2" width="5" height="20" rx="1.3"/><path d="M38 9a12 12 0 0 1 16 0l-2 2.3a9 9 0 0 0-12 0z M41.5 13a7 7 0 0 1 9 0L46 18z"/><rect x="58" y="5" width="22" height="12" rx="3.5" fill="none" stroke="#111" stroke-width="1.6"/></g><rect x="60.5" y="7.5" width="15" height="7" rx="1.8" fill="#111"/></svg>'%(70*k*.95,22*k*.95)
   return s+btns+f'''<div class="ph" style="left:{x}px;top:{y}px;width:{w}px;--r:{w*.165}px;--t:{t}px;--z:{z}px"><div class="bz"><div class="sc">
 <div class="sb" style="height:{sbh}px;background:#f4eadc;--fs:{17*k}px"><b>9:41</b><i class="isl"></i>{sig}</div>
-<img src="{C}{img}.png"><div class="hi" style="height:{hib}px"><i></i></div></div></div></div>'''
+<img src="{C}{img}.png">'''+(f'<div class="hi" style="height:{hib}px"><i></i></div>' if hib else f'<i style="position:absolute;left:34%;right:34%;bottom:{8*k}px;height:{5*k}px;border-radius:9px;background:#151515"></i>')+'</div></div></div>'
 def tab(img,x,y,W,ar=820/1180):
   t=W*.006;z=W*.024;sw=W-2*t-2*z;H=sw*ar+2*t+2*z
   s=shadow(x+W*.04,y+H-W*.02,W*.92,W*.05,b=W*.025,o=.45)+shadow(x+W*.1,y+W*.1,W*.9,H*.9,b=W*.06,o=.2)
@@ -96,6 +96,45 @@ def hero(bgh,dark=False,lx=300,lw=2060,px=2130,pw=560):
 <div class="a" style="left:0;right:0;top:418px;text-align:center;font:400 54px Inter;color:{sub}">Week plan · grocery list · recipes · pantry</div>
 '''+l+phone('ph-shopping',px,870,pw)+'''
 <div class="a" style="left:0;right:0;top:2140px;text-align:center"><span style="display:inline-block;font:600 46px Inter;letter-spacing:.16em;color:#fff;background:#2f5a3a;padding:20px 64px;border-radius:999px;box-shadow:0 14px 30px -10px rgba(30,60,35,.5)">INSTANT DOWNLOAD</span></div>'''
+LEAF='<svg width="150" height="40" viewBox="0 0 150 40"><g fill="none" stroke="#a07a3a" stroke-width="2.4"><path d="M20 20 H62"/><path d="M88 20 H130"/></g><g fill="#7e8f5a"><path d="M75 6c6 6 6 18 0 28c-6-10-6-22 0-28z"/><path d="M75 20c8-8 16-9 22-6c-6 8-14 9-22 6z" opacity=".8"/><path d="M75 20c-8-8-16-9-22-6c6 8 14 9 22 6z" opacity=".8"/></g></svg>'
+def heroD():
+  l,_=lap('lap-home',560,640,1880)
+  return bg(f='bgsea.jpg',sz=3000,hx=0,y=0)+f'''
+<div class="a" style="left:600px;top:92px;font:700 54px Inter;letter-spacing:.07em;color:#2a1c13">PLAN THE WEEK · <span style="color:#a8741c">SHOP IN ONE TAP</span></div>
+<div class="a" style="right:600px;top:98px;font:600 50px G;color:#000"><span style="color:#b8892f">K</span>aelLabs</div>
+<div class="a" style="left:0;right:0;top:175px;text-align:center;color:#3a2618">
+<div style="font:500 italic 140px/1 G;color:#3a2618">Mediterranean</div>
+<div style="font:500 168px/1 G;letter-spacing:.06em;margin-top:6px;color:#2a1c13">MEAL PLANNER</div>
+<div style="margin-top:22px">{LEAF}</div>
+<div style="font:500 40px Inter;letter-spacing:.32em;color:#5a4232;margin-top:10px">WEEK PLAN · GROCERY LIST · RECIPES · PANTRY</div></div>
+'''+l+phone('ph-shopping',2180,940,470)+'''
+<div class="a" style="left:0;right:0;top:2140px;text-align:center"><span style="display:inline-block;font:600 46px Inter;letter-spacing:.16em;color:#fff;background:#2f5a3a;padding:20px 64px;border-radius:999px;box-shadow:0 14px 30px -10px rgba(30,60,35,.5)">INSTANT DOWNLOAD</span></div>'''
+S['01-hero-D']=heroD()
+LEAFW='<svg width="120" height="70" viewBox="0 0 120 70"><g fill="#fffaf0"><path d="M60 66 C58 44 66 22 86 6 C88 26 78 46 60 66z"/><path d="M60 66 C50 50 40 40 22 36 C30 52 44 62 60 66z" opacity=".9"/></g></svg>'
+def heroE():
+  l,_=lap('lap-home',640,700,1720)
+  sh='text-shadow:0 3px 24px rgba(90,45,10,.45),0 1px 2px rgba(90,45,10,.35)'
+  return bg(f='bgsun.jpg',sz=3000,hx=0,y=0,wash='linear-gradient(180deg,rgba(40,30,25,.10),rgba(40,30,25,0) 20%)')+f'''
+<div class="a" style="left:600px;top:84px;font:700 54px Inter;letter-spacing:.07em;color:#fffaf0;{sh}">PLAN THE WEEK · <span style="color:#f2c66a">SHOP IN ONE TAP</span></div>
+<div class="a" style="right:600px;top:90px;font:600 50px G;color:#000"><span style="color:#b8892f">K</span>aelLabs</div>
+<div class="a" style="left:0;right:0;top:150px;text-align:center;color:#fffaf0;{sh}">
+<div style="height:70px">{LEAFW}</div>
+<div style="font:500 196px/1 G;letter-spacing:.01em;margin-top:-4px">Mediterranean</div>
+<div style="display:flex;align-items:center;justify-content:center;gap:18px;margin-top:22px"><i style="width:420px;height:3px;background:#fffaf0;opacity:.9"></i><i style="width:16px;height:16px;background:#fffaf0;transform:rotate(45deg)"></i><i style="width:420px;height:3px;background:#fffaf0;opacity:.9"></i></div>
+<div style="font:500 60px Inter;letter-spacing:.34em;margin-top:22px">MEAL PLANNER</div></div>
+'''+l+phone('ph-shopping',2190,975,470,shadowo=.5)+'''
+<div class="a" style="left:0;right:0;top:2140px;text-align:center"><span style="display:inline-block;font:600 46px Inter;letter-spacing:.16em;color:#fff;background:#2f5a3a;padding:20px 64px;border-radius:999px;box-shadow:0 14px 30px -10px rgba(30,60,35,.5)">INSTANT DOWNLOAD</span></div>'''
+S['01-hero-E']=heroE()
+def heroF():
+  l,_=lap('lap-home_s',640,600,1880)
+  return bg(f='bgsun.jpg',sz=3000,hx=0,y=0,wash='linear-gradient(180deg,rgba(250,244,234,.62) 0%,rgba(250,244,234,.38) 16%,rgba(250,244,234,0) 30%)')+'''
+<div class="a" style="left:600px;top:96px;font:700 58px Inter;letter-spacing:.07em;color:#2a1c13">PLAN THE WEEK · <span style="color:#a8741c">SHOP IN ONE TAP</span></div>
+<div class="a" style="right:600px;top:102px;font:600 50px G;color:#000"><span style="color:#b8892f">K</span>aelLabs</div>
+<div class="a" style="left:0;right:0;top:205px;text-align:center"><h1 style="font-size:176px;letter-spacing:-2px;text-shadow:0 0 40px rgba(250,244,234,.6)">Mediterranean <em>Meal Planner</em></h1></div>
+<div class="a" style="left:0;right:0;top:418px;text-align:center;font:500 54px Inter;color:#4a3526;text-shadow:0 0 24px rgba(250,244,234,.8)">Week plan · grocery list · recipes · pantry</div>
+'''+l+phone('ph402-week_s',2280,850,500,shadowo=.5,cw=402,ch=815)+'''
+<div class="a" style="left:0;right:0;top:2140px;text-align:center"><span style="display:inline-block;font:600 46px Inter;letter-spacing:.16em;color:#fff;background:#2f5a3a;padding:20px 64px;border-radius:999px;box-shadow:0 14px 30px -10px rgba(30,60,35,.5)">INSTANT DOWNLOAD</span></div>'''
+S['01-hero-F']=heroF()
 S['01-hero-A']=hero(bg(sz=3600,hx=-300,y=-700,wash='linear-gradient(180deg,rgba(250,244,234,.5),rgba(250,244,234,0) 30%)'))
 S['01-hero-B']=hero(bg(f='bg5.jpg',sz=3002,hx=0,y=-560,wash='linear-gradient(180deg,rgba(250,244,234,.6),rgba(250,244,234,0) 28%),linear-gradient(90deg,rgba(255,196,120,.10),rgba(255,196,120,0) 40%)'),lx=640,lw=1880,px=2280,pw=500)
 S['01-hero-C']=hero(bg(f='bg1.jpg',sz=3600,hx=-300,y=-880,wash='linear-gradient(180deg,rgba(10,25,18,.35),rgba(10,25,18,0) 30%)'),True)
