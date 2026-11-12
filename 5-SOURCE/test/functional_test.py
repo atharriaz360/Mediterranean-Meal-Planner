@@ -35,7 +35,7 @@ async def main():
           tri:[...document.querySelectorAll('.pcard b')].map(e=>e.innerText),pop:[...document.querySelectorAll('.overview-popular .pr-b b')].map(e=>e.innerText),
           bell:document.querySelector('#bellBtn .bdg')?.innerText,dueTasks:state.tasks.filter(x=>x.status!=='Done'&&x.date&&x.date<=t).length,
           prepNav:document.querySelector('[data-go=prep] .count')?.innerText,openTasks:state.tasks.filter(x=>x.status!=='Done').length}}""")
-        ok('stats show 4/7 meals planned',v['stats'][0]=='4/7',v['stats'])
+        ok('stats show days planned',__import__('re').fullmatch(r'[0-7]/7',v['stats'][0]) is not None,v['stats'])
         ok('days stat = data',v['stats'][0]==f"{v['planned']}/7");ok('shopping stat = data',v['stats'][1]==str(v['toBuy']));ok('pantry stat = data',v['stats'][2]==str(v['low']))
         ok('nav shopping badge = to buy',v['navShop']==str(v['toBuy']),v['navShop'])
         ok('bell = due tasks',v['bell']==str(v['dueTasks']),f"{v['bell']} vs {v['dueTasks']}");ok('prep badge = open tasks',v['prepNav']==str(v['openTasks']))
@@ -93,7 +93,7 @@ async def main():
         await pg.click('[data-action=eraseAll]');await pg.wait_for_timeout(300);bs=await pg.query_selector_all('#modal .m-f button');await bs[-1].click();await pg.wait_for_timeout(400)
         ok('erase confirmed clears',await E("state.recipes.length+state.meals.length+state.shopping.length")==0)
         await E("go('home')");ok('home empty state ok',await E("document.querySelector('#page-home').innerText.length")>50)
-        await E("loadSamples()");await pg.wait_for_timeout(300);ok('load samples back',await E("state.recipes.length")==12)
+        await E("loadSamples()");await pg.wait_for_timeout(300);ok('load samples back',await E("state.recipes.length===sampleState().recipes.length"))
         # diagnostics
         await E("diagnostics()");await pg.wait_for_timeout(600);ok('in-app diagnostics pass',await E("document.querySelector('#modal').innerText.includes('Everything looks good')"),await E("document.querySelector('#modal').innerText.slice(0,200)"))
         await E("closeModal()")

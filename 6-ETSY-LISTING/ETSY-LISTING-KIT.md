@@ -138,7 +138,7 @@ Grocery list
 - Add your own items with quantity and aisle; tick off as you shop; filter All, To buy and Bought; copy or print the list
 
 Recipe organizer
-- Add your own recipes with photos. 16 sample recipes (name, ingredients and photo) show how it works. Add your own method and steps
+- Add your own recipes with your own ingredients, method and photos. No recipes are included: sample dishes (name and photo only) show the layout
 - Ingredients to tick off, your own numbered method, time, servings and kcal per serving
 - Search, filter by meal and star favourites; Plan it or Add to shopping in one tap; print recipe cards
 
@@ -181,10 +181,10 @@ YOUR DATA
 - Clearing browser data or private browsing can remove saved entries. Keep a backup
 
 GOOD TO KNOW
-- A flexible planning tool, not a prescribed diet or calorie calculator. Calories come from the sample recipes or your entries
+- A flexible planning tool, not a prescribed diet or calorie calculator. Calories come from your recipes or your entries
 - Check ingredients, allergens and your own dietary needs before cooking
 - Personal use only. No sharing or resale of the app, guide or link
-- Sample recipes are example data, not tested recipes. Check ingredients, allergens and cooking times yourself
+- No recipes are included. Sample dishes are example names and photos only; clear them in Settings
 - Designed and built by me, with AI assistance. I planned the app, designed its features and structure, reviewed the code and checked screens. AI tools helped write parts of the code, the listing images and this description. Screens show the real app with example data. Devices are not included.
 
 NEED HELP?

@@ -278,40 +278,24 @@ function blankState(){
   ui:{page:'home',weekOffset:0,calMonth:null,calYear:null,recipeFilter:'All',shopFilter:'all',backupSnooze:null}};
 }
 function sampleState(){
- const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:'',method:''},o);
+ const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:'',method:'',ingredients:[]},o);
  s.recipes=[
-  R({title:'Lemon Herb Chicken',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan',
-   ingredients:['2 chicken breasts, sliced','1 lemon','2 garlic cloves','1 tsp dried oregano','1 red pepper','1 zucchini','200 g green beans','2 tbsp extra virgin olive oil','150 g bulgur wheat, to serve']}),
-  R({title:'Mediterranean Bowl',category:'Lunch',time:25,servings:2,calories:510,art:'salad',fav:true,groups:['poultry','grains','veg','oliveoil'],tags:'popular, meal prep',
-   ingredients:['150 g quinoa','2 chicken breasts','1 cucumber','200 g cherry tomatoes','handful of olives','60 g feta','1 lemon','2 tbsp extra virgin olive oil']}),
-  R({title:'Greek Yogurt Pancakes',category:'Breakfast',time:20,servings:2,calories:420,art:'pancakes',fav:true,groups:['grains','fruit','dairy','nuts'],tags:'weekend, popular',
-   ingredients:['150 g Greek yogurt','2 eggs','100 g wholemeal flour','1 tsp baking powder','1 tbsp honey','handful of berries','1 tbsp chopped walnuts']}),
-  R({title:'Tomato & Olive Pasta',category:'Dinner',time:25,servings:4,calories:540,art:'pasta',fav:true,groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
-   ingredients:['320 g wholewheat pasta','400 g cherry tomatoes','handful of Kalamata olives','3 garlic cloves','1 tbsp capers','handful of basil','2 tbsp extra virgin olive oil','50 g parmesan']}),
-  R({title:'Grilled Chicken Bowl',category:'Lunch',time:30,servings:2,calories:520,art:'chickensalad',groups:['poultry','grains','veg','oliveoil'],tags:'high protein, meal prep',
-   ingredients:['2 chicken breasts','150 g quinoa','1 avocado','200 g cherry tomatoes','handful of spinach','1 lemon','2 tbsp extra virgin olive oil','1 tsp sesame seeds']}),
-  R({title:'Veggie Pasta',category:'Dinner',time:25,servings:4,calories:520,art:'pasta',groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
-   ingredients:['320 g wholewheat pasta','250 g cherry tomatoes','1 zucchini','1 red pepper','2 garlic cloves','handful of basil','2 tbsp extra virgin olive oil','parmesan, to serve']}),
-  R({title:'Salmon & Quinoa',category:'Dinner',time:25,servings:2,calories:560,art:'salmon',groups:['fish','grains','veg','oliveoil'],tags:'high protein, 30 minutes',
-   ingredients:['2 salmon fillets','150 g quinoa','200 g asparagus','150 g cherry tomatoes','1 lemon','2 garlic cloves','small bunch of dill','1 tbsp extra virgin olive oil']}),
-  R({title:'Mediterranean Wrap',category:'Lunch',time:20,servings:2,calories:420,art:'salad',groups:['grains','veg','dairy','oliveoil'],tags:'quick, vegetarian',
-   ingredients:['2 wholemeal wraps','100 g hummus','1 cucumber','2 tomatoes','60 g feta','handful of olives','handful of spinach']}),
-  R({title:'Lentil Soup',category:'Dinner',time:35,servings:4,calories:380,art:'lentil',groups:['legumes','veg','oliveoil'],tags:'batch cook, freezer friendly',
-   ingredients:['250 g red lentils','1 onion','2 carrots','2 garlic cloves','1 tsp cumin','1 litre vegetable stock','1 lemon','2 tbsp extra virgin olive oil','parsley, to serve']}),
-  R({title:'Overnight Oats',category:'Breakfast',time:10,servings:1,calories:410,art:'oats',groups:['grains','fruit','nuts','dairy'],tags:'make ahead',
-   ingredients:['50 g rolled oats','120 g Greek yogurt','80 ml milk','handful of mixed berries','1 tbsp chopped walnuts','1 tsp honey','pinch of cinnamon']}),
-  R({title:'Grilled Chicken Salad',category:'Lunch',time:20,servings:2,calories:420,art:'chickensalad',groups:['poultry','veg','oliveoil'],tags:'high protein, quick',
-   ingredients:['2 grilled chicken breasts','100 g spinach','150 g cherry tomatoes','1 cucumber','1/2 red onion','1 lemon','2 tbsp extra virgin olive oil']}),
-  R({title:'Greek Yogurt & Berries',category:'Snack',time:5,servings:1,calories:180,art:'oats',groups:['dairy','fruit','nuts'],tags:'snack, no-cook',
-   ingredients:['200 g Greek yogurt','handful of mixed berries','1 tsp honey','1 tbsp chopped walnuts']}),
-  R({title:'Shakshuka',category:'Breakfast',time:25,servings:2,calories:390,art:'shakshuka',groups:['poultry','veg','oliveoil'],tags:'weekend, one pan',
-   ingredients:['4 eggs','400 g canned tomatoes','1 red pepper','1 onion','2 garlic cloves','1 tsp cumin','1 tsp paprika','handful of parsley','1 tbsp extra virgin olive oil']}),
-  R({title:'Tuna & White Bean Salad',category:'Lunch',time:15,servings:2,calories:450,art:'tuna',fav:true,groups:['fish','legumes','veg','oliveoil'],tags:'no-cook, high protein',
-   ingredients:['2 cans tuna in olive oil','400 g canned cannellini beans','1/2 red onion','150 g cherry tomatoes','handful of parsley','1 lemon','1 tbsp extra virgin olive oil']}),
-  R({title:'Stuffed Peppers',category:'Dinner',time:45,servings:4,calories:470,art:'peppers',groups:['grains','legumes','veg','dairy','oliveoil'],tags:'vegetarian, batch cook',
-   ingredients:['4 large peppers','150 g bulgur wheat','400 g canned chickpeas','200 g canned tomatoes','1 onion','1 tsp smoked paprika','60 g feta','2 tbsp extra virgin olive oil']}),
-  R({title:'Hummus & Veggie Sticks',category:'Snack',time:10,servings:2,calories:220,art:'hummus',groups:['legumes','veg','oliveoil'],tags:'snack, no-cook',
-   ingredients:['150 g hummus','2 carrots','1 cucumber','1 red pepper','pinch of paprika','1 tsp extra virgin olive oil']})
+  R({title:'Lemon Herb Chicken',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan'}),
+  R({title:'Mediterranean Bowl',category:'Lunch',time:25,servings:2,calories:510,art:'salad',fav:true,groups:['poultry','grains','veg','oliveoil'],tags:'popular, meal prep'}),
+  R({title:'Greek Yogurt Pancakes',category:'Breakfast',time:20,servings:2,calories:420,art:'pancakes',fav:true,groups:['grains','fruit','dairy','nuts'],tags:'weekend, popular'}),
+  R({title:'Tomato & Olive Pasta',category:'Dinner',time:25,servings:4,calories:540,art:'pasta',fav:true,groups:['grains','veg','oliveoil'],tags:'family, vegetarian'}),
+  R({title:'Grilled Chicken Bowl',category:'Lunch',time:30,servings:2,calories:520,art:'chickensalad',groups:['poultry','grains','veg','oliveoil'],tags:'high protein, meal prep'}),
+  R({title:'Veggie Pasta',category:'Dinner',time:25,servings:4,calories:520,art:'pasta',groups:['grains','veg','oliveoil'],tags:'family, vegetarian'}),
+  R({title:'Salmon & Quinoa',category:'Dinner',time:25,servings:2,calories:560,art:'salmon',groups:['fish','grains','veg','oliveoil'],tags:'high protein, 30 minutes'}),
+  R({title:'Mediterranean Wrap',category:'Lunch',time:20,servings:2,calories:420,art:'salad',groups:['grains','veg','dairy','oliveoil'],tags:'quick, vegetarian'}),
+  R({title:'Lentil Soup',category:'Dinner',time:35,servings:4,calories:380,art:'lentil',groups:['legumes','veg','oliveoil'],tags:'batch cook, freezer friendly'}),
+  R({title:'Overnight Oats',category:'Breakfast',time:10,servings:1,calories:410,art:'oats',groups:['grains','fruit','nuts','dairy'],tags:'make ahead'}),
+  R({title:'Grilled Chicken Salad',category:'Lunch',time:20,servings:2,calories:420,art:'chickensalad',groups:['poultry','veg','oliveoil'],tags:'high protein, quick'}),
+  R({title:'Greek Yogurt & Berries',category:'Snack',time:5,servings:1,calories:180,art:'oats',groups:['dairy','fruit','nuts'],tags:'snack, no-cook'}),
+  R({title:'Shakshuka',category:'Breakfast',time:25,servings:2,calories:390,art:'shakshuka',groups:['poultry','veg','oliveoil'],tags:'weekend, one pan'}),
+  R({title:'Tuna & White Bean Salad',category:'Lunch',time:15,servings:2,calories:450,art:'tuna',fav:true,groups:['fish','legumes','veg','oliveoil'],tags:'no-cook, high protein'}),
+  R({title:'Stuffed Peppers',category:'Dinner',time:45,servings:4,calories:470,art:'peppers',groups:['grains','legumes','veg','dairy','oliveoil'],tags:'vegetarian, batch cook'}),
+  R({title:'Hummus & Veggie Sticks',category:'Snack',time:10,servings:2,calories:220,art:'hummus',groups:['legumes','veg','oliveoil'],tags:'snack, no-cook'})
  ];
  const rb=t=>s.recipes.find(r=>r.title===t);
  const ws=weekStartOf(today(),s.settings.weekStart),t=today(),ti=(parse(t).getDay()-s.settings.weekStart+7)%7;
@@ -364,7 +348,7 @@ function normalize(x){
   shopFilter:oneOf(U.shopFilter,['open','done','all'],'all'),backupSnooze:isDate(U.backupSnooze)?U.backupSnooze:null};
  o.recipes=arr(x.recipes).filter(r=>r&&typeof r==='object').map(r=>({id:cid(r.id,idMap),title:str(r.title,160).trim()||'Recipe',category:oneOf(r.category,RECIPE_CATS,'Dinner'),
   time:numOr(r.time===''?'':parseInt(r.time),0,1440),servings:numOr(r.servings===''?'':parseInt(r.servings),1,100),calories:numOr(r.calories,0,10000),groups:groupsOf(r.groups),
-  tags:str(r.tags,300),ingredients:(Array.isArray(r.ingredients)?r.ingredients:String(r.ingredients||'').split('\n')).map(v=>str(v,300).trim()).filter(Boolean).slice(0,200),
+  tags:str(r.tags,300),ingredients:r.isSample?[]:(Array.isArray(r.ingredients)?r.ingredients:String(r.ingredients||'').split('\n')).map(v=>str(v,300).trim()).filter(Boolean).slice(0,200),
   method:r.isSample?'':str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&Object.hasOwnProperty.call(ART,r.art)?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
  o.meals=arr(x.meals).filter(m=>m&&typeof m==='object'&&isDate(m.date)).map(m=>({id:cid(m.id),date:m.date,slot:oneOf(m.slot,SLOTS,'Dinner'),title:str(m.title,160).trim()||'Meal',
   recipeId:typeof m.recipeId==='string'&&idMap[m.recipeId]?idMap[m.recipeId]:null,calories:numOr(m.calories,0,10000),groups:groupsOf(m.groups),status:m.status==='Eaten'?'Eaten':'Planned',notes:str(m.notes,2000),isSample:!!m.isSample}));
@@ -830,7 +814,7 @@ function recipeDetail(id){
   ${st.length?`<div class="rd-stats" style="grid-template-columns:repeat(${st.length},minmax(0,1fr))">${st.map(([i,v,k])=>`<div>${ic(i)}<b>${v}</b><span>${k}</span></div>`).join('')}</div>`:''}
   ${gs.length?`<div class="rd-groups">${gs.map(k=>`<span class="pill"><span class="dot" style="background:${G[k].color}"></span>${G[k].label}</span>`).join('')}</div>`:''}
   <div class="rd-cols"><section class="rd-ing"><h4>Ingredients<em>${n}</em></h4>${n?`<ul>${r.ingredients.map(i=>`<li><label><input type="checkbox"><span>${esc(i)}</span></label></li>`).join('')}</ul><p class="rd-hint">Tick items off as you cook.</p>`:'<p class="muted">No ingredients added yet.</p>'}</section>
-  <section class="rd-steps"><h4>Method${steps.length?`<em>${steps.length} step${steps.length===1?'':'s'}</em>`:''}</h4>${steps.length?`<ol>${steps.map((x,k)=>`<li><i>${k+1}</i><p>${esc(x)}</p></li>`).join('')}</ol>`:(r.isSample?'<p class="muted">Sample recipe: name, ingredients and photo only. Tap Edit to write your own method.</p>':'<p class="muted">No method added yet.</p>')}</section></div>
+  <section class="rd-steps"><h4>Method${steps.length?`<em>${steps.length} step${steps.length===1?'':'s'}</em>`:''}</h4>${steps.length?`<ol>${steps.map((x,k)=>`<li><i>${k+1}</i><p>${esc(x)}</p></li>`).join('')}</ol>`:(r.isSample?'<p class="muted">Sample dish: name and photo only. Tap Edit to add your own ingredients and method.</p>':'<p class="muted">No method added yet.</p>')}</section></div>
   ${r.tags?`<p class="muted small rd-tags">Tags: ${esc(r.tags)}</p>`:''}</div>`,
   left:`<button class="btn ghost" id="rEdit">${ic('edit')}Edit</button><button class="btn ghost" id="rPrint">${ic('print')}<span class="lbl-sm">Print</span></button>`,
   buttons:[{label:`${ic('cart')}<span class="lbl-sm">Add to shopping</span>`,onClick:()=>{addIngredients([r],`from ${r.title}`)}},{label:`${ic('week')}Plan it`,cls:'primary',onClick:()=>{setTimeout(()=>mealModal({recipeId:r.id}),30)}}]});
@@ -887,7 +871,7 @@ function addIngredients(recipes,label){
 function genShopping(){
  const ws=curWeekStart(),ids=[...new Set(weekMeals(ws).map(m=>m.recipeId).filter(Boolean))];
  const recs=ids.map(id=>state.recipes.find(r=>r.id===id)).filter(r=>r&&r.ingredients.length);
- if(!recs.length){toast('Plan meals from your recipes first — their ingredients become your list.','err');return}
+ if(!recs.length){toast('Add ingredients to the recipes in your week first — they become your list.','err');return}
  addIngredients(recs,`from ${recs.length} recipe${recs.length===1?'':'s'}`);
  if(state.ui.page!=='shopping')go('shopping');
 }
@@ -1079,7 +1063,7 @@ async function pSettings(){
    <p class="small muted" style="margin:6px 0 0">Your planner lives only on this device, in this browser. Nothing is uploaded anywhere. To move to another device, back up here and restore there.</p>
   </div>
   <div class="card"><div class="card-h"><h3>Start fresh</h3></div>
-   <div class="set-row"><div class="lbl"><b>Sample data</b><span>${hasSamples()?'Example meals, recipes and lists are still here':'Cleared — the sample week has been removed'}</span></div><button class="btn" data-action="${hasSamples()?'clearSamples':'loadSamples'}">${hasSamples()?'Clear samples':'Load samples'}</button></div>
+   <div class="set-row"><div class="lbl"><b>Sample data</b><span>${hasSamples()?'Example meals, dishes and lists are still here':'Cleared — the sample week has been removed'}</span></div><button class="btn" data-action="${hasSamples()?'clearSamples':'loadSamples'}">${hasSamples()?'Clear samples':'Load samples'}</button></div>
    <div class="set-row"><div class="lbl"><b>Erase everything</b><span>Deletes all your plans in this browser</span></div><button class="btn danger" data-action="eraseAll">Erase…</button></div>
   </div>
   <div class="card"><div class="card-h"><h3>Help</h3></div>
@@ -1157,7 +1141,7 @@ function onboarding(step=0){
    <div>${ic('shield')}<span><b>Use the same browser each time.</b> Your plans are saved in the browser you’re using now${location.protocol==='file:'?', for this file in its current folder. If you move the file, restore a backup':''}.</span></div>
    <div>${ic('down')}<span><b>Back up once a week.</b> Settings → Back up now saves a small file you can restore any time, on any device.</span></div>
    <div>${ic('heart')}<span><b>Bookmark this page</b> so it’s one click away.</span></div></div></div>`,
-  ()=>`<div class="onb"><h2>How would you like to start?</h2><p>You can change your mind later in Settings.</p><div class="choice" id="oStart"><button class="on" data-v="sample"><b>Explore a sample week</b><span>See Mediterranean Meal Planner filled with meals, recipes and a shopping list.</span></button><button data-v="blank"><b>Start with a blank planner</b><span>Jump straight in with your own meals.</span></button></div></div>`
+  ()=>`<div class="onb"><h2>How would you like to start?</h2><p>You can change your mind later in Settings.</p><div class="choice" id="oStart"><button class="on" data-v="sample"><b>Explore a sample week</b><span>See Mediterranean Meal Planner filled with sample meals, dishes and a shopping list.</span></button><button data-v="blank"><b>Start with a blank planner</b><span>Jump straight in with your own meals.</span></button></div></div>`
  ];
  const last=step===steps.length-1;
  const m=openModal({title:'<span class="sr-only">Welcome</span>',size:'',body:steps[step]()+`<div class="steps">${steps.map((_,i)=>`<i class="${i===step?'on':''}"></i>`).join('')}</div>`,

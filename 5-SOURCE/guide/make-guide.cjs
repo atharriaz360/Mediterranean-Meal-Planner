@@ -117,11 +117,11 @@ h1 em { color: #F2C66A; font-style: italic; }
   </div>
   <div class="box"><h2><i></i>Your first five minutes</h2><ol>
     <li><b>Look around.</b> Your planner opens with a <b>sample week</b>. Click through Week Plan, Recipes and Shopping.</li>
-    <li><b>Plan a meal.</b> Open any recipe and tap <b>Plan it</b>, or tap an empty slot in Week Plan.</li>
-    <li><b>Build your list.</b> In Week Plan tap <b>Build shopping list</b>. Ingredients appear sorted by aisle. Anything in your <b>Pantry</b> is skipped.</li>
+    <li><b>Add your recipe.</b> Recipes &rarr; <b>New recipe</b>, with your own ingredients. Tap <b>Plan it</b>.</li>
+    <li><b>Build your list.</b> In Week Plan tap <b>Build shopping list</b>. Your ingredients appear sorted by aisle. Anything in your <b>Pantry</b> is skipped.</li>
     <li><b>Repeat a good week.</b> <b>Copy last week</b> fills the new week in one tap.</li>
     <li><b>Make it yours.</b> Settings &rarr; <b>Clear sample data</b>. Anything you added yourself stays.</li></ol>
-    <p class="mut">Sample recipes and meals are examples only. They aren't a diet plan.</p></div>
+    <p class="mut">Sample dishes and meals are examples only, with no ingredients or method. They aren't a diet plan.</p></div>
   <div class="box warn"><h2><i></i>The one rule: your planner lives in your browser</h2>
     <p style="margin:0">Mediterranean Meal Planner saves automatically, in the browser you open it in, on that device only. So <b>open it from the same place, in the same browser, each time</b>. It doesn't sync between devices. Private or Incognito windows, clearing browser data, or moving the file can make your plans unavailable. Go to Settings &rarr; <b>Back up now</b> once a week, and use <b>Restore backup</b> to move your planner to another browser or device.</p></div>
   <div class="foot"><span>Mediterranean Meal Planner &middot; Plan, cook &amp; shop</span><span>Page 1 of 2</span></div>
