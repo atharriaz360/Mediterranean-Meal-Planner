@@ -278,56 +278,40 @@ function blankState(){
   ui:{page:'home',weekOffset:0,calMonth:null,calYear:null,recipeFilter:'All',shopFilter:'all',backupSnooze:null}};
 }
 function sampleState(){
- const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:''},o);
+ const s=blankState();const R=(o)=>Object.assign({id:uid(),isSample:true,fav:false,image:'',method:''},o);
  s.recipes=[
   R({title:'Lemon Herb Chicken',category:'Dinner',time:30,servings:2,calories:480,art:'stirfry',fav:true,groups:['poultry','veg','oliveoil'],tags:'popular, one pan',
-   ingredients:['2 chicken breasts, sliced','1 lemon','2 garlic cloves','1 tsp dried oregano','1 red pepper','1 zucchini','200 g green beans','2 tbsp extra virgin olive oil','150 g bulgur wheat, to serve'],
-   method:'Toss the chicken with olive oil, garlic, oregano and lemon zest.\nSear in a large pan for 6 minutes until golden.\nAdd the pepper, zucchini and green beans and cook 5 minutes more.\nSqueeze over the lemon and serve with bulgur.'}),
+   ingredients:['2 chicken breasts, sliced','1 lemon','2 garlic cloves','1 tsp dried oregano','1 red pepper','1 zucchini','200 g green beans','2 tbsp extra virgin olive oil','150 g bulgur wheat, to serve']}),
   R({title:'Mediterranean Bowl',category:'Lunch',time:25,servings:2,calories:510,art:'salad',fav:true,groups:['poultry','grains','veg','oliveoil'],tags:'popular, meal prep',
-   ingredients:['150 g quinoa','2 chicken breasts','1 cucumber','200 g cherry tomatoes','handful of olives','60 g feta','1 lemon','2 tbsp extra virgin olive oil'],
-   method:'Cook the quinoa and grill the seasoned chicken.\nChop the cucumber and tomatoes.\nBuild the bowls, top with olives and feta, and dress with lemon and olive oil.'}),
+   ingredients:['150 g quinoa','2 chicken breasts','1 cucumber','200 g cherry tomatoes','handful of olives','60 g feta','1 lemon','2 tbsp extra virgin olive oil']}),
   R({title:'Greek Yogurt Pancakes',category:'Breakfast',time:20,servings:2,calories:420,art:'pancakes',fav:true,groups:['grains','fruit','dairy','nuts'],tags:'weekend, popular',
-   ingredients:['150 g Greek yogurt','2 eggs','100 g wholemeal flour','1 tsp baking powder','1 tbsp honey','handful of berries','1 tbsp chopped walnuts'],
-   method:'Whisk the yogurt and eggs, then fold in the flour and baking powder.\nCook ladlefuls in a pan with a little olive oil, 2 minutes per side.\nServe with berries, walnuts and a drizzle of honey.'}),
+   ingredients:['150 g Greek yogurt','2 eggs','100 g wholemeal flour','1 tsp baking powder','1 tbsp honey','handful of berries','1 tbsp chopped walnuts']}),
   R({title:'Tomato & Olive Pasta',category:'Dinner',time:25,servings:4,calories:540,art:'pasta',fav:true,groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
-   ingredients:['320 g wholewheat pasta','400 g cherry tomatoes','handful of Kalamata olives','3 garlic cloves','1 tbsp capers','handful of basil','2 tbsp extra virgin olive oil','50 g parmesan'],
-   method:'Cook the pasta until al dente.\nSoften the garlic in olive oil, add the tomatoes and cook until they burst.\nStir in the olives and capers, then toss through the pasta with basil.\nFinish with parmesan.'}),
+   ingredients:['320 g wholewheat pasta','400 g cherry tomatoes','handful of Kalamata olives','3 garlic cloves','1 tbsp capers','handful of basil','2 tbsp extra virgin olive oil','50 g parmesan']}),
   R({title:'Grilled Chicken Bowl',category:'Lunch',time:30,servings:2,calories:520,art:'chickensalad',groups:['poultry','grains','veg','oliveoil'],tags:'high protein, meal prep',
-   ingredients:['2 chicken breasts','150 g quinoa','1 avocado','200 g cherry tomatoes','handful of spinach','1 lemon','2 tbsp extra virgin olive oil','1 tsp sesame seeds'],
-   method:'Cook the quinoa according to the pack.\nGrill the seasoned chicken for 6 minutes per side, rest, then slice.\nBuild the bowls with quinoa, spinach, tomatoes and avocado, top with the chicken.\nDress with lemon and olive oil, finish with sesame seeds.'}),
+   ingredients:['2 chicken breasts','150 g quinoa','1 avocado','200 g cherry tomatoes','handful of spinach','1 lemon','2 tbsp extra virgin olive oil','1 tsp sesame seeds']}),
   R({title:'Veggie Pasta',category:'Dinner',time:25,servings:4,calories:520,art:'pasta',groups:['grains','veg','oliveoil'],tags:'family, vegetarian',
-   ingredients:['320 g wholewheat pasta','250 g cherry tomatoes','1 zucchini','1 red pepper','2 garlic cloves','handful of basil','2 tbsp extra virgin olive oil','parmesan, to serve'],
-   method:'Cook the pasta until al dente.\nSoften the garlic, zucchini and pepper in olive oil, add the tomatoes and cook until they burst.\nToss through the pasta with basil and parmesan.'}),
+   ingredients:['320 g wholewheat pasta','250 g cherry tomatoes','1 zucchini','1 red pepper','2 garlic cloves','handful of basil','2 tbsp extra virgin olive oil','parmesan, to serve']}),
   R({title:'Salmon & Quinoa',category:'Dinner',time:25,servings:2,calories:560,art:'salmon',groups:['fish','grains','veg','oliveoil'],tags:'high protein, 30 minutes',
-   ingredients:['2 salmon fillets','150 g quinoa','200 g asparagus','150 g cherry tomatoes','1 lemon','2 garlic cloves','small bunch of dill','1 tbsp extra virgin olive oil'],
-   method:'Heat the oven to 200°C / 400°F.\nPlace the salmon on a tray with the asparagus and tomatoes, rub with olive oil, garlic, lemon zest and dill.\nRoast 12–15 minutes while the quinoa cooks.\nServe with lemon wedges.'}),
+   ingredients:['2 salmon fillets','150 g quinoa','200 g asparagus','150 g cherry tomatoes','1 lemon','2 garlic cloves','small bunch of dill','1 tbsp extra virgin olive oil']}),
   R({title:'Mediterranean Wrap',category:'Lunch',time:20,servings:2,calories:420,art:'salad',groups:['grains','veg','dairy','oliveoil'],tags:'quick, vegetarian',
-   ingredients:['2 wholemeal wraps','100 g hummus','1 cucumber','2 tomatoes','60 g feta','handful of olives','handful of spinach'],
-   method:'Spread hummus over the wraps.\nLayer the vegetables, feta and olives.\nRoll tightly and slice in half.'}),
+   ingredients:['2 wholemeal wraps','100 g hummus','1 cucumber','2 tomatoes','60 g feta','handful of olives','handful of spinach']}),
   R({title:'Lentil Soup',category:'Dinner',time:35,servings:4,calories:380,art:'lentil',groups:['legumes','veg','oliveoil'],tags:'batch cook, freezer friendly',
-   ingredients:['250 g red lentils','1 onion','2 carrots','2 garlic cloves','1 tsp cumin','1 litre vegetable stock','1 lemon','2 tbsp extra virgin olive oil','parsley, to serve'],
-   method:'Soften the onion and carrot in olive oil for 6–8 minutes.\nStir in the garlic and cumin, then add the lentils and stock.\nSimmer 20 minutes until the lentils collapse.\nSqueeze in the lemon, season, and top with parsley.'}),
+   ingredients:['250 g red lentils','1 onion','2 carrots','2 garlic cloves','1 tsp cumin','1 litre vegetable stock','1 lemon','2 tbsp extra virgin olive oil','parsley, to serve']}),
   R({title:'Overnight Oats',category:'Breakfast',time:10,servings:1,calories:410,art:'oats',groups:['grains','fruit','nuts','dairy'],tags:'make ahead',
-   ingredients:['50 g rolled oats','120 g Greek yogurt','80 ml milk','handful of mixed berries','1 tbsp chopped walnuts','1 tsp honey','pinch of cinnamon'],
-   method:'Stir the oats, yogurt, milk and cinnamon together in a jar.\nCover and refrigerate overnight.\nTop with berries, walnuts and honey in the morning.'}),
+   ingredients:['50 g rolled oats','120 g Greek yogurt','80 ml milk','handful of mixed berries','1 tbsp chopped walnuts','1 tsp honey','pinch of cinnamon']}),
   R({title:'Grilled Chicken Salad',category:'Lunch',time:20,servings:2,calories:420,art:'chickensalad',groups:['poultry','veg','oliveoil'],tags:'high protein, quick',
-   ingredients:['2 grilled chicken breasts','100 g spinach','150 g cherry tomatoes','1 cucumber','1/2 red onion','1 lemon','2 tbsp extra virgin olive oil'],
-   method:'Slice the chicken and combine with the spinach, tomatoes, cucumber and onion.\nWhisk the olive oil and lemon juice, toss through and season.'}),
+   ingredients:['2 grilled chicken breasts','100 g spinach','150 g cherry tomatoes','1 cucumber','1/2 red onion','1 lemon','2 tbsp extra virgin olive oil']}),
   R({title:'Greek Yogurt & Berries',category:'Snack',time:5,servings:1,calories:180,art:'oats',groups:['dairy','fruit','nuts'],tags:'snack, no-cook',
-   ingredients:['200 g Greek yogurt','handful of mixed berries','1 tsp honey','1 tbsp chopped walnuts'],
-   method:'Spoon the yogurt into a bowl.\nTop with the berries, walnuts and honey.'}),
+   ingredients:['200 g Greek yogurt','handful of mixed berries','1 tsp honey','1 tbsp chopped walnuts']}),
   R({title:'Shakshuka',category:'Breakfast',time:25,servings:2,calories:390,art:'shakshuka',groups:['poultry','veg','oliveoil'],tags:'weekend, one pan',
-   ingredients:['4 eggs','400 g canned tomatoes','1 red pepper','1 onion','2 garlic cloves','1 tsp cumin','1 tsp paprika','handful of parsley','1 tbsp extra virgin olive oil'],
-   method:'Soften the onion and pepper in olive oil for 6 minutes.\nAdd the garlic and spices, then the tomatoes, and simmer 8 minutes.\nMake four wells, crack in the eggs, cover and cook 5–7 minutes.\nScatter with parsley and serve with bread.'}),
+   ingredients:['4 eggs','400 g canned tomatoes','1 red pepper','1 onion','2 garlic cloves','1 tsp cumin','1 tsp paprika','handful of parsley','1 tbsp extra virgin olive oil']}),
   R({title:'Tuna & White Bean Salad',category:'Lunch',time:15,servings:2,calories:450,art:'tuna',fav:true,groups:['fish','legumes','veg','oliveoil'],tags:'no-cook, high protein',
-   ingredients:['2 cans tuna in olive oil','400 g canned cannellini beans','1/2 red onion','150 g cherry tomatoes','handful of parsley','1 lemon','1 tbsp extra virgin olive oil'],
-   method:'Drain the beans and tuna.\nToss with the sliced onion, tomatoes and parsley.\nDress with lemon and olive oil, then season.'}),
+   ingredients:['2 cans tuna in olive oil','400 g canned cannellini beans','1/2 red onion','150 g cherry tomatoes','handful of parsley','1 lemon','1 tbsp extra virgin olive oil']}),
   R({title:'Stuffed Peppers',category:'Dinner',time:45,servings:4,calories:470,art:'peppers',groups:['grains','legumes','veg','dairy','oliveoil'],tags:'vegetarian, batch cook',
-   ingredients:['4 large peppers','150 g bulgur wheat','400 g canned chickpeas','200 g canned tomatoes','1 onion','1 tsp smoked paprika','60 g feta','2 tbsp extra virgin olive oil'],
-   method:'Heat the oven to 190°C / 375°F.\nCook the bulgur, then mix with the chickpeas, tomatoes, softened onion and paprika.\nHalve the peppers, fill them, drizzle with olive oil and bake 30 minutes.\nCrumble over the feta to serve.'}),
+   ingredients:['4 large peppers','150 g bulgur wheat','400 g canned chickpeas','200 g canned tomatoes','1 onion','1 tsp smoked paprika','60 g feta','2 tbsp extra virgin olive oil']}),
   R({title:'Hummus & Veggie Sticks',category:'Snack',time:10,servings:2,calories:220,art:'hummus',groups:['legumes','veg','oliveoil'],tags:'snack, no-cook',
-   ingredients:['150 g hummus','2 carrots','1 cucumber','1 red pepper','pinch of paprika','1 tsp extra virgin olive oil'],
-   method:'Cut the vegetables into sticks.\nSpoon the hummus into a bowl, drizzle with olive oil and dust with paprika.'})
+   ingredients:['150 g hummus','2 carrots','1 cucumber','1 red pepper','pinch of paprika','1 tsp extra virgin olive oil']})
  ];
  const rb=t=>s.recipes.find(r=>r.title===t);
  const ws=weekStartOf(today(),s.settings.weekStart),t=today(),ti=(parse(t).getDay()-s.settings.weekStart+7)%7;
@@ -381,7 +365,7 @@ function normalize(x){
  o.recipes=arr(x.recipes).filter(r=>r&&typeof r==='object').map(r=>({id:cid(r.id,idMap),title:str(r.title,160).trim()||'Recipe',category:oneOf(r.category,RECIPE_CATS,'Dinner'),
   time:numOr(r.time===''?'':parseInt(r.time),0,1440),servings:numOr(r.servings===''?'':parseInt(r.servings),1,100),calories:numOr(r.calories,0,10000),groups:groupsOf(r.groups),
   tags:str(r.tags,300),ingredients:(Array.isArray(r.ingredients)?r.ingredients:String(r.ingredients||'').split('\n')).map(v=>str(v,300).trim()).filter(Boolean).slice(0,200),
-  method:str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&Object.hasOwnProperty.call(ART,r.art)?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
+  method:r.isSample?'':str(r.method,20000),image:typeof r.image==='string'&&r.image.length<4e6&&IMG_RE.test(r.image)?r.image:'',art:typeof r.art==='string'&&Object.hasOwnProperty.call(ART,r.art)?r.art:null,fav:!!r.fav,isSample:!!r.isSample}));
  o.meals=arr(x.meals).filter(m=>m&&typeof m==='object'&&isDate(m.date)).map(m=>({id:cid(m.id),date:m.date,slot:oneOf(m.slot,SLOTS,'Dinner'),title:str(m.title,160).trim()||'Meal',
   recipeId:typeof m.recipeId==='string'&&idMap[m.recipeId]?idMap[m.recipeId]:null,calories:numOr(m.calories,0,10000),groups:groupsOf(m.groups),status:m.status==='Eaten'?'Eaten':'Planned',notes:str(m.notes,2000),isSample:!!m.isSample}));
  o.shopping=arr(x.shopping).filter(i=>i&&typeof i==='object'&&str(i.name).trim()).map(i=>({id:cid(i.id),name:str(i.name,160).trim(),qty:str(i.qty,60),aisle:AISLES.includes(i.aisle)?i.aisle:guessAisle(str(i.name)),done:!!i.done,isSample:!!i.isSample}));
@@ -846,7 +830,7 @@ function recipeDetail(id){
   ${st.length?`<div class="rd-stats" style="grid-template-columns:repeat(${st.length},minmax(0,1fr))">${st.map(([i,v,k])=>`<div>${ic(i)}<b>${v}</b><span>${k}</span></div>`).join('')}</div>`:''}
   ${gs.length?`<div class="rd-groups">${gs.map(k=>`<span class="pill"><span class="dot" style="background:${G[k].color}"></span>${G[k].label}</span>`).join('')}</div>`:''}
   <div class="rd-cols"><section class="rd-ing"><h4>Ingredients<em>${n}</em></h4>${n?`<ul>${r.ingredients.map(i=>`<li><label><input type="checkbox"><span>${esc(i)}</span></label></li>`).join('')}</ul><p class="rd-hint">Tick items off as you cook.</p>`:'<p class="muted">No ingredients added yet.</p>'}</section>
-  <section class="rd-steps"><h4>Method<em>${steps.length} step${steps.length===1?'':'s'}</em></h4>${steps.length?`<ol>${steps.map((x,k)=>`<li><i>${k+1}</i><p>${esc(x)}</p></li>`).join('')}</ol>`:'<p class="muted">No method added yet.</p>'}</section></div>
+  <section class="rd-steps"><h4>Method${steps.length?`<em>${steps.length} step${steps.length===1?'':'s'}</em>`:''}</h4>${steps.length?`<ol>${steps.map((x,k)=>`<li><i>${k+1}</i><p>${esc(x)}</p></li>`).join('')}</ol>`:(r.isSample?'<p class="muted">Sample recipe: name, ingredients and photo only. Tap Edit to write your own method.</p>':'<p class="muted">No method added yet.</p>')}</section></div>
   ${r.tags?`<p class="muted small rd-tags">Tags: ${esc(r.tags)}</p>`:''}</div>`,
   left:`<button class="btn ghost" id="rEdit">${ic('edit')}Edit</button><button class="btn ghost" id="rPrint">${ic('print')}<span class="lbl-sm">Print</span></button>`,
   buttons:[{label:`${ic('cart')}<span class="lbl-sm">Add to shopping</span>`,onClick:()=>{addIngredients([r],`from ${r.title}`)}},{label:`${ic('week')}Plan it`,cls:'primary',onClick:()=>{setTimeout(()=>mealModal({recipeId:r.id}),30)}}]});
@@ -1161,7 +1145,7 @@ function doPrint(kind,orient){
 function printWeek(){if(state.ui.page!=='week')go('week');doPrint('week','landscape')}
 function printShopping(){if(state.ui.page!=='shopping')go('shopping');doPrint('shopping','portrait')}
 function printRecipe(r){
- $('#printRecipe').innerHTML=printHead(r.title)+`<div class="rdetail"><img class="img" style="max-height:240px" src="${recipeImg(r)}" alt=""><div class="meta">${[r.category,r.time&&r.time+' min',r.servings&&'Serves '+r.servings,kcal(r.calories)].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div><div class="grid g2" style="gap:24px"><div><h4>Ingredients</h4><ul>${r.ingredients.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div><div><h4>Method</h4><ol>${(r.method||'').split('\n').filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div></div></div>`;
+ $('#printRecipe').innerHTML=printHead(r.title)+`<div class="rdetail"><img class="img" style="max-height:240px" src="${recipeImg(r)}" alt=""><div class="meta">${[r.category,r.time&&r.time+' min',r.servings&&'Serves '+r.servings,kcal(r.calories)].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}</div><div class="grid g2" style="gap:24px"><div><h4>Ingredients</h4><ul>${r.ingredients.map(i=>`<li>${esc(i)}</li>`).join('')}</ul></div>${(r.method||'').trim()?`<div><h4>Method</h4><ol>${r.method.split('\n').filter(Boolean).map(s=>`<li>${esc(s)}</li>`).join('')}</ol></div>`:''}</div></div>`;
  closeModal();doPrint('recipe','portrait');
 }
 

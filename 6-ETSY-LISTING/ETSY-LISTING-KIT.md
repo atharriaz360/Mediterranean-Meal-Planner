@@ -1,22 +1,123 @@
-# Mediterranean Meal Planner — Etsy listing kit
+Mediterranean Diet Meal Planner App: Weekly Plan, Grocery List & Recipe Organizer
+ View on Etsy
+Copy
 
-Listing: https://www.etsy.com/listing/4581630401/mediterranean-meal-planner-app-weekly
 
-## Title
+Active
+Listed on 24 Sept, 2026
+Performance
+Photo & Video
+Item Details
+Item Options
+Pricing & Delivery
+How It's Made
+Legal and compliance
+Settings
+Photo and video
+Show off different angles, available options, or even a peek behind the scenes at your process.
+
+Add up to 20 photos and 2 videos. 
+
+
+Drag to reorder.
+
+Primary listing image
+Featured
+
+
+
+Featured
+Edit Listing image 2
+
+
+Edit Listing image 3
+
+
+Edit Listing image 4
+
+
+Edit Listing image 5
+
+
+Edit Listing image 6
+
+
+Edit Listing image 7
+
+
+Edit Listing image 8
+
+
+Edit Listing image 9
+
+
+Edit Listing image 10
+
+
+Edit Listing image 11
+
+
+Edit Listing image 12
+
+
+Edit Listing image 13
+
+
+
+No file chosen
+Add photos
+Add photos
+7 remaining
+
+Thumbnails
+Thumbnails are cropped versions of your primary listing photo that show up across Etsy. Make adjustments to preview the most common thumbnail sizes that shoppers will see.
+
+
+Adjust thumbnails
+Listing Thumbnail
+Item details
+Help buyers understand your item better, and share any special options you offer.
+
+Selected category 
+Planner Templates
+Digital files
+Change
+Title 
+
+
+Make sure your title is easy to understand and clearly describes what you’re selling.
 
 Mediterranean Diet Meal Planner App: Weekly Plan, Grocery List & Recipe Organizer
+81/140
+Digital files 
 
-## Tags
 
-```text
-weekly meal planner, recipe organizer, digital meal planner, mediterranean diet, meal planner app, meal prep planner, pantry tracker, grocery list, shopping list, recipe collection, offline meal planner, meal plan organizer, weekly meal plan
-```
+Buyers can download these files as soon as they complete their purchase. Add up to 5 files.
 
-## Description
 
-```
+This digital item is made to order
+Mediterranean-Meal-Planner-Digital-Download.zip
+1.73 mb
+
+
+Mediterranean-Meal-Planner-Start-Here.pdf
+582.01 kb
+
+
+ Add file
+By adding files to this listing, you guarantee that you have rights to the content. Etsy may remove content per our Intellectual Property Policy, at which point buyers may not be able to access purchased files. See our Terms for more information.
+
+Note to buyers for digital items
+
+
+Thank you for your purchase. HOW TO GET YOUR FILES 1. Go to Etsy &gt; You &gt; Purchases and orders, then click &quot;Download files&quot; next to your order. Use a web browser, not the Etsy app. 2. If your download is a ZIP, unzip it first. 3. Open the &quot;Start Here&quot; guide if one is included. 4. Apps: open the .html file in Chrome, Safari or Firefox. It works offline. Bookmark it or add it to your home screen. 5. Spreadsheets: open in Excel, or upload to Google Drive and open with Google Sheets. 6. Printables: print at 100% scale on A4 or US Letter. YOUR DATA App data saves in your browser on your device only. Use the app&#39;s export/backup option before clearing browser data or switching devices. Personal use only. Please do not share or resell the files. Need help? Message me on Etsy. Athar, KaelLabs
+Thank you for your purchase. HOW TO GET YOUR FILES 1. Go to Etsy &gt; You &gt; Purchases and orders, then click &quot;Download files&quot; next to your order. Use a web browser, not the Etsy app. 2. If your download is a ZIP, unzip it first. 3. Open the &quot;Start Here&quot; guide if one is included. 4. Apps: open the .html file in Chrome, Safari or Firefox. It works offline. Bookmark it or add it to your home screen. 5. Spreadsheets: open in Excel, or upload to Google Drive and open with Google Sheets. 6. Printables: print at 100% scale on A4 or US Letter. YOUR DATA App data saves in your browser on your device only. Use the app&#39;s export/backup option before clearing browser data or switching devices. Personal use only. Please do not share or resell the files. Need help? Message me on Etsy. Athar, KaelLabs
+
+Description 
+What makes your item special? Buyers will only see the first few lines unless they expand the description.
+
 Mediterranean diet meal planner app with a weekly plan, grocery list and recipe organizer. Stop asking "what's for dinner?": plan the week once, tap Build shopping list and shop from a list grouped by aisle. Meals, recipes and pantry in one calm place.
-One-time purchase. No subscription, no account. Works offline on your computer; use it on phone and tablet through the private link in the Start Here guide.
+One-time purchase. No subscription, no account. Works offline on your computer; open it on phone and tablet with the online link in the Start Here guide.
 
 WHY HOME COOKS USE IT
 - Plan breakfast, lunch, dinner and snacks for the whole week on one board
@@ -36,9 +137,9 @@ Grocery list
 - Grouped by aisle: Produce, Herbs & Spices, Bakery & Grains, Legumes & Canned, Fish & Meat and more
 - Add your own items with quantity and aisle; tick off as you shop; filter All, To buy and Bought; copy or print the list
 
-Recipes
-- 16 Mediterranean starter recipes with photos, plus your own
-- Ingredients to tick off as you cook, numbered steps, time, servings and kcal per serving
+Recipe organizer
+- Add your own recipes with photos. 16 sample recipes (name, ingredients and photo) show how it works. Add your own method and steps
+- Ingredients to tick off, your own numbered method, time, servings and kcal per serving
 - Search, filter by meal and star favourites; Plan it or Add to shopping in one tap; print recipe cards
 
 Pantry and prep
@@ -61,7 +162,7 @@ WHO IT'S FOR
 WHAT YOU GET
 - Mediterranean-Meal-Planner-Digital-Download.zip: Mediterranean-Meal-Planner.html (the app), Mediterranean-Meal-Planner-Start-Here.pdf and LICENSE.txt
 - Start Here PDF also as a separate file
-- A private browser link for phone and tablet (in the Start Here guide)
+- An online  link for phone and tablet (in the Start Here guide)
 
 HOW TO START
 1. Download and unzip Mediterranean-Meal-Planner-Digital-Download.zip
@@ -80,11 +181,11 @@ YOUR DATA
 - Clearing browser data or private browsing can remove saved entries. Keep a backup
 
 GOOD TO KNOW
-- A flexible planning tool, not a prescribed diet or calorie calculator. Calories come from the starter recipes or your entries
+- A flexible planning tool, not a prescribed diet or calorie calculator. Calories come from the sample recipes or your entries
 - Check ingredients, allergens and your own dietary needs before cooking
-- Personal use only.
-- No sharing or resale of the app, guide or link
-- Designed and built by KaelLabs with AI assistance for parts of the code, food photos, images and listing copy. Screens show the real app with sample data. Devices are not included
+- Personal use only. No sharing or resale of the app, guide or link
+- Sample recipes are example data, not tested recipes. Check ingredients, allergens and cooking times yourself
+- Designed and built by me, with AI assistance. I planned the app, designed its features and structure, reviewed the code and checked screens. AI tools helped write parts of the code, the listing images and this description. Screens show the real app with example data. Devices are not included.
 
 NEED HELP?
 Message me on Etsy and I'll help. Applicable consumer rights and Etsy protections are unaffected.
@@ -93,67 +194,138 @@ ALSO IN MY SHOP
 - Freelancer Business OS: invoice tracker app for freelancers with a built-in client CRM
 
 Digital download. Nothing is shipped. Pay once.
-```
+Item options
+Let buyers know what choices are available for this item
 
-## Upload order and alt text
+Variations
+Variations are unavailable for digital items.
+Custom optionsCreate up to 5 input fields to collect details from buyers like text, images, or names. These won't affect your available inventory.
+Custom options
 
-Copy-paste order (1 = first uploaded). Alt text under 250 chars, keyword-first, no filler words. VERIFIED filenames exist in `6-ETSY-LISTING/images/`.
+Create up to 5 input fields to collect details from buyers like text, images, or names. These won't affect your available inventory. Learn moreOpens a new tab
 
-1. `01-hero.jpg` — Mediterranean Meal Planner app on a laptop and phone in front of pantry jars and olive oil, showing the overview and week plan. Weekly meal planner with grocery list.
-2. `02-what-you-get.jpg` — Six real screens of the planner: week plan, shopping list, recipes, pantry, balance, and goals and water. Digital meal planner app.
-3. `03-in-your-kitchen.jpg` — Two phones showing the Recipes and Today screens with meals, tasks and water log. Meal planner app on your phone.
-4. `04-week-plan.jpg` — Laptop showing the week plan board with breakfast, lunch, dinner and snacks for 7 days and a Build shopping list callout. Weekly meal plan.
-5. `05-shopping-list.jpg` — Laptop showing the shopping list grouped by aisle, with bought items ticked and a progress bar. Grocery list from your meal plan.
-6. `06-overview.jpg` — Laptop dashboard with callouts for days planned, to buy, expiring soon, meal overview, top recipes and upcoming prep. Meal plan organizer.
-7. `07-recipes.jpg` — Tablet on a kitchen counter showing Lemon Herb Chicken with an ingredient checklist, method steps and a Plan it button. Recipe organizer.
-8. `08-dashboard-unedited.jpg` — Unedited screenshot of the planner overview with a sample week, shopping and pantry counts, meal chart and top recipes. Digital meal planner.
-9. `09-every-screen.jpg` — The planner on laptop, tablet and phone: overview, recipes and week plan. Meal planner app for computer, tablet and phone.
-10. `10-pantry-prep.jpg` — Laptop on a pantry shelf beside glass jars, showing pantry items with quantities, use-by dates and restock buttons. Pantry tracker.
-11. `11-balance.jpg` — Tablet showing the Balance screen with food groups, meal mix and weekly totals. Mediterranean diet planner.
-12. `12-private-offline.jpg` — Laptop and phone showing Settings with theme, accent colour, backup and restore. Offline meal planner saved on your device.
-13. `13-digital-download.jpg` — Digital download card listing the HTML app, Start Here PDF and LICENSE.txt. Nothing is shipped. Instant download meal planner.
+Add field
+Attributes
+These details help buyers find your item in search as they get specific about what they're looking for.
 
-### Alt text only — copy-paste list
+Tags
+Add tag
+Add up to 13 tags to help people search for your listings.
 
-```text
-1. Mediterranean Meal Planner app on a laptop and phone in front of pantry jars and olive oil, showing the overview and week plan. Weekly meal planner with grocery list.
-2. Six real screens of the planner: week plan, shopping list, recipes, pantry, balance, and goals and water. Digital meal planner app.
-3. Two phones showing the Recipes and Today screens with meals, tasks and water log. Meal planner app on your phone.
-4. Laptop showing the week plan board with breakfast, lunch, dinner and snacks for 7 days and a Build shopping list callout. Weekly meal plan.
-5. Laptop showing the shopping list grouped by aisle, with bought items ticked and a progress bar. Grocery list from your meal plan.
-6. Laptop dashboard with callouts for days planned, to buy, expiring soon, meal overview, top recipes and upcoming prep. Meal plan organizer.
-7. Tablet on a kitchen counter showing Lemon Herb Chicken with an ingredient checklist, method steps and a Plan it button. Recipe organizer.
-8. Unedited screenshot of the planner overview with a sample week, shopping and pantry counts, meal chart and top recipes. Digital meal planner.
-9. The planner on laptop, tablet and phone: overview, recipes and week plan. Meal planner app for computer, tablet and phone.
-10. Laptop on a pantry shelf beside glass jars, showing pantry items with quantities, use-by dates and restock buttons. Pantry tracker.
-11. Tablet showing the Balance screen with food groups, meal mix and weekly totals. Mediterranean diet planner.
-12. Laptop and phone showing Settings with theme, accent colour, backup and restore. Offline meal planner saved on your device.
-13. Digital download card listing the HTML app, Start Here PDF and LICENSE.txt. Nothing is shipped. Instant download meal planner.
-```
+Shape, colour, style, function, etc.
+Add
+mediterranean diet
+meal planner
+weekly meal planner
+meal planner app
+grocery list
+weekly grocery list
+recipe organizer
+meal prep planner
+meal prep organizer
+pantry tracker
+diet meal planner
+meal planning app
+html planner
+All 13 used
+Loading
+Price and inventory
+Set your item price, and how many are available for sale.
 
-## Internal checks
+Price 
+USD
+16.65
 
-- VERIFIED — The Week Plan preview and dashboard JPGs are direct 3000 × 2250 screenshots from the buyer HTML in offline Chromium, with no crop, overlay or retouch. See `images/dashboard-capture.json` for file hashes. Week Plan opened and Build shopping list switched to Shopping without a page error.
-- VERIFIED — The flatlay uses current buyer HTML captures for Week Plan and Shopping. The phone shows Home, Week, Recipes, Shop and More. See `images/hero-flatlay-capture.json` for the build and image hashes.
-- VERIFIED — The ZIP passes its integrity check and all three entries match the standalone buyer files byte for byte. No `start.txt` is included.
-- Listing video: `Mediterranean-Meal-Planner-Listing-Video-v2.mp4`. Current buyer HTML shows Week Plan, a real grocery-list build, a checked item and Recipes. The end card uses the current first listing image. See `video-checks.json` and the 16-frame contact sheet. Keep older mockups out of the upload order.
-- Listing positioning — Mediterranean weekly meals → aisle-grouped grocery list. Shop-wide keyword overlap remains UNKNOWN without current titles and tags for the other listings.
-- Product guidance uses a medical and nutrition disclaimer. Browser setup instructions describe the guide. Physical-device compatibility remains UNKNOWN.
-- VERIFIED (owner statement 2026-11-11) — All backgrounds in `5-SOURCE/canva-bg/` were generated by KaelLabs with AI image tools, not Canva stock. Folder name is legacy only. Covered by the AI disclosure.
-- Policy checked against [Etsy Listing Image Requirements](https://www.etsy.com/legal/policy/listing-image-requirements/253962679005) and [Etsy Creativity Standards](https://www.etsy.com/legal/creativity).
+Estimated earnings: USD 13.99
 
 
-# latest
 
-## 14. Mediterranean Meal Planner — 4581630401 — Mediterranean-Meal-Planner
 
-FILES VERIFIED: Mediterranean-Meal-Planner-Digital-Download.zip = Mediterranean-Meal-Planner.html, Mediterranean-Meal-Planner-Start-Here.pdf, LICENSE.txt. Matches.
-APP VERIFIED: shopping list 13, pantry 72, recipe 171, grocery 1 (buyer word; OK).
-IMAGES VERIFIED: 11 numbered + extra hero-v2.jpg + "visual preview or excerpt.jpg" (unnumbered). 02-dashboard-unedited ✓. Hero INFERENCE 6/10: title small/low contrast on green, screen small. Test hero-v2.
 
-eRANK VERIFIED: mediterranean diet 1,244 (KD 1, easiest in all data); grocery list 914; weekly meal planner 434; meal prep planner 343; digital meal planner 298; recipe organizer 203; weekly meal plan 93; recipe collection 87
 
-TITLE: Mediterranean Diet Meal Planner App: Weekly Plan, Grocery List & Recipe Organizer
-TAGS: mediterranean diet, grocery list, weekly meal planner, meal prep planner, digital meal planner, recipe organizer, weekly meal plan, recipe collection, shopping list, meal planner app, pantry tracker, mediterranean meal, meal plan organizer
+Opens a new tab
+Quantity 
+999
 
-DESCRIPTION: see ## Description above (current).
+Add SKU
+Allow restock requests
+
+When this sells out, shoppers can sign up to be alerted when it's back in stock. No listing fees will be applied. Learn more.Opens a new tab
+
+Allow restock requests
+Delivery, processing, and returns
+Give clear expectations about delivery time and cost by making sure your delivery info is accurate - including the delivery profile and your order processing schedule. You can make updates any time in Delivery settings.
+
+Buyers will download your uploaded files immediately after purchase.
+How it's made
+We want to know more about how your item was made, and so do buyers. This helps to show what makes your item special, and helps the Etsy marketplace stay unique. Learn more about what types of items are allowed on Etsy.
+
+Who made it? 
+
+I did
+
+A member of my shop
+
+Another company or person
+What is it? 
+
+A finished product
+
+A supply or tool to make things
+How is this digital content created?
+
+Created by me
+
+It’s designed and created entirely by me.
+
+
+With an AI generator
+
+It’s created with help from an AI generator.
+
+Production partners for this listing
+
+A production partner is anyone who’s not a part of your Etsy shop who helps you physically produce your items. Is this required for you?Opens a new tab
+
+
+Add production partners
+Legal and compliance
+
+GPSR manufacturer and safety information
+
+If you’re a “trader”Opens a new tab selling to EEA statesOpens a new tab or Northern Ireland (NI), you may need to include manufacturer and safety info (for listings added after 13 December 2024) to comply with the General Product Safety RegulationOpens a new tab (GPSR). You can also choose to stop selling to these states in GPSR settingsOpens a new tab.
+
+This information will be displayed to buyers on the listing page for this item. See our Privacy PolicyOpens a new tab for details.
+
+Add info
+Settings
+Choose how this listing will display in your shop, how it will renew, and if you want it to be promoted in Etsy Ads.
+
+Shop section
+Use shop sections to organise your products into groups shoppers can explore.
+
+
+Meal Planning
+
+Feature this listing
+Showcase this listing at the top of your shop home to make it stand out.
+
+Feature this listing
+
+Etsy Ads
+Promote this listing on Etsy as part of your Etsy Ads campaign.
+
+Promote this listing on Etsy as part of your Etsy Ads campaign.
+Renewal options 
+Each renewal lasts for four months or until the listing sells out. Get more details on auto-renewing.
+
+
+Automatic
+This listing will renew as it expires for USD 0.20 USD each time (recommended).
+
+Manual
+Expires on Mar 12, 2027
+You have no unsaved changes.
+
+Preview
+Publish changes
